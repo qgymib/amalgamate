@@ -6,7 +6,7 @@ static int _filter_processer_c_comment_user_include(lua_State* L)
     int sp = lua_gettop(L);
 
     lua_getfield(L, 1, "file"); /* SP + 1 */
-    amalgamate_filter_checktype(L, &filter_c_comment_user_include, sp + 1, LUA_TTABLE);
+    luaL_checktype(L, sp + 1, LUA_TTABLE);
 
     /* Foreach array. */
     lua_pushnil(L); /* SP + 2 */

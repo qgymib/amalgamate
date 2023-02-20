@@ -56,16 +56,6 @@ amalgamate_filter_t* amalgamate_get_filter(lua_State* L, const char* name);
  */
 void amalgamate_print_filter(void);
 
-/**
- * @see luaL_error()
- */
-int amalgamate_filter_error(lua_State* L, amalgamate_filter_t* filter, const char* fmt, ...);
-
-/**
- * @see luaL_checktype()
- */
-void amalgamate_filter_checktype(lua_State* L, amalgamate_filter_t* filter, int idx, int type);
-
 #ifdef __cplusplus
 }
 #endif

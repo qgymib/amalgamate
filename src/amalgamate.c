@@ -17,15 +17,15 @@ static const char* s_help =
 "  --list-filter\n"
 "    List all filters and exit.\n"
 "\n"
-"  --out=[PATH]\n"
+"  --output=PATH\n"
 "    Path to output file.\n"
 "\n"
-"  --input=[PATH]\n"
+"  --input=PATH\n"
 "    Input file path.\n"
 "\n"
-"  --filter=[STRING|PATH]\n"
-"    A sed like string to perform in all group. This string is executed after all\n"
-"    `--group-substitute` is executed.\n"
+"  --filter=STRING\n"
+"    A string declare which filter to use. The filter can be either a builtin\n"
+"    component (see `--list-filter') or a lua file path.\n"
 "\n"
 "  --verbose\n"
 "    Show extra output.\n"
@@ -97,7 +97,7 @@ static int _amalgamate_tostring(lua_State* L)
     return 1;
 }
 
-static int _setup_arg_out(lua_State* L, amalgamate_ctx_t* ctx, char* str)
+static int _setup_arg_output(lua_State* L, amalgamate_ctx_t* ctx, char* str)
 {
     amalgamate_str_destroy(&ctx->out_path);
     ctx->out_path = amalgamate_str_make(L, str);
@@ -223,7 +223,7 @@ static int _setup_args(lua_State* L, amalgamate_ctx_t* ctx, int argc, char* argv
         }
 
         /* Options. */
-        PARSER_LONGOPT_WITH_VALUE("--out", _setup_arg_out);
+        PARSER_LONGOPT_WITH_VALUE("--output", _setup_arg_output);
         PARSER_LONGOPT_WITH_VALUE("--filter", _setup_arg_filter);
         PARSER_LONGOPT_WITH_VALUE("--input", _setup_arg_input);
         PARSER_LONGOPT_NO_VALUE("--verbose", _setup_arg_verbose);
@@ -343,27 +343,41 @@ error:
         "Processer in filter `%s' does not return correct type.", filter);
 }
 
+static int _amalgamate_filter_msgh(lua_State* L)
+{
+    luaL_traceback(L, L, lua_tostring(L, -1), 0);
+    return 1;
+}
+
 static int _amalgamate_run_with_filter(lua_State* L, const char* filter, int idx)
 {
     int sp = lua_gettop(L);
 
+    lua_pushcfunction(L, _amalgamate_filter_msgh); /* SP + 1 */
+
     /* Load filter. */
-    _amalgamate_load_filter(L, filter); /* SP + 1 */
+    _amalgamate_load_filter(L, filter); /* SP + 2 */
 
     /* Get processer function */
-    lua_getfield(L, -1, "processer"); /* SP + 2 */
+    lua_getfield(L, -1, "processer"); /* SP + 3 */
 
     /* Push parameter */
-    lua_pushvalue(L, idx); /* SP + 3 */
+    lua_pushvalue(L, idx); /* SP + 4 */
 
     /* Call processer. */
-    lua_call(L, 1, 1); /* SP + 2 */
+    if (lua_pcall(L, 1, 1, sp + 1) != LUA_OK) /* SP + 3 */
+    {
+        lua_pushfstring(L, "[%s]", filter); /* SP + 4 */
+        lua_insert(L, sp + 3);
+        lua_concat(L, 2); /* SP + 3 */
+        return lua_error(L);
+    }
 
     /* Check result. */
-    _amalgamate_check_filter_result(L, filter, sp + 2);
+    _amalgamate_check_filter_result(L, filter, sp + 3);
 
     /* Save result. */
-    lua_replace(L, idx); /* SP + 1 */
+    lua_replace(L, idx); /* SP + 2 */
 
     /* Rebalance stack. */
     lua_settop(L, sp);

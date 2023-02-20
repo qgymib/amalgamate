@@ -77,10 +77,10 @@ int lua_file_load(lua_State* L, const char* path)
 	luaL_pushresult(&buf); /* SP + 3 */
 
 	/* Cleanup. */
-	lua_remove(L, sp + 1); /* SP + 2 */
-	lua_remove(L, sp + 2); /* SP + 1 */
+	lua_remove(L, sp + 2); /* SP + 2 */
+	lua_remove(L, sp + 1); /* SP + 1 */
 
-	return 0;
+	return 1;
 
 error:
 	strerror_r(errcode, errbuf, sizeof(errbuf));

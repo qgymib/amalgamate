@@ -39,30 +39,3 @@ void amalgamate_print_filter(void)
         }
     }
 }
-
-int amalgamate_filter_error(lua_State* L, amalgamate_filter_t* filter, const char* fmt, ...)
-{
-    lua_pushfstring(L, "[%s]", filter->name);
-
-    va_list ap;
-    va_start(ap, fmt);
-    lua_pushvfstring(L, fmt, ap);
-    va_end(ap);
-
-    lua_concat(L, 2);
-
-    return lua_error(L);
-}
-
-void amalgamate_filter_checktype(lua_State* L, amalgamate_filter_t* filter, int idx, int type)
-{
-    int v_type = lua_type(L, idx);
-    if (v_type == type)
-    {
-        return;
-    }
-
-    lua_pushfstring(L, "[%s]%s expected, got %s",
-        filter->name, lua_typename(L, type), lua_typename(L, v_type));
-    lua_error(L);
-}

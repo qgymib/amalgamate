@@ -24,11 +24,11 @@ int lua_substitute(lua_State* L)
     lua_settop(L, 3);
 
     size_t content_sz = 0;
-    const char* content = luaL_tolstring(L, 1, &content_sz);
+    const char* content = luaL_checklstring(L, 1, &content_sz);
     size_t pattern_sz = 0;
-    const char* pattern = luaL_tolstring(L, 2, &pattern_sz);
+    const char* pattern = luaL_checklstring(L, 2, &pattern_sz);
     size_t replace_sz = 0;
-    const char* replace = luaL_tolstring(L, 3, &replace_sz);
+    const char* replace = luaL_checklstring(L, 3, &replace_sz);
 
     pcre2_code* re_pattern = pcre2_compile((PCRE2_SPTR)pattern,
         pattern_sz,
