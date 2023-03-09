@@ -1,8 +1,8 @@
 #include "amalgamate.h"
 #include "utils/lua_file.h"
 #include "utils/lua_json.h"
-#include "utils/lua_substitute.h"
 #include "filter/__init__.h"
+#include "lua_pcre2.h"
 #include <string.h>
 #include <stdlib.h>
 
@@ -250,6 +250,12 @@ static int _setup_args(lua_State* L, amalgamate_ctx_t* ctx, int argc, char* argv
 #undef PARSER_LONGOPT_NO_VALUE
 }
 
+static void _setup_libs(lua_State* L)
+{
+    luaopen_lpcre2(L);
+    lua_setglobal(L, "lpcre2");
+}
+
 amalgamate_ctx_t* amalgamate_make(lua_State* L, int argc, char* argv[])
 {
     /* Initialize empty object. */
@@ -263,7 +269,6 @@ amalgamate_ctx_t* amalgamate_make(lua_State* L, int argc, char* argv[])
         { NULL,         NULL },
     };
     static const luaL_Reg s_amalgamate_method[] = {
-        { "substitute", lua_substitute },
         { NULL,         NULL },
     };
     if (luaL_newmetatable(L, "__amalgamate") != 0)
@@ -277,6 +282,7 @@ amalgamate_ctx_t* amalgamate_make(lua_State* L, int argc, char* argv[])
 
     /* Actual initialize. */
     _setup_args(L, ctx, argc, argv);
+    _setup_libs(L);
 
     return ctx;
 }

@@ -25,7 +25,6 @@ add_executable(${PROJECT_NAME}
     "src/utils/lua_api.c"
     "src/utils/lua_file.c"
     "src/utils/lua_json.c"
-    "src/utils/lua_substitute.c"
     "src/utils/str.c"
     "src/utils/uuid.c"
 	"src/amalgamate.c"
@@ -49,9 +48,10 @@ target_link_libraries(${PROJECT_NAME} PRIVATE lua54)
 include(third_party/cJSON.cmake)
 target_link_libraries(${PROJECT_NAME} PRIVATE cJSON)
 
-# PCRE2
+# lua_pcre2
 include(third_party/pcre2.cmake)
-target_link_libraries(${PROJECT_NAME} PRIVATE pcre2)
+include(third_party/lua_pcre2.cmake)
+target_link_libraries(${PROJECT_NAME} PRIVATE lpcre2)
 
 ###############################################################################
 # Test
