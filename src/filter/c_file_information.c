@@ -7,11 +7,7 @@ static int _filter_processer_c_file_information_summary(lua_State* L, const char
 
     if ((errcode = fopen_s(&pfile, path, "rb")) != 0)
     {
-        lua_pushfstring(L,
-            "////////////////////////////////////////////////////////////////////////////////\n"
-            "/// Cannot access `%s`\n"
-            "////////////////////////////////////////////////////////////////////////////////\n", path);
-        return 0;
+        return luaL_error(L, "Cannot access `%s`", path);
     }
 
     fseek(pfile, 0L, SEEK_END);
