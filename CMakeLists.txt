@@ -19,15 +19,16 @@ endfunction()
 ###############################################################################
 
 add_executable(${PROJECT_NAME}
-    "src/filter/__init__.c"
-    "src/filter/c_comment_user_include.c"
-    "src/filter/c_file_information.c"
+    "src/addon/__init__.c"
+    "src/addon/expand_include.c"
     "src/utils/lua_api.c"
+    "src/utils/lua_dumphex.c"
     "src/utils/lua_file.c"
-    "src/utils/lua_json.c"
-    "src/utils/str.c"
-    "src/utils/uuid.c"
-	"src/amalgamate.c"
+    "src/utils/lua_preproccess.c"
+    "src/utils/lua_sha256.c"
+    "src/utils/lua_string.c"
+    "src/utils/lua_table.c"
+    "src/amalgamate.c"
 	"src/main.c")
 
 target_include_directories(${PROJECT_NAME}
@@ -47,6 +48,10 @@ target_link_libraries(${PROJECT_NAME} PRIVATE lua54)
 # cJSON
 include(third_party/cJSON.cmake)
 target_link_libraries(${PROJECT_NAME} PRIVATE cJSON)
+
+# cjson.lua
+include(third_party/cjson.lua.cmake)
+target_link_libraries(${PROJECT_NAME} PRIVATE cjson.lua)
 
 # lua_pcre2
 include(third_party/pcre2.cmake)

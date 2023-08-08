@@ -10,3 +10,6 @@
 [submodule "third_party/lua_pcre2"]
 	path = third_party/lua_pcre2
 	url = https://github.com/qgymib/lua_pcre2.git
+[submodule "third_party/cjson.lua"]
+	path = third_party/cjson.lua
+	url = https://github.com/qgymib/cjson.lua.git

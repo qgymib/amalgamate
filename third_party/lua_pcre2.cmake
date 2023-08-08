@@ -1,7 +1,7 @@
 set(LUA_PCRE2_ROOT ${CMAKE_CURRENT_SOURCE_DIR}/third_party/lua_pcre2)
 
 add_library(lpcre2
-    ${LUA_PCRE2_ROOT}/src/lua_pcre2.c)
+    ${LUA_PCRE2_ROOT}/src/pcre2.lua.c)
 
 target_include_directories(lpcre2
     PUBLIC

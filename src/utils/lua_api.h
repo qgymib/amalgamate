@@ -7,6 +7,8 @@
 #define ERROR_NO_GROUP(L)   \
     luaL_error(L, "No group declared. You need to declare a group with `--group-beg'.")
 
+#define ARRAY_SIZE(x)   (sizeof(x) / sizeof(x[0]))
+
 #ifdef __cplusplus
 extern "C" {
 #endif
