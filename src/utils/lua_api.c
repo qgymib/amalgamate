@@ -1,4 +1,5 @@
 #include "lua_api.h"
+#include <errno.h>
 
 #if !defined(_MSC_VER)
 int fopen_s(FILE** pFile, const char* filename, const char* mode)

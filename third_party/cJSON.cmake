@@ -6,7 +6,7 @@ set(CJSON_INSTALL_PATH ${CMAKE_CURRENT_BINARY_DIR}/third_party/cJSON)
 if (WIN32)
     set(CJSON_LIB_PATH ${CJSON_INSTALL_PATH}/lib/cjson.lib)
 else ()
-    set(CJSON_LIB_PATH ${CJSON_INSTALL_PATH}/lib/cjson.a)
+    set(CJSON_LIB_PATH ${CJSON_INSTALL_PATH}/lib/libcjson.a)
 endif ()
 
 ExternalProject_Add(3rd_cJSON
