@@ -83,3 +83,7 @@ dkms.conf
 /out
 /CMakeSettings.json
 /TestResults
+
+# LSP
+/.cache
+
