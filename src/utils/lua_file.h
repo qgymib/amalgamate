@@ -25,6 +25,8 @@ int am_fmtpath(lua_State* L);
 
 int am_write_file(lua_State* L);
 
+int am_is_abs_path(lua_State* L);
+
 #ifdef __cplusplus
 }
 #endif

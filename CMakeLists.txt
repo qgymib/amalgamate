@@ -20,9 +20,9 @@ endfunction()
 
 add_executable(${PROJECT_NAME}
     "src/addon/__init__.c"
+    "src/addon/dump_hex.c"
     "src/addon/expand_include.c"
     "src/utils/lua_api.c"
-    "src/utils/lua_dumphex.c"
     "src/utils/lua_file.c"
     "src/utils/lua_preproccess.c"
     "src/utils/lua_sha256.c"

@@ -11,6 +11,12 @@ int am_strcasecmp(lua_State* L);
 int am_split_line(lua_State* L);
 int am_merge_line(lua_State* L);
 
+/**
+ * @brief Dump string as hex.
+ * @return	Always 1.
+ */
+int am_dumphex(lua_State* L);
+
 #ifdef __cplusplus
 }
 #endif

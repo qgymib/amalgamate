@@ -2,7 +2,6 @@
 #include <string.h>
 #include <stdio.h>
 #include "addon/__init__.h"
-#include "utils/lua_dumphex.h"
 #include "utils/lua_file.h"
 #include "utils/lua_preproccess.h"
 #include "utils/lua_sha256.h"
@@ -45,7 +44,7 @@ static const char* s_help =
 
 static int _setup_arg_output(lua_State* L, int idx, char* str)
 {
-	lua_pushcfunction(L, am_fmtpath);
+    lua_pushcfunction(L, am_fmtpath);
     lua_pushstring(L, str);
     lua_call(L, 1, 1);
     lua_setfield(L, idx, "output");
@@ -186,6 +185,7 @@ static void _am_openlibs(lua_State* L)
         { "dirname",        am_dirname },
         { "dumphex",        am_dumphex },
         { "fmtpath",        am_fmtpath },
+        { "is_abs_path",    am_is_abs_path },
         { "is_file_exist",  am_is_file_exist },
         { "load_file",      am_load_file },
         { "load_txt_file",  am_load_txt_file },
@@ -214,8 +214,8 @@ static void _am_openlibs(lua_State* L)
 
 static int _pmain(lua_State* L)
 {
-	luaL_openlibs(L);
-	_am_openlibs(L);
+    luaL_openlibs(L);
+    _am_openlibs(L);
     am_addon_init(L);
 
     int argc = (int)lua_tointeger(L, 1);

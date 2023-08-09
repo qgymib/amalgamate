@@ -38,6 +38,7 @@ LF
 LF
 "        -- Get file information" LF
 "        local file_data_txt = am.load_txt_file(real_file_path)" LF
+"        io.write(am.dumphex(file_data_txt))" LF
 "        local file_data_bin = am.load_file(real_file_path)" LF
 "        local file_sha256 = am.sha256(file_data_bin)" LF
 "        local file_len = string.len(file_data_bin)" LF
@@ -64,8 +65,11 @@ LF
 LF
 "return {" LF
 "    proc = expand_include_proc," LF
-"    desc = [[expand user include." LF
-"Configurations:" LF
+"    desc = " LF
+"[[DESCRIPTION:"LF
+"    Expand user include." LF
+LF
+"ATTRIBUTES:" LF
 "    \"lineno\": true|false. Default: true." LF
 "        Enable `#line [path] 1` syntax so that if compile error, you known what" LF
 "        is wrong." LF
@@ -76,22 +80,13 @@ LF
 #include "expand_include.h"
 #include "pcre2.lua.h"
 #include "utils/lua_file.h"
-#include <string.h>
 
 static int _am_c_expand_include(lua_State* L)
 {
-	if (luaL_loadbuffer(L, expand_include_script, strlen(expand_include_script),
-		"expand_include.lua") != LUA_OK)
-	{
-		return lua_error(L);
-	}
-
-	lua_call(L, 0, 1);
-
-	return 1;
+    return am_addon_call_script(L, expand_include_script, "expand_include.lua");
 }
 
 am_addon_t am_addon_expand_include = {
-	"c:expand_include",
-	_am_c_expand_include,
+    "c:expand_include",
+    _am_c_expand_include,
 };

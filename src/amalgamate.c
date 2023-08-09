@@ -25,6 +25,13 @@ LF
 "-- @param path The file that want to search" LF
 "-- @return The real path that can be opened or nil if failed" LF
 "local function search_file(path)" LF
+"    if am.is_abs_path(path) then" LF
+"        if am.is_file_exist(path) then" LF
+"            return path" LF
+"        else" LF
+"            return nil" LF
+"        end" LF
+"    end" LF
 "    local tmp_path = am.dirname(arg.input) .. \"/\" .. path" LF
 "    if am.is_file_exist(tmp_path) then" LF
 "        return tmp_path" LF

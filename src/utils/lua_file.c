@@ -4,6 +4,8 @@
 #include <errno.h>
 #include <string.h>
 
+#define IS_LETTER(c) (((c) >= 'a' && (c) <= 'z') || ((c) >= 'A' && (c) <= 'Z'))
+
 typedef struct lua_file
 {
     FILE* file;
@@ -119,7 +121,7 @@ int am_load_txt_file(lua_State* L)
     /* Load file */
     lua_pushcfunction(L, am_load_file);
     lua_pushvalue(L, 1);
-    lua_call(L, 1, 1);
+    lua_call(L, 1, 1); // sp+1
 
     /* Split line */
     lua_pushcfunction(L, am_split_line);
@@ -129,7 +131,7 @@ int am_load_txt_file(lua_State* L)
     lua_pushcfunction(L, am_merge_line);
     lua_insert(L, sp + 1);
     lua_pushstring(L, file_type);
-    lua_call(L, 2, 1);
+    lua_call(L, 2, 1); // sp+1
 
     return 1;
 }
@@ -257,4 +259,25 @@ int am_write_file(lua_State* L)
 	}
 
     return 0;
+}
+
+int am_is_abs_path(lua_State* L)
+{
+    int ret = 0;
+    const char* path = luaL_checkstring(L, 1);
+
+    if (path[0] == '/')
+    {
+        ret = 1;
+        goto finish;
+    }
+    if (IS_LETTER(path[0]) && path[1] == ':' && (path[2] == '/' || path[2] == '\\'))
+    {
+        ret = 1;
+        goto finish;
+    }
+
+finish:
+    lua_pushboolean(L, ret);
+    return 1;
 }

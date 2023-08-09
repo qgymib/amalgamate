@@ -2,9 +2,13 @@
 /**
  * @AMALGAMATE:BEG
 ```json
-[
-    { "name": "c:expand_include", "args": { "noline": true } }
-]
+{
+    "name": "c:dump_hex",
+    "args": {
+        "name_of_array": "test",
+		"name_of_array_size": "test_sz"
+    }
+}
 ```
  */
 #include "CMakeLists.txt"
@@ -14,5 +18,5 @@
 
 int main(int argc, char* argv[])
 {
-	return 0;
+    return 0;
 }
