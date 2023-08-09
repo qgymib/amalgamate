@@ -77,16 +77,14 @@ LF
 "}" LF
 ;
 
-#include "expand_include.h"
-#include "pcre2.lua.h"
-#include "utils/lua_file.h"
+#include "c_expand_include.h"
 
 static int _am_c_expand_include(lua_State* L)
 {
     return am_addon_call_script(L, expand_include_script, "expand_include.lua");
 }
 
-am_addon_t am_addon_expand_include = {
+am_addon_t am_addon_c_expand_include = {
     "c:expand_include",
     _am_c_expand_include,
 };

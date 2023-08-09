@@ -1,14 +1,24 @@
 #include "__init__.h"
-#include "dump_hex.h"
-#include "expand_include.h"
+#include "c_dump_hex.h"
+#include "c_expand_include.h"
+#include "txt_black_hole.h"
 #include <string.h>
 
 static am_addon_t* s_addon_list[] = {
-    &am_addon_dump_hex,
-    &am_addon_expand_include,
+    &am_addon_c_dump_hex,
+    &am_addon_c_expand_include,
+    &am_addon_txt_black_hole,
 };
 
-static void _am_addon_load(lua_State* L, void(*cb)(lua_State* L, const char* name, int idx, void* arg), void* arg)
+typedef void (*am_addon_load_cb)(lua_State* L, const char* name, int idx, void* arg);
+
+/**
+ * @brief Load all addons.
+ * @param[in] L     Lua VM.
+ * @param[in] cb    Load callback. Can be NULL.
+ * @param[in] arg   User data passed to \p cb.
+ */
+static void _am_addon_load(lua_State* L, am_addon_load_cb cb, void* arg)
 {
     size_t i;
     int sp = lua_gettop(L);
@@ -56,10 +66,10 @@ int am_addon_help(lua_State* L)
 
 int am_addon_call_script(lua_State* L, const char* script, const char* name)
 {
-	if (luaL_loadbuffer(L, script, strlen(script), name) != LUA_OK)
-	{
-		return lua_error(L);
-	}
+    if (luaL_loadbuffer(L, script, strlen(script), name) != LUA_OK)
+    {
+        return lua_error(L);
+    }
 
     lua_call(L, 0, 1);
     return 1;
