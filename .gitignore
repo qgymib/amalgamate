@@ -87,3 +87,7 @@ dkms.conf
 # LSP
 /.cache
 
+# idea
+/.idea
+/cmake-build-debug
+/cmake-build-release
