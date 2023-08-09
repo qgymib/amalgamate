@@ -2,12 +2,14 @@
 #include "c_dump_hex.h"
 #include "c_expand_include.h"
 #include "txt_black_hole.h"
+#include "txt_pcre2_substitute.h"
 #include <string.h>
 
 static am_addon_t* s_addon_list[] = {
     &am_addon_c_dump_hex,
     &am_addon_c_expand_include,
     &am_addon_txt_black_hole,
+    &am_addon_txt_pcre2_substitute,
 };
 
 typedef void (*am_addon_load_cb)(lua_State* L, const char* name, int idx, void* arg);

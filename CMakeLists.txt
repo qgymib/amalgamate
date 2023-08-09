@@ -23,6 +23,7 @@ add_executable(${PROJECT_NAME}
     "src/addon/c_dump_hex.c"
     "src/addon/c_expand_include.c"
     "src/addon/txt_black_hole.c"
+    "src/addon/txt_pcre2_substitute.c"
     "src/utils/lua_api.c"
     "src/utils/lua_file.c"
     "src/utils/lua_preproccess.c"
