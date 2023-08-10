@@ -2,12 +2,10 @@
 #include <string.h>
 #include <stdio.h>
 #include "addon/__init__.h"
-#include "utils/lua_file.h"
-#include "utils/lua_preproccess.h"
-#include "utils/lua_sha256.h"
-#include "utils/lua_string.h"
-#include "utils/lua_table.h"
+#include "function/__init__.h"
+#include "function/lua_file.h"
 #include "amalgamate.h"
+#include "preproccess.h"
 #include "pcre2.lua.h"
 #include "cjson.lua.h"
 
@@ -27,7 +25,13 @@ static const char* s_help =
 "    Show this help and exit.\n"
 "\n"
 "  --list-addon\n"
-"    List all addons and exit.\n"
+"    List builtin addons and exit.\n"
+"\n"
+"  --list-function\n"
+"    List builtin functions and exit.\n"
+"\n"
+"  --man=STRING\n"
+"    Show manual of function or addon.\n"
 "\n"
 "  --output=PATH\n"
 "    Path to output file.\n"
@@ -44,7 +48,7 @@ static const char* s_help =
 
 static int _setup_arg_output(lua_State* L, int idx, char* str)
 {
-    lua_pushcfunction(L, am_fmtpath);
+    lua_pushcfunction(L, am_func_fmtpath.func);
     lua_pushstring(L, str);
     lua_call(L, 1, 1);
     lua_setfield(L, idx, "output");
@@ -54,7 +58,7 @@ static int _setup_arg_output(lua_State* L, int idx, char* str)
 static int _setup_arg_input(lua_State* L, int idx, char* str)
 {
     /* Save input file path */
-    lua_pushcfunction(L, am_fmtpath);
+    lua_pushcfunction(L, am_func_fmtpath.func);
     lua_pushstring(L, str);
     lua_call(L, 1, 1);
     lua_setfield(L, idx, "input");
@@ -73,6 +77,37 @@ static int _setup_arg_iquote(lua_State* L, int idx, char* str)
     return 0;
 }
 
+static int _setup_arg_man(lua_State* L, int idx, char* str)
+{
+    (void)idx;
+
+    lua_pushcfunction(L, am_function_manual);
+    lua_pushstring(L, str);
+    lua_call(L, 1, 1);
+
+    if (lua_type(L, -1) == LUA_TSTRING)
+    {
+        goto show_man;
+    }
+    lua_pop(L, 1);
+
+    lua_pushcfunction(L, am_addon_manual);
+    lua_pushstring(L, str);
+    lua_call(L, 1, 1);
+
+    if (lua_type(L, -1) == LUA_TSTRING)
+    {
+        goto show_man;
+    }
+    lua_pop(L, 0);
+
+    return luaL_error(L, "No manual for %s.", str);
+
+show_man:
+    fprintf(stdout, "%s\n", lua_tostring(L, -1));
+    exit(EXIT_SUCCESS);
+}
+
 static int _setup_arg_verbose(lua_State* L, int idx, char* str)
 {
     (void)str;
@@ -84,9 +119,18 @@ static int _setup_arg_verbose(lua_State* L, int idx, char* str)
 static int _setup_arg_list_addon(lua_State* L, int idx, char* str)
 {
     (void)idx; (void)str;
-    lua_pushcfunction(L, am_addon_help);
+    lua_pushcfunction(L, am_addon_list);
     lua_call(L, 0, 1);
     fprintf(stdout, "%s", lua_tostring(L, -1));
+    exit(EXIT_SUCCESS);
+}
+
+static int _setup_arg_list_function(lua_State* L, int idx, char* str)
+{
+    (void)idx; (void)str;
+    lua_pushcfunction(L, am_list_function);
+    lua_call(L, 0, 1);
+    fprintf(stdout, "%s\n", luaL_checkstring(L, -1));
     exit(EXIT_SUCCESS);
 }
 
@@ -129,8 +173,10 @@ static int _parser_arguments(lua_State* L, int idx, int argc, char* argv[])
         PARSER_LONGOPT_WITH_VALUE("--output", _setup_arg_output);
         PARSER_LONGOPT_WITH_VALUE("--input", _setup_arg_input);
         PARSER_LONGOPT_WITH_VALUE("--iquote", _setup_arg_iquote);
+        PARSER_LONGOPT_WITH_VALUE("--man", _setup_arg_man);
         PARSER_LONGOPT_NO_VALUE("--verbose", _setup_arg_verbose);
         PARSER_LONGOPT_NO_VALUE("--list-addon", _setup_arg_list_addon);
+        PARSER_LONGOPT_NO_VALUE("--list-function", _setup_arg_list_function);
     }
 
     return 0;
@@ -181,24 +227,9 @@ static void _generate_arg_table(lua_State* L, int argc, char* argv[])
 static void _am_openlibs(lua_State* L)
 {
     /* Amalgamate API */
-    static const luaL_Reg s_api[] = {
-        { "dirname",        am_dirname },
-        { "dumphex",        am_dumphex },
-        { "fmtpath",        am_fmtpath },
-        { "is_abs_path",    am_is_abs_path },
-        { "is_file_exist",  am_is_file_exist },
-        { "load_file",      am_load_file },
-        { "load_txt_file",  am_load_txt_file },
-        { "split_line",     am_split_line },
-        { "merge_line",     am_merge_line },
-        { "preproccess",    am_preproccess },
-        { "sha256",         am_sha256 },
-        { "strcasecmp",     am_strcasecmp },
-        { "table_is_array", am_table_is_array },
-        { "write_file",     am_write_file },
-        { NULL,             NULL },
-    };
-    luaL_newlib(L, s_api);
+    luaopen_am(L);
+    lua_pushcfunction(L, am_preproccess);
+    lua_setfield(L, -2, "preproccess");
 
     /* am.pcre2 */
     luaopen_lpcre2(L);

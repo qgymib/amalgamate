@@ -191,7 +191,7 @@ static void sha256_final(SHA256_CTX* ctx, uint8_t hash[])
     }
 }
 
-int am_sha256(lua_State* L)
+static int _am_sha256(lua_State* L)
 {
     size_t data_sz = 0;
     const char* data = luaL_checklstring(L, 1, &data_sz);
@@ -200,15 +200,22 @@ int am_sha256(lua_State* L)
     sha256_init(&ctx);
     sha256_update(&ctx, (uint8_t*)data, data_sz);
 
-	uint8_t ret[SHA256_BLOCK_SIZE];
-	sha256_final(&ctx, ret);
+    uint8_t ret[SHA256_BLOCK_SIZE];
+    sha256_final(&ctx, ret);
 
-	char buf[65]; size_t i;
-	for (i = 0; i < sizeof(ret); i++)
-	{
-		snprintf(buf + 2 * i, sizeof(buf) - 2 * i, "%02x", ret[i]);
-	}
+    char buf[65]; size_t i;
+    for (i = 0; i < sizeof(ret); i++)
+    {
+        snprintf(buf + 2 * i, sizeof(buf) - 2 * i, "%02x", ret[i]);
+    }
 
-	lua_pushstring(L, buf);
-	return 1;
+    lua_pushstring(L, buf);
+    return 1;
 }
+
+am_function_t am_func_sha256 = {
+"sha256", _am_sha256, "string sha256(string s)",
+"Calcualte SHA-256.",
+
+"Calcualte SHA256 of `s` and return it's string value."
+};

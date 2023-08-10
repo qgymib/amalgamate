@@ -1,11 +1,5 @@
-#ifndef __AMALGAMATE_LUA_API_H__
-#define __AMALGAMATE_LUA_API_H__
-
-#define ERROR_OOM(L)        \
-    luaL_error(L, "Out of memory.")
-
-#define ERROR_NO_GROUP(L)   \
-    luaL_error(L, "No group declared. You need to declare a group with `--group-beg'.")
+#ifndef __AMALGAMATE_FUNCTION_INIT_H__
+#define __AMALGAMATE_FUNCTION_INIT_H__
 
 #define ARRAY_SIZE(x)   (sizeof(x) / sizeof(x[0]))
 
@@ -38,10 +32,38 @@ int fopen_s(FILE** pFile, const char* filename, const char* mode);
 
 #endif
 
-int lua_foreach(lua_State* L, int idx,
-    int (*cb)(lua_State* L, int idx, int key, int val, void* data), void* data);
+typedef struct am_function
+{
+    const char*     name;
+    lua_CFunction   func;
+    const char*     proto;
+    const char*     brief;
+    const char*     document;
+} am_function_t;
+
+/**
+ * @brief Push a table on top of stack that contains all functions.
+ * @param[in] L     Lua VM.
+ * @return          Always 1.
+ */
+int luaopen_am(lua_State* L);
+
+/**
+ * @brief Push a string on top of stack that contains all function name and brief.
+ * @param[in] L     Lua VM.
+ * @return          Always 1.
+ */
+int am_list_function(lua_State* L);
+
+/**
+ * @brief Search for function manual.
+ * @param[in] L     Lua VM.
+ * @return          1 if found, or 0 if not found.
+ */
+int am_function_manual(lua_State* L);
 
 #ifdef __cplusplus
 }
 #endif
+
 #endif

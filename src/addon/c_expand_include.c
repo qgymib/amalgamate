@@ -65,14 +65,14 @@ LF
 LF
 "return {" LF
 "    proc = expand_include_proc," LF
+"    brief = \"Replace file content with #include path.\"," LF
 "    desc = " LF
-"[[DESCRIPTION:"LF
-"    Expand user include." LF
+"[[Read #include file content and replace the #include statement."LF
 LF
-"ATTRIBUTES:" LF
-"    \"lineno\": true|false. Default: true." LF
-"        Enable `#line [path] 1` syntax so that if compile error, you known what" LF
-"        is wrong." LF
+"[ATTRIBUTES]" LF
+"\"lineno\": true|false. Default: true." LF
+"    Enable `#line [path] 1` syntax so that if compile error, you known what" LF
+"    is wrong." LF
 "]]," LF
 "}" LF
 ;

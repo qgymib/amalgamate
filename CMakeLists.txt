@@ -24,12 +24,12 @@ add_executable(${PROJECT_NAME}
     "src/addon/c_expand_include.c"
     "src/addon/txt_black_hole.c"
     "src/addon/txt_pcre2_substitute.c"
-    "src/utils/lua_api.c"
-    "src/utils/lua_file.c"
-    "src/utils/lua_preproccess.c"
-    "src/utils/lua_sha256.c"
-    "src/utils/lua_string.c"
-    "src/utils/lua_table.c"
+    "src/function/__init__.c"
+    "src/function/lua_file.c"
+    "src/function/lua_sha256.c"
+    "src/function/lua_string.c"
+    "src/function/lua_table.c"
+    "src/preproccess.c"
     "src/amalgamate.c"
 	"src/main.c")
 

@@ -1,4 +1,4 @@
-#define LF	"\n"
+#define LF  "\n"
 const char* script = "\n\n\n\n\n" LF // let's align the line number
 
 //////////////////////////////////////////////////////////////////////////
@@ -84,8 +84,8 @@ LF
 "    if v.lang == nil then" LF
 "        -- do nothing" LF
 "    elseif am.strcasecmp(v.lang, \"lua\") == 0 then" LF
-"        local func = load(v.code)" LF
-"        v.data = func(v.data)" LF
+"        local addon = load(v.code)" LF
+"        v.data = addon.proc(v.data, {})" LF
 "    elseif am.strcasecmp(v.lang, \"json\") == 0 then" LF
 "        v.data = process_json(v.code, v.data)" LF
 "    end" LF

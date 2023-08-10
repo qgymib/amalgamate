@@ -53,19 +53,7 @@ static FILE* lua_fopen(lua_State* L, const char* filename, const char* mode)
     return file->file;
 }
 
-static char* _am_dirname(char* s)
-{
-	size_t i;
-	if (!s || !*s) return ".";
-	i = strlen(s) - 1;
-	for (; s[i] == '/'; i--) if (!i) return "/";
-	for (; s[i] != '/'; i--) if (!i) return ".";
-	for (; s[i] == '/'; i--) if (!i) return "/";
-	s[i + 1] = 0;
-	return s;
-}
-
-int lua_file_load(lua_State* L, const char* path)
+static int _lua_file_load(lua_State* L, const char* path)
 {
     int errcode;
     char errbuf[256];
@@ -103,13 +91,19 @@ error:
         path, errbuf, errcode);
 }
 
-int am_load_file(lua_State* L)
+static int _am_load_file(lua_State* L)
 {
     const char* path = luaL_checkstring(L, 1);
-    return lua_file_load(L, path);
+    return _lua_file_load(L, path);
 }
 
-int am_load_txt_file(lua_State* L)
+am_function_t am_func_load_file = {
+"load_file", _am_load_file, "string load_file(string path)",
+"Load whole file as binary mode and return it.",
+"Load whole file as binary mode and return it."
+};
+
+static int am_load_txt_file(lua_State* L)
 {
     int sp = lua_gettop(L);
     const char* file_type = "\n";
@@ -119,16 +113,16 @@ int am_load_txt_file(lua_State* L)
     }
 
     /* Load file */
-    lua_pushcfunction(L, am_load_file);
+    lua_pushcfunction(L, _am_load_file);
     lua_pushvalue(L, 1);
     lua_call(L, 1, 1); // sp+1
 
     /* Split line */
-    lua_pushcfunction(L, am_split_line);
+    lua_pushcfunction(L, am_func_split_line.func);
     lua_insert(L, sp + 1);
     lua_call(L, 1, 1);
 
-    lua_pushcfunction(L, am_merge_line);
+    lua_pushcfunction(L, am_func_merge_line.func);
     lua_insert(L, sp + 1);
     lua_pushstring(L, file_type);
     lua_call(L, 2, 1); // sp+1
@@ -136,7 +130,13 @@ int am_load_txt_file(lua_State* L)
     return 1;
 }
 
-int am_is_file_exist(lua_State* L)
+am_function_t am_func_load_txt_file = {
+"load_txt_file", am_load_txt_file, "string load_txt_file(string path)",
+"Load while file as txt mode and return it.",
+"Load while file as txt mode and return it. Line endings is always convert to \"\\n\"."
+};
+
+static int _am_is_file_exist(lua_State* L)
 {
     FILE* file = NULL;
     const char* path = luaL_checkstring(L, 1);
@@ -161,7 +161,26 @@ int am_is_file_exist(lua_State* L)
     return 1;
 }
 
-int am_dirname(lua_State* L)
+am_function_t am_func_is_file_exist = {
+"is_file_exist", _am_is_file_exist, "boolean is_file_exist(string path)",
+"Check if file is exist.",
+"Check if file is exist, return true if it is, false if not exist or cannot\n"
+"access it."
+};
+
+static char* _am_dirname(char* s)
+{
+    size_t i;
+    if (!s || !*s) return ".";
+    i = strlen(s) - 1;
+    for (; s[i] == '/'; i--) if (!i) return "/";
+    for (; s[i] != '/'; i--) if (!i) return ".";
+    for (; s[i] == '/'; i--) if (!i) return "/";
+    s[i + 1] = 0;
+    return s;
+}
+
+static int _lua_dirname(lua_State* L)
 {
     const char* path = luaL_checkstring(L, 1);
     char* cpy_path = strdup(path);
@@ -173,7 +192,14 @@ int am_dirname(lua_State* L)
     return 1;
 }
 
-int am_fmtpath(lua_State* L)
+am_function_t am_func_dirname = {
+"dirname", _lua_dirname, "string dirname(string s)",
+"Break string `s` into directory component and return it.",
+"dirname() returns the string up to, but not including, the final '/'. If path\n"
+"does not contain a slash, dirname() returns the string \".\"."
+};
+
+static int _am_fmtpath(lua_State* L)
 {
     int sp = lua_gettop(L);
     luaL_checktype(L, 1, LUA_TSTRING);
@@ -215,7 +241,19 @@ int am_fmtpath(lua_State* L)
     return 1;
 }
 
-int am_write_file(lua_State* L)
+am_function_t am_func_fmtpath = {
+"fmtpath", _am_fmtpath, "string fmtpath(string path[, string delim])",
+"Format path into unified path string.",
+"The first parameter is a string contains the path to format. The second optional\n"
+"parameter is a string decide what the delimiter is, which by default is \"\\n\".\n"
+"\n"
+"EXAMPLE\n"
+"If we have path string \"path/to\\\\foo\\\\bar\", the result of call\n"
+"`fmtpath(path, \"/\")` is:\n"
+"\"path/to/foo/bar\"."
+};
+
+static int _am_write_file(lua_State* L)
 {
     const char* path = luaL_checkstring(L, 1);
 
@@ -240,28 +278,38 @@ int am_write_file(lua_State* L)
 #else
         if ((file = fopen(path, "wb")) == NULL)
 #endif
-		{
-			return luaL_error(L, "open `%s` failed.", path);
-		}
+        {
+            return luaL_error(L, "open `%s` failed.", path);
+        }
         file_need_close = 1;
     }
 
     size_t write_cnt = fwrite(data, data_sz, 1, file);
-	if (file_need_close)
-	{
-		fclose(file);
-		file = NULL;
-	}
+    if (file_need_close)
+    {
+        fclose(file);
+        file = NULL;
+    }
 
-	if (write_cnt != 1)
-	{
-		return luaL_error(L, "write file failed.");
-	}
+    if (write_cnt != 1)
+    {
+        return luaL_error(L, "write file failed.");
+    }
 
     return 0;
 }
 
-int am_is_abs_path(lua_State* L)
+am_function_t am_func_write_file = {
+"write_file", _am_write_file, "nil write_file(string path, string data)",
+"Write data to file.",
+
+"Open file as binary mode and write data into it.\n"
+"\n"
+"If the file is not exist, the file will be created. If the file is exist, the\n"
+"content of the file is cleared before write."
+};
+
+static int _am_is_abs_path(lua_State* L)
 {
     int ret = 0;
     const char* path = luaL_checkstring(L, 1);
@@ -281,3 +329,9 @@ finish:
     lua_pushboolean(L, ret);
     return 1;
 }
+
+am_function_t am_func_is_abs_path = {
+"is_abs_path", _am_is_abs_path, "boolean is_abs_path(string path)",
+"Check if parameter is absolute path.",
+"Check if parameter is absolute path without actually access it."
+};

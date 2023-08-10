@@ -1,7 +1,7 @@
 #ifndef __AMALGAMATE_LUA_PREPROCCESS_H__
 #define __AMALGAMATE_LUA_PREPROCCESS_H__
 
-#include "lua_api.h"
+#include "function/__init__.h"
 
 #ifdef __cplusplus
 extern "C" {
