@@ -2,6 +2,7 @@
 static const char* expand_include_script = "\n" LF
 LF
 "local M = {}" LF
+"-- This is the pattern to search `#include` statement." LF
 "M.pattern = \"^\\\\s*#\\\\s*include\\\\s+\\\"([-.\\\\w/]+)\\\".*?$\"" LF
 "M.regex = am.pcre2.compile(M.pattern)" LF
 LF
@@ -13,6 +14,9 @@ LF
 "    -- Argument format" LF
 "    if args.lineno == nil then" LF
 "        args.lineno = true" LF
+"    end" LF
+"    if args.fileinfo == nil then" LF
+"        args.fileinfo = true" LF
 "    end" LF
 LF
 "    while true do" LF
@@ -44,11 +48,13 @@ LF
 "        local file_len = string.len(file_data_bin)" LF
 LF
 "        -- Generate header" LF
-"        ret = ret .. string.rep(\"/\", 80) .. \"\\n\"" LF
-"        ret = ret .. \"// PATH:    \" .. inc_file_path .. \"\\n\"" LF
-"        ret = ret .. \"// SIZE:    \" .. string.format(\"%q\", file_len) .. \"\\n\"" LF
-"        ret = ret .. \"// SHA-256: \" .. file_sha256 .. \"\\n\"" LF
-"        ret = ret .. string.rep(\"/\", 80) .. \"\\n\"" LF
+"        if args.fileinfo then" LF
+"            ret = ret .. string.rep(\"/\", 80) .. \"\\n\"" LF
+"            ret = ret .. \"// PATH:    \" .. inc_file_path .. \"\\n\"" LF
+"            ret = ret .. \"// SIZE:    \" .. string.format(\"%q\", file_len) .. \"\\n\"" LF
+"            ret = ret .. \"// SHA-256: \" .. file_sha256 .. \"\\n\"" LF
+"            ret = ret .. string.rep(\"/\", 80) .. \"\\n\"" LF
+"        end" LF
 LF
 "        -- Append file content" LF
 "        if args.lineno then" LF
@@ -73,6 +79,8 @@ LF
 "\"lineno\": true|false. Default: true." LF
 "    Enable `#line [path] 1` syntax so that if compile error, you known what" LF
 "    is wrong." LF
+"\"fileinfo\": true|false. Default: true" LF
+"    Add file path, size, SHA-256 information before replacement." LF
 "]]," LF
 "}" LF
 ;
