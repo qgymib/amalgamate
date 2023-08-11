@@ -77,16 +77,16 @@ int am_function_manual(lua_State* L)
         if (strcmp(name, am_apis[i]->name) == 0)
         {
             lua_pushfstring(L,
-                "NAME\n"
+                "[NAME]\n"
                 "%s\n"
                 "\n"
-                "SYNOPSIS\n"
+                "[SYNOPSIS]\n"
                 "%s\n"
                 "\n"
-                "BRIEF\n"
+                "[BRIEF]\n"
                 "%s\n"
                 "\n"
-                "DOCUMENT\n"
+                "[DOCUMENT]\n"
                 "%s\n",
                 am_apis[i]->name, am_apis[i]->proto, am_apis[i]->brief, am_apis[i]->document);
             return 1;

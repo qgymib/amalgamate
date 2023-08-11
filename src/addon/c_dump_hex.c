@@ -66,22 +66,21 @@ LF
 "return {" LF
 "    proc = dump_hex_proc," LF
 "    desc = " LF
-"[[DESCRIPTION:" LF
-"    Dump anything into C array." LF
+"[[Dump anything into C array." LF
 LF
-"ATTRIBUTES:" LF
-"    \"name_of_array\": [string]" LF
-"        The name of dumped array variable." LF
-"    \"name_of_array_size\": [string]" LF
-"        The name of dumped array size variable. If not specificed, the array" LF
-"        size is not generated." LF
-"    \"source_file\": [string]" LF
-"        The source file to dump. If not specificed, dump amalgamate content as" LF
-"        hex array." LF
-"    \"include_stdint\": true|false. Default: false." LF
-"        Set to true if need to include header file `stdint.h` and `stddef.h`." LF
-"    \"append_eol\": true|false. Default: true." LF
-"        Whether append NULL terminal character to end of dumped array." LF
+"[ATTRIBUTES]" LF
+"\"name_of_array\": [string]" LF
+"    The name of dumped array variable." LF
+"\"name_of_array_size\": [string]" LF
+"    The name of dumped array size variable. If not specificed, the array" LF
+"    size is not generated." LF
+"\"source_file\": [string]" LF
+"    The source file to dump. If not specificed, dump amalgamate content as" LF
+"    hex array." LF
+"\"include_stdint\": true|false. Default: false." LF
+"    Set to true if need to include header file `stdint.h` and `stddef.h`." LF
+"\"append_eol\": true|false. Default: true." LF
+"    Whether append NULL terminal character to end of dumped array." LF
 "]]," LF
 "}" LF
 ;
