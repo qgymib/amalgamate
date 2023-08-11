@@ -74,6 +74,13 @@ static int _am_split_line(lua_State* L)
         }
     }
 
+    if (start < data + pos)
+    {
+        size_t len = data + data_sz - start;
+        lua_pushlstring(L, start, len);
+        lua_seti(L, -2, luaL_len(L, -2) + 1);
+    }
+
     return 1;
 }
 

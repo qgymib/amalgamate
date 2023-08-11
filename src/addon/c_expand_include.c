@@ -3,8 +3,8 @@ static const char* expand_include_script = "\n" LF
 LF
 "local M = {}" LF
 "-- This is the pattern to search `#include` statement." LF
-"M.pattern = \"^\\\\s*#\\\\s*include\\\\s+\\\"([-.\\\\w/]+)\\\".*?$\"" LF
-"M.regex = am.pcre2.compile(M.pattern)" LF
+"M.pattern = \"#\\\\s*include\\\\s+\\\"([-.\\\\w/]+)\\\"\"" LF
+"M.regex = am.pcre2.compile(M.pattern, am.pcre2.PCRE2_MULTILINE)" LF
 LF
 "local function expand_include_proc(data, args)" LF
 "    -- Local variable" LF
@@ -17,6 +17,9 @@ LF
 "    end" LF
 "    if args.fileinfo == nil then" LF
 "        args.fileinfo = true" LF
+"    end" LF
+"    if args.displace_include == nil then" LF
+"        args.displace_include = true" LF
 "    end" LF
 LF
 "    while true do" LF
@@ -42,7 +45,6 @@ LF
 LF
 "        -- Get file information" LF
 "        local file_data_txt = am.load_txt_file(real_file_path)" LF
-"        io.write(am.dumphex(file_data_txt))" LF
 "        local file_data_bin = am.load_file(real_file_path)" LF
 "        local file_sha256 = am.sha256(file_data_bin)" LF
 "        local file_len = string.len(file_data_bin)" LF
@@ -59,6 +61,10 @@ LF
 "        -- Append file content" LF
 "        if args.lineno then" LF
 "            ret = ret .. \"#line \" .. inc_file_path .. \" 1\\n\"" LF
+"        end" LF
+"        if args.displace_include then" LF
+"            file_data_txt = regex:substitute(file_data_txt, \"/* AMALGAMATE_DISPLACE: ${0} */\"," LF
+"                am.pcre2.PCRE2_SUBSTITUTE_GLOBAL | am.pcre2.PCRE2_SUBSTITUTE_EXTENDED)" LF
 "        end" LF
 "        ret = ret .. file_data_txt .. \"\\n\"" LF
 LF
@@ -81,6 +87,8 @@ LF
 "    is wrong." LF
 "\"fileinfo\": true|false. Default: true" LF
 "    Add file path, size, SHA-256 information before replacement." LF
+"\"displace_include\": true|false. Default: true" LF
+"    comment `#include \"foo.h\"`." LF
 "]]," LF
 "}" LF
 ;
@@ -89,7 +97,7 @@ LF
 
 static int _am_c_expand_include(lua_State* L)
 {
-    return am_addon_call_script(L, expand_include_script, "expand_include.lua");
+    return am_addon_call_script(L, expand_include_script, "c:expand_include.lua");
 }
 
 am_addon_t am_addon_c_expand_include = {

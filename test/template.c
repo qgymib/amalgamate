@@ -1,17 +1,13 @@
-
 /**
  * @AMALGAMATE:BEG
 ```json
 {
-    "name": "c:dump_hex",
-    "args": {
-        "name_of_array": "test",
-		"name_of_array_size": "test_sz"
-    }
+    "name": "c:expand_include",
+	"args": { "displace_include": true }
 }
 ```
  */
-#include "CMakeLists.txt"
+#include "test.h"
 /**
  * @AMALGAMATE:END
  */

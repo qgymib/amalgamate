@@ -84,10 +84,23 @@ LF
 "    if v.lang == nil then" LF
 "        -- do nothing" LF
 "    elseif am.strcasecmp(v.lang, \"lua\") == 0 then" LF
-"        local addon = load(v.code)" LF
+"        local trunk = load(v.code)" LF
+"        local b,addon = pcall(trunk)" LF
+"        if b ~= true then" LF
+"            error(addon)" LF
+"        end" LF
 "        v.data = addon.proc(v.data, {})" LF
+"        if v.data == nil then" LF
+"            v.data = \"\"" LF
+"        end" LF
 "    elseif am.strcasecmp(v.lang, \"json\") == 0 then" LF
 "        v.data = process_json(v.code, v.data)" LF
+"        if v.data == nil then" LF
+"            v.data = \"\"" LF
+"        end" LF
+"    else" LF
+"        local err_msg = \"unknown lang `\" .. v.lang .. \"`.\"" LF
+"        error(err_msg)" LF
 "    end" LF
 "end" LF
 LF

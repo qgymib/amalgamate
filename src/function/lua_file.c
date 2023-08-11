@@ -120,7 +120,7 @@ static int am_load_txt_file(lua_State* L)
     /* Split line */
     lua_pushcfunction(L, am_func_split_line.func);
     lua_insert(L, sp + 1);
-    lua_call(L, 1, 1);
+    lua_call(L, 1, 1); // sp+1
 
     lua_pushcfunction(L, am_func_merge_line.func);
     lua_insert(L, sp + 1);
