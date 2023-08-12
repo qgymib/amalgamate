@@ -4,6 +4,7 @@
 #include "lua_string.h"
 #include "lua_table.h"
 #include <string.h>
+#include <errno.h>
 
 static am_function_t* am_apis[] = {
     /* file */
