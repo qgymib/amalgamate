@@ -8,6 +8,7 @@
 #include "preproccess.h"
 #include "pcre2.lua.h"
 #include "cjson.lua.h"
+#include "config.h"
 
 typedef struct amalgamate_ctx
 {
@@ -227,18 +228,18 @@ static void _generate_arg_table(lua_State* L, int argc, char* argv[])
 static void _am_openlibs(lua_State* L)
 {
     /* open pcre2 */
-    luaopen_lpcre2(L);
-    lua_setglobal(L, "pcre2");
+    luaL_requiref(L, "pcre2", luaopen_lpcre2, 1);
+    lua_pop(L, 1);
 
     /* open cjson */
-    luaopen_cjson(L);
-    lua_setglobal(L, "cjson");
+    luaL_requiref(L, "cjson", luaopen_cjson, 1);
+    lua_pop(L, 1);
 
     /* Amalgamate API */
     luaopen_am(L);
     lua_pushcfunction(L, am_preproccess);
     lua_setfield(L, -2, "preproccess");
-    lua_setglobal(L, "am");
+    lua_setglobal(L, AMALGAMATE_NAMESPACE);
 }
 
 static int _pmain(lua_State* L)

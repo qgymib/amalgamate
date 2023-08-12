@@ -1,6 +1,7 @@
-#define LF	"\n"
+#define LF  "\n"
 static const char* expand_include_script = "\n" LF
 LF
+"local pcre2 = require(\"pcre2\")" LF
 "local M = {}" LF
 "-- This is the pattern to search `#include` statement." LF
 "M.pattern = \"#\\\\s*include\\\\s+\\\"([-.\\\\w/]+)\\\"\"" LF

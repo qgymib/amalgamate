@@ -1,5 +1,7 @@
 #define LF "\n"
 static const char* pcre2_substitute_script = "\n" LF
+"local pcre2 = require(\"pcre2\")" LF
+LF
 "local function pcre2_substitute_proc(data, args)" LF
 "    -- Check arguments" LF
 "    if args.pattern == nil then" LF

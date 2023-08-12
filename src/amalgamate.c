@@ -59,6 +59,7 @@ LF
 LF
 "-- Process json" LF
 "local function process_json(code, data)" LF
+"    local cjson = require(\"cjson\")" LF
 "    local config = cjson.from_json(code)" LF
 "    if am.table_is_array(config) then" LF
 "        for _, v in ipairs(config) do" LF
