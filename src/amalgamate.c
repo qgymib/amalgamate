@@ -59,7 +59,7 @@ LF
 LF
 "-- Process json" LF
 "local function process_json(code, data)" LF
-"    local config = am.json.from_json(code)" LF
+"    local config = cjson.from_json(code)" LF
 "    if am.table_is_array(config) then" LF
 "        for _, v in ipairs(config) do" LF
 "            data = process_json_addon(data, v)" LF

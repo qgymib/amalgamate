@@ -4,7 +4,7 @@ LF
 "local M = {}" LF
 "-- This is the pattern to search `#include` statement." LF
 "M.pattern = \"#\\\\s*include\\\\s+\\\"([-.\\\\w/]+)\\\"\"" LF
-"M.regex = am.pcre2.compile(M.pattern, am.pcre2.PCRE2_MULTILINE)" LF
+"M.regex = pcre2.compile(M.pattern, pcre2.PCRE2_MULTILINE)" LF
 LF
 "local function expand_include_proc(data, args)" LF
 "    -- Local variable" LF
@@ -64,7 +64,7 @@ LF
 "        end" LF
 "        if args.displace_include then" LF
 "            file_data_txt = regex:substitute(file_data_txt, \"/* AMALGAMATE_DISPLACE: ${0} */\"," LF
-"                am.pcre2.PCRE2_SUBSTITUTE_GLOBAL | am.pcre2.PCRE2_SUBSTITUTE_EXTENDED)" LF
+"                pcre2.PCRE2_SUBSTITUTE_GLOBAL | pcre2.PCRE2_SUBSTITUTE_EXTENDED)" LF
 "        end" LF
 "        ret = ret .. file_data_txt .. \"\\n\"" LF
 LF

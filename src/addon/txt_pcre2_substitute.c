@@ -9,9 +9,9 @@ static const char* pcre2_substitute_script = "\n" LF
 "        error(\"missing argument `replace`.\")" LF
 "    end" LF
 LF
-"    local code = am.pcre2.compile(args.pattern, am.pcre2.PCRE2_MULTILINE)" LF
+"    local code = pcre2.compile(args.pattern, pcre2.PCRE2_MULTILINE)" LF
 "    return code:substitute(data, args.replace," LF
-"        am.pcre2.PCRE2_SUBSTITUTE_GLOBAL | am.pcre2.PCRE2_SUBSTITUTE_EXTENDED)" LF
+"        pcre2.PCRE2_SUBSTITUTE_GLOBAL | pcre2.PCRE2_SUBSTITUTE_EXTENDED)" LF
 "end" LF
 LF
 "return {" LF

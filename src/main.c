@@ -226,20 +226,18 @@ static void _generate_arg_table(lua_State* L, int argc, char* argv[])
 
 static void _am_openlibs(lua_State* L)
 {
+    /* open pcre2 */
+    luaopen_lpcre2(L);
+    lua_setglobal(L, "pcre2");
+
+    /* open cjson */
+    luaopen_cjson(L);
+    lua_setglobal(L, "cjson");
+
     /* Amalgamate API */
     luaopen_am(L);
     lua_pushcfunction(L, am_preproccess);
     lua_setfield(L, -2, "preproccess");
-
-    /* am.pcre2 */
-    luaopen_lpcre2(L);
-    lua_setfield(L, -2, "pcre2");
-
-    /* am.json */
-    luaopen_cjson(L);
-    lua_setfield(L, -2, "json");
-
-    /* Set as global namespace */
     lua_setglobal(L, "am");
 }
 
