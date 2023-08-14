@@ -57,8 +57,8 @@ target_link_libraries(${PROJECT_NAME} PRIVATE cjson.lua)
 
 # lua_pcre2
 include(third_party/pcre2.cmake)
-include(third_party/lua_pcre2.cmake)
-target_link_libraries(${PROJECT_NAME} PRIVATE lpcre2)
+include(third_party/pcre2.lua.cmake)
+target_link_libraries(${PROJECT_NAME} PRIVATE pcre2.lua)
 
 ###############################################################################
 # Test
