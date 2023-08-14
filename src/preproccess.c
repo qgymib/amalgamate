@@ -1,22 +1,13 @@
 #include "preproccess.h"
 #include "pcre2.lua.h"
+#include "config.h"
 #include <string.h>
 
 static int _split_template(lua_State* L, int ret_idx, int src_idx)
 {
     int sp = lua_gettop(L);
 
-    static const char* pattern =
-        "/\\*\\*\\n"
-        " \\* @AMALGAMATE:BEG\\n"
-        "```(\\w+)\\n"
-        "([\\w\\W]*?)\\n"
-        "```\\n"
-        " \\*/\\n"
-        "([\\w\\W]*?)\\n"
-        "/\\*\\*\\n"
-        " \\* @AMALGAMATE:END\\n"
-        " \\*/";
+    static const char* pattern = AMALGAMATE_PATTERN;
         
     lpcre2_code_t* code = lpcre2_compile(L, pattern, strlen(pattern),
         LPCRE2_MULTILINE); // sp + 1
