@@ -1,5 +1,5 @@
 #define LF  "\n"
-const char* script = "\n\n\n\n\n" LF // let's align the line number
+const char* amalgamate_script = "\n\n\n\n\n" LF // let's align the line number
 
 //////////////////////////////////////////////////////////////////////////
 // Script begin
@@ -25,18 +25,18 @@ LF
 "-- @param path The file that want to search" LF
 "-- @return The real path that can be opened or nil if failed" LF
 "local function search_file(path)" LF
-"    if am.is_abs_path(path) then" LF
+"    if am.is_abspath(path) then" LF
 "        if am.is_file_exist(path) then" LF
 "            return path" LF
 "        else" LF
 "            return nil" LF
 "        end" LF
 "    end" LF
-"    local tmp_path = am.dirname(arg.input) .. \"/\" .. path" LF
+"    local tmp_path = am.dirname(am.config.input) .. \"/\" .. path" LF
 "    if am.is_file_exist(tmp_path) then" LF
 "        return tmp_path" LF
 "    end" LF
-"    for _,v in ipairs(arg.iquote) do" LF
+"    for _,v in ipairs(am.config.iquote) do" LF
 "        tmp_path = v .. \"/\" .. path" LF
 "        if am.is_file_exist(tmp_path) then" LF
 "            return tmp_path" LF
@@ -75,7 +75,7 @@ LF
 "local rt = {}" LF
 LF
 "-- Read input file" LF
-"rt.input_content = am.load_txt_file(arg.input)" LF
+"rt.input_content = am.load_txt_file(am.config.input)" LF
 LF
 "-- Split input file into sequence of token" LF
 "local payload = am.preproccess(rt.input_content)" LF
@@ -112,7 +112,7 @@ LF
 "end" LF
 LF
 "-- Write file" LF
-"am.write_file(arg.output, rt.output_content)" LF
+"am.write_file(am.config.output, rt.output_content)" LF
 
 //////////////////////////////////////////////////////////////////////////
 // Script end

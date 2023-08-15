@@ -253,15 +253,12 @@ am_function_t am_func_fmtpath = {
 "\"path/to/foo/bar\"."
 };
 
-static int _am_write_file(lua_State* L)
+static int _am_file_op(lua_State* L, const char* path, const char* mode,
+    const char* data, size_t data_sz)
 {
-    const char* path = luaL_checkstring(L, 1);
-
-    size_t data_sz = 0;
-    const char* data = luaL_checklstring(L, 2, &data_sz);
-
-    FILE* file = NULL;
+    int ret;
     int file_need_close = 0;
+    FILE* file = NULL;
 
     if (strcmp(path, ":stdout") == 0)
     {
@@ -273,13 +270,11 @@ static int _am_write_file(lua_State* L)
     }
     else
     {
-#if defined(_WIN32)
-        if (fopen_s(&file, path, "wb") != 0)
-#else
-        if ((file = fopen(path, "wb")) == NULL)
-#endif
+        if ((ret = fopen_s(&file, path, mode)) != 0)
         {
-            return luaL_error(L, "open `%s` failed.", path);
+            char buf[64];
+            strerror_r(ret, buf, sizeof(buf));
+            return luaL_error(L, "open `%s` failed: %s(%d).", path, buf, ret);
         }
         file_need_close = 1;
     }
@@ -293,15 +288,25 @@ static int _am_write_file(lua_State* L)
 
     if (write_cnt != 1)
     {
-        return luaL_error(L, "write file failed.");
+        return luaL_error(L, "write file `%s` failed.", path);
     }
 
     return 0;
 }
 
+static int _am_write_file(lua_State* L)
+{
+    const char* path = luaL_checkstring(L, 1);
+
+    size_t data_sz = 0;
+    const char* data = luaL_checklstring(L, 2, &data_sz);
+
+    return _am_file_op(L, path, "wb", data, data_sz);
+}
+
 am_function_t am_func_write_file = {
 "write_file", _am_write_file, "nil write_file(string path, string data)",
-"Write data to file.",
+"Write data to file with clear previously data.",
 
 "Open file as binary mode and write data into it.\n"
 "\n"
@@ -309,7 +314,7 @@ am_function_t am_func_write_file = {
 "content of the file is cleared before write."
 };
 
-static int _am_is_abs_path(lua_State* L)
+static int _am_is_abspath(lua_State* L)
 {
     int ret = 0;
     const char* path = luaL_checkstring(L, 1);
@@ -330,8 +335,26 @@ finish:
     return 1;
 }
 
-am_function_t am_func_is_abs_path = {
-"is_abs_path", _am_is_abs_path, "boolean is_abs_path(string path)",
+am_function_t am_func_is_abspath = {
+"is_abspath", _am_is_abspath, "boolean is_abspath(string path)",
 "Check if parameter is absolute path.",
 "Check if parameter is absolute path without actually access it."
+};
+
+static int _am_append_file(lua_State* L)
+{
+    const char* path = luaL_checkstring(L, 1);
+
+    size_t data_sz = 0;
+    const char* data = luaL_checklstring(L, 2, &data_sz);
+
+    return _am_file_op(L, path, "a+b", data, data_sz);
+}
+
+am_function_t am_func_append_file = {
+"append_file", _am_append_file, "nil append_file(string path, string data)",
+"Append data to file.",
+"Open file as binary mode and append data into it.\n"
+"\n"
+"If the file is not exist, the file will be created."
 };

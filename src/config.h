@@ -11,18 +11,26 @@
 /**
  * @brief Pattern for searching specific code block.
  */
-#ifndef AMALGAMATE_PATTERN
-#define AMALGAMATE_PATTERN      \
-    "/\\*\\*\\n"                \
-    " \\* @AMALGAMATE:BEG\\n"   \
-    "```(\\w+)\\n"              \
-    "([\\w\\W]*?)\\n"           \
-    "```\\n"                    \
-    " \\*/\\n"                  \
-    "([\\w\\W]*?)\\n"           \
-    "/\\*\\*\\n"                \
-    " \\* @AMALGAMATE:END\\n"   \
-    " \\*/"
+#ifndef AMALGAMATE_PARSER_PATTERN
+#define AMALGAMATE_PARSER_PATTERN   \
+    "/\\*\\*\\n"                    \
+    " \\* @AMALGAMATE:BEG\\n"       \
+    "```(\\w+)\\n"                  \
+    "([\\w\\W]*?)\\n"               \
+    "```\\n"                        \
+    " \\*/\\n"                      \
+    "([\\w\\W]*?)\\n"               \
+    "/\\*\\*\\n"                    \
+    " \\* @AMALGAMATE:END\\n"       \
+    " \\*/\\n"
+#endif
+
+#ifndef AMALGAMATE_DEFAULT_OUTPUT
+#define AMALGAMATE_DEFAULT_OUTPUT   ":stdout"
+#endif
+
+#ifndef AMALGAMATE_DEFAULT_LOGFILE
+#define AMALGAMATE_DEFAULT_LOGFILE  ":stderr"
 #endif
 
 #endif

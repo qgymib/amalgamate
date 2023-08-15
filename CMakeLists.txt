@@ -19,19 +19,7 @@ endfunction()
 ###############################################################################
 
 add_executable(${PROJECT_NAME}
-    "src/addon/__init__.c"
-    "src/addon/c_dump_hex.c"
-    "src/addon/c_expand_include.c"
-    "src/addon/txt_black_hole.c"
-    "src/addon/txt_pcre2_substitute.c"
-    "src/function/__init__.c"
-    "src/function/lua_file.c"
-    "src/function/lua_sha256.c"
-    "src/function/lua_string.c"
-    "src/function/lua_table.c"
-    "src/preproccess.c"
-    "src/amalgamate.c"
-	"src/main.c")
+    "src/main.c")
 
 target_include_directories(${PROJECT_NAME}
     PRIVATE
@@ -59,6 +47,27 @@ target_link_libraries(${PROJECT_NAME} PRIVATE cjson.lua)
 include(third_party/pcre2.cmake)
 include(third_party/pcre2.lua.cmake)
 target_link_libraries(${PROJECT_NAME} PRIVATE pcre2.lua)
+
+###############################################################################
+# Amalgamate
+###############################################################################
+add_custom_command(
+    OUTPUT
+        ${CMAKE_CURRENT_SOURCE_DIR}/amalgamate_all.c
+        ${CMAKE_CURRENT_BINARY_DIR}/__always_run.h
+    COMMAND $<TARGET_FILE:amalgamate>
+        --input=${CMAKE_CURRENT_SOURCE_DIR}/src/main.c
+        --output=${CMAKE_CURRENT_SOURCE_DIR}/amalgamate_all.c
+        --iquote=${CMAKE_CURRENT_SOURCE_DIR}/src)
+add_custom_target(my_custom_target_that_always_runs ALL
+    DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/__always_run.h)
+add_executable(${PROJECT_NAME}_all
+    ${CMAKE_CURRENT_SOURCE_DIR}/amalgamate_all.c)
+setup_target_wall(${PROJECT_NAME}_all)
+target_link_libraries(${PROJECT_NAME}_all PRIVATE lua54)
+target_link_libraries(${PROJECT_NAME}_all PRIVATE cJSON)
+target_link_libraries(${PROJECT_NAME}_all PRIVATE cjson.lua)
+target_link_libraries(${PROJECT_NAME}_all PRIVATE pcre2.lua)
 
 ###############################################################################
 # Test

@@ -7,12 +7,8 @@ LF
 "M.pattern = \"#\\\\s*include\\\\s+\\\"([-.\\\\w/]+)\\\"\"" LF
 "M.regex = pcre2.compile(M.pattern, pcre2.PCRE2_MULTILINE)" LF
 LF
-"local function expand_include_proc(data, args)" LF
-"    -- Local variable" LF
-"    local ret = \"\"" LF
-"    local regex = M.regex" LF
-LF
-"    -- Argument format" LF
+"-- Set default value if not exist" LF
+"local function format_default_arguments(args)" LF
 "    if args.lineno == nil then" LF
 "        args.lineno = true" LF
 "    end" LF
@@ -22,6 +18,62 @@ LF
 "    if args.displace_include == nil then" LF
 "        args.displace_include = true" LF
 "    end" LF
+"    return args" LF
+"end" LF
+LF
+"-- Get file information for matched regex pattern" LF
+"local function generate_file_info(match_data, data)" LF
+"    local info = {}" LF
+"    info.include_path = match_data:group(data, 1)" LF
+"    info.real_path = am.search_file(info.include_path)" LF
+"    if info.real_path == nil then" LF
+"        local err_msg = \"file `\" .. info.include_path .. \"` not found.\"" LF
+"        error(err_msg)" LF
+"    end" LF
+"    info.txt_data = am.load_txt_file(info.real_path)" LF
+"    info.bin_data = am.load_file(info.real_path)" LF
+"    info.sha256 = am.sha256(info.bin_data)" LF
+"    info.bin_size = string.len(info.bin_data)" LF
+"    return info" LF
+"end" LF
+LF
+"-- Generate file header" LF
+"local function generate_header_info(info, args)" LF
+"    if not args.fileinfo then" LF
+"        return \"\"" LF
+"    end" LF
+"    local ret = \"\"" LF
+"    ret = ret .. string.rep(\"/\", 80) .. \"\\n\"" LF
+"    ret = ret .. \"// PATH:    \" .. info.include_path .. \"\\n\"" LF
+"    ret = ret .. \"// SIZE:    \" .. string.format(\"%q\", info.bin_size) .. \"\\n\"" LF
+"    ret = ret .. \"// SHA-256: \" .. info.sha256 .. \"\\n\"" LF
+"    ret = ret .. string.rep(\"/\", 80) .. \"\\n\"" LF
+"    return ret" LF
+"end" LF
+LF
+"-- Generate file content" LF
+"local function generate_file_content(info, args, regex)" LF
+"    local ret = \"\"" LF
+"    local temp = \"\"" LF
+"    if args.lineno then" LF
+"        ret = ret .. \"#line 1 \\\"\" .. info.include_path .. \"\\\"\\n\"" LF
+"    end" LF
+"    if args.displace_include then" LF
+"        temp = regex:substitute(info.txt_data, \"/* AMALGAMATE_DISPLACE: ${0} */\"," LF
+"            pcre2.PCRE2_SUBSTITUTE_GLOBAL | pcre2.PCRE2_SUBSTITUTE_EXTENDED)" LF
+"    end" LF
+"    ret = ret .. temp .. \"\\n\"" LF
+"    return ret" LF
+"end" LF
+LF
+"-- c:expand_include" LF
+"local function expand_include_proc(data, args)" LF
+"    -- Local variable" LF
+"    local ret = \"\"" LF
+"    local temp = \"\"" LF
+"    local regex = M.regex" LF
+LF
+"    args = format_default_arguments(args)" LF
 LF
 "    while true do" LF
 "        local match_data = regex:match(data)" LF
@@ -33,45 +85,24 @@ LF
 "        -- Append data before pattern" LF
 "        local off,len = match_data:group_offset(0)" LF
 "        if off >= 2 then" LF
-"            ret = ret .. string.sub(data, 1, off)" LF
-"        end" LF
-LF
-"        -- Get include file path" LF
-"        local inc_file_path = match_data:group(data, 1)" LF
-"        local real_file_path = am.search_file(inc_file_path)" LF
-"        if real_file_path == nil then" LF
-"            local err_msg = \"file `\" .. inc_file_path .. \"` not found.\"" LF
-"            error(err_msg)" LF
+"            temp = string.sub(data, 1, off)" LF
+"            ret = ret .. temp" LF
 "        end" LF
 LF
 "        -- Get file information" LF
-"        local file_data_txt = am.load_txt_file(real_file_path)" LF
-"        local file_data_bin = am.load_file(real_file_path)" LF
-"        local file_sha256 = am.sha256(file_data_bin)" LF
-"        local file_len = string.len(file_data_bin)" LF
+"        local info = generate_file_info(match_data, data)"
 LF
 "        -- Generate header" LF
-"        if args.fileinfo then" LF
-"            ret = ret .. string.rep(\"/\", 80) .. \"\\n\"" LF
-"            ret = ret .. \"// PATH:    \" .. inc_file_path .. \"\\n\"" LF
-"            ret = ret .. \"// SIZE:    \" .. string.format(\"%q\", file_len) .. \"\\n\"" LF
-"            ret = ret .. \"// SHA-256: \" .. file_sha256 .. \"\\n\"" LF
-"            ret = ret .. string.rep(\"/\", 80) .. \"\\n\"" LF
-"        end" LF
+"        temp = generate_header_info(info, args)" LF
+"        ret = ret .. temp" LF
 LF
 "        -- Append file content" LF
-"        if args.lineno then" LF
-"            ret = ret .. \"#line \" .. inc_file_path .. \" 1\\n\"" LF
-"        end" LF
-"        if args.displace_include then" LF
-"            file_data_txt = regex:substitute(file_data_txt, \"/* AMALGAMATE_DISPLACE: ${0} */\"," LF
-"                pcre2.PCRE2_SUBSTITUTE_GLOBAL | pcre2.PCRE2_SUBSTITUTE_EXTENDED)" LF
-"        end" LF
-"        ret = ret .. file_data_txt .. \"\\n\"" LF
+"        temp = generate_file_content(info, args, regex)" LF
+"        ret = ret .. temp" LF
 LF
 "        -- Update data" LF
 "        off,len = match_data:group_offset(0)" LF
-"        data = string.sub(data, off + len)" LF
+"        data = string.sub(data, off + len + 1)" LF
 "    end" LF
 "    return ret" LF
 "end" LF

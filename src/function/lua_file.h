@@ -9,11 +9,12 @@ extern "C" {
 
 extern am_function_t am_func_dirname;
 extern am_function_t am_func_fmtpath;
-extern am_function_t am_func_is_abs_path;
+extern am_function_t am_func_is_abspath;
 extern am_function_t am_func_is_file_exist;
 extern am_function_t am_func_load_file;
 extern am_function_t am_func_load_txt_file;
 extern am_function_t am_func_write_file;
+extern am_function_t am_func_append_file;
 
 #ifdef __cplusplus
 }

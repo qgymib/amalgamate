@@ -1,5 +1,6 @@
 #include "__init__.h"
 #include "lua_file.h"
+#include "lua_log.h"
 #include "lua_sha256.h"
 #include "lua_string.h"
 #include "lua_table.h"
@@ -10,11 +11,14 @@ static am_function_t* am_apis[] = {
     /* file */
     &am_func_dirname,
     &am_func_fmtpath,
-    &am_func_is_abs_path,
+    &am_func_is_abspath,
     &am_func_is_file_exist,
     &am_func_load_file,
     &am_func_load_txt_file,
     &am_func_write_file,
+    &am_func_append_file,
+    /* log */
+    &am_func_log_i,
     /* sha256 */
     &am_func_sha256,
     /* string */

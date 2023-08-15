@@ -14,7 +14,7 @@ extern "C" {
 #if defined(_MSC_VER)
 
 #define strtok_r(str, delim, saveptr)   strtok_s(str, delim, saveptr)
-#define strerror_r(errno,buf,len)       strerror_s(buf,len,errno)
+#define strerror_r(errcode, buf, len)   strerror_s(buf,len, errcode)
 #define strdup(s)                       _strdup(s)
 
 #else

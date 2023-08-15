@@ -4,7 +4,7 @@
 extern "C" {
 #endif
 
-extern const char* script;
+extern const char* amalgamate_script;
 
 #ifdef __cplusplus
 }

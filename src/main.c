@@ -1,14 +1,90 @@
+//////////////////////////////////////////////////////////////////////////
+// Version
+//////////////////////////////////////////////////////////////////////////
+#define AMALGAMATE_VERSION_MAJRO    1
+#define AMALGAMATE_VERSION_MINOR    0
+#define AMALGAMATE_VERSION_PATCH    0
+
+//////////////////////////////////////////////////////////////////////////
+// System header
+//////////////////////////////////////////////////////////////////////////
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
-#include "addon/__init__.h"
+
+//////////////////////////////////////////////////////////////////////////
+// 3rd: cjson.lua
+//////////////////////////////////////////////////////////////////////////
+#include "cjson.lua.h"
+
+
+//////////////////////////////////////////////////////////////////////////
+// User header
+//////////////////////////////////////////////////////////////////////////
+#include "pcre2.lua.h"
+/**
+ * @AMALGAMATE:BEG
+```json
+{ "name": "c:expand_include" }
+```
+ */
+#include "config.h"
 #include "function/__init__.h"
 #include "function/lua_file.h"
+#include "function/lua_log.h"
+#include "function/lua_sha256.h"
+#include "function/lua_string.h"
+#include "function/lua_table.h"
+#include "addon/__init__.h"
+#include "addon/c_dump_hex.h"
+#include "addon/c_expand_include.h"
+#include "addon/txt_black_hole.h"
+#include "addon/txt_pcre2_substitute.h"
 #include "amalgamate.h"
 #include "preproccess.h"
-#include "pcre2.lua.h"
-#include "cjson.lua.h"
-#include "config.h"
+/**
+ * @AMALGAMATE:END
+ */
+
+//////////////////////////////////////////////////////////////////////////
+// Embed source file
+//////////////////////////////////////////////////////////////////////////
+/**
+ * @AMALGAMATE:BEG
+```json
+{ "name": "c:expand_include" }
+```
+ */
+#include "amalgamate.c"
+#include "preproccess.c"
+#include "function/__init__.c"
+#include "function/lua_file.c"
+#include "function/lua_log.c"
+#include "function/lua_sha256.c"
+#include "function/lua_string.c"
+#include "function/lua_table.c"
+#include "addon/__init__.c"
+#include "addon/c_dump_hex.c"
+#include "addon/c_expand_include.c"
+#include "addon/txt_black_hole.c"
+#include "addon/txt_pcre2_substitute.c"
+/**
+ * @AMALGAMATE:END
+ */
+
+//////////////////////////////////////////////////////////////////////////
+// Embed source code
+//////////////////////////////////////////////////////////////////////////
+
+#define AMALGAMATE_VERSION_STRINGIFY(x) AMALGAMATE_VERSION_STRINGIFY_2(x)
+#define AMALGAMATE_VERSION_STRINGIFY_2(x) #x
+
+#define AMALGAMATE_VERSION_STRING   \
+    AMALGAMATE_VERSION_STRINGIFY(AMALGAMATE_VERSION_MAJRO) \
+    "." \
+    AMALGAMATE_VERSION_STRINGIFY(AMALGAMATE_VERSION_MINOR) \
+    "." \
+    AMALGAMATE_VERSION_STRINGIFY(AMALGAMATE_VERSION_PATCH)
 
 typedef struct amalgamate_ctx
 {
@@ -18,12 +94,21 @@ typedef struct amalgamate_ctx
 static amalgamate_ctx_t G = { NULL };
 
 static const char* s_help =
-"amalgamate - Merge your source code into one big file.\n"
+"amalgamate v" AMALGAMATE_VERSION_STRING " - Merge your source code into one big file.\n"
 "Usage: amalgamate [OPTIONS] -- [FILES]\n"
 "\n"
 "OPTIONS:\n"
-"  -h, --help\n"
-"    Show this help and exit.\n"
+"  --input=PATH\n"
+"    Input file path.\n"
+"\n"
+"  --output=PATH\n"
+"    Path to output file.\n"
+"\n"
+"  --iquote=PATH\n"
+"    Add the directory dir to the list of directories to be searched.\n"
+"\n"
+"  --logfile=PATH\n"
+"    Where to store log output. And exists content will be erased.\n"
 "\n"
 "  --list-addon\n"
 "    List builtin addons and exit.\n"
@@ -34,14 +119,11 @@ static const char* s_help =
 "  --man=STRING\n"
 "    Show manual of function or addon.\n"
 "\n"
-"  --output=PATH\n"
-"    Path to output file.\n"
+"  -v, --version\n"
+"    Show software version and exit.\n"
 "\n"
-"  --input=PATH\n"
-"    Input file path.\n"
-"\n"
-" ---iquote=PATH\n"
-"    Add the directory dir to the list of directories to be searched.\n"
+"  -h, --help\n"
+"    Show this help and exit.\n"
 "\n"
 "  --verbose\n"
 "    Show extra output.\n"
@@ -109,6 +191,36 @@ show_man:
     exit(EXIT_SUCCESS);
 }
 
+static void _clear_log_file(const char* str)
+{
+    FILE* file;
+    char buf[64];
+
+    int ret = fopen_s(&file, str, "wb");
+    if (ret != 0)
+    {
+        strerror_r(ret, buf, sizeof(buf));
+        fprintf(stderr, "open `%s` failed: %s(%d).\n", str, buf, ret);
+        exit(EXIT_FAILURE);
+    }
+
+    fclose(file);
+    file = NULL;
+}
+
+static int _setup_arg_logfile(lua_State* L, int idx, char* str)
+{
+    lua_pushstring(L, str);
+    lua_setfield(L, idx, "logfile");
+
+    if (str[0] != ':')
+    {
+        _clear_log_file(str);
+    }
+
+    return 0;
+}
+
 static int _setup_arg_verbose(lua_State* L, int idx, char* str)
 {
     (void)str;
@@ -167,7 +279,12 @@ static int _parser_arguments(lua_State* L, int idx, int argc, char* argv[])
     {
         if (strcmp(argv[i], "-h") == 0 || strcmp(argv[i], "--help") == 0)
         {
-            printf("%s", s_help);
+            printf("%s\n", s_help);
+            exit(EXIT_SUCCESS);
+        }
+        if (strcmp(argv[i], "-v") == 0 || strcmp(argv[i], "--version") == 0)
+        {
+            printf("v%s\n", AMALGAMATE_VERSION_STRING);
             exit(EXIT_SUCCESS);
         }
 
@@ -175,6 +292,7 @@ static int _parser_arguments(lua_State* L, int idx, int argc, char* argv[])
         PARSER_LONGOPT_WITH_VALUE("--input", _setup_arg_input);
         PARSER_LONGOPT_WITH_VALUE("--iquote", _setup_arg_iquote);
         PARSER_LONGOPT_WITH_VALUE("--man", _setup_arg_man);
+        PARSER_LONGOPT_WITH_VALUE("--logfile", _setup_arg_logfile);
         PARSER_LONGOPT_NO_VALUE("--verbose", _setup_arg_verbose);
         PARSER_LONGOPT_NO_VALUE("--list-addon", _setup_arg_list_addon);
         PARSER_LONGOPT_NO_VALUE("--list-function", _setup_arg_list_function);
@@ -197,8 +315,20 @@ static void _setup_default_arguments(lua_State* L, int idx)
     lua_setfield(L, idx, "iquote");
 
     /* .output */
-    lua_pushstring(L, ":stdout");
+    lua_pushstring(L, AMALGAMATE_DEFAULT_OUTPUT);
     lua_setfield(L, idx, "output");
+
+    lua_pushstring(L, AMALGAMATE_DEFAULT_LOGFILE);
+    lua_setfield(L, idx, "logfile");
+
+    lua_pushstring(L, AMALGAMATE_PARSER_PATTERN);
+    lua_setfield(L, idx, "parser_pattern");
+
+    lua_pushstring(L, AMALGAMATE_DEFAULT_OUTPUT);
+    lua_setfield(L, idx, "default_output");
+
+    lua_pushstring(L, AMALGAMATE_DEFAULT_LOGFILE);
+    lua_setfield(L, idx, "default_logfile");
 }
 
 static int _check_arguments(lua_State* L, int idx)
@@ -216,13 +346,15 @@ static void _generate_arg_table(lua_State* L, int argc, char* argv[])
 {
     int sp = lua_gettop(L);
 
-    lua_newtable(L); // sp + 1
+    lua_getglobal(L, AMALGAMATE_NAMESPACE); // sp+1
 
-    _setup_default_arguments(L, sp + 1);
-    _parser_arguments(L, sp + 1, argc, argv);
-    _check_arguments(L, sp + 1);
+    lua_newtable(L); // sp + 2
+    _setup_default_arguments(L, sp + 2);
+    _parser_arguments(L, sp + 2, argc, argv);
+    _check_arguments(L, sp + 2);
 
-    lua_setglobal(L, "arg");
+    lua_setfield(L, sp + 1, "config");
+    lua_setglobal(L, AMALGAMATE_NAMESPACE);
 }
 
 static void _am_openlibs(lua_State* L)
@@ -252,7 +384,9 @@ static int _pmain(lua_State* L)
     char** argv = lua_touserdata(L, 2);
     _generate_arg_table(L, argc, argv);
 
-    if (luaL_loadbuffer(L, script, strlen(script), "amalgamate.lua") != LUA_OK)
+    int ret = luaL_loadbuffer(L, amalgamate_script, strlen(amalgamate_script),
+        "amalgamate.lua");
+    if (ret != LUA_OK)
     {
         return lua_error(L);
     }

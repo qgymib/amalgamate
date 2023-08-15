@@ -7,7 +7,7 @@ static int _split_template(lua_State* L, int ret_idx, int src_idx)
 {
     int sp = lua_gettop(L);
 
-    static const char* pattern = AMALGAMATE_PATTERN;
+    static const char* pattern = AMALGAMATE_PARSER_PATTERN;
         
     lpcre2_code_t* code = lpcre2_compile(L, pattern, strlen(pattern),
         LPCRE2_MULTILINE); // sp + 1
