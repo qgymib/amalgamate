@@ -21,31 +21,6 @@ const char* amalgamate_script = "\n\n\n\n\n" LF // let's align the line number
 "end" LF
 "am.dump = dump" LF
 LF
-"-- @brief Search file in iquote table and return real path" LF
-"-- @param path The file that want to search" LF
-"-- @return The real path that can be opened or nil if failed" LF
-"local function search_file(path)" LF
-"    if am.is_abspath(path) then" LF
-"        if am.is_file_exist(path) then" LF
-"            return path" LF
-"        else" LF
-"            return nil" LF
-"        end" LF
-"    end" LF
-"    local tmp_path = am.dirname(am.config.input) .. \"/\" .. path" LF
-"    if am.is_file_exist(tmp_path) then" LF
-"        return tmp_path" LF
-"    end" LF
-"    for _,v in ipairs(am.config.iquote) do" LF
-"        tmp_path = v .. \"/\" .. path" LF
-"        if am.is_file_exist(tmp_path) then" LF
-"            return tmp_path" LF
-"        end" LF
-"    end" LF
-"    return nil" LF
-"end" LF
-"am.search_file = search_file" LF
-LF
 "-- Process data with addon configuration" LF
 "local function process_json_addon(data, config)" LF
 "    config.args = config.args or {}" LF

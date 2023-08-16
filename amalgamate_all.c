@@ -171,12 +171,13 @@ extern am_function_t am_func_append_file;
 #endif
 ////////////////////////////////////////////////////////////////////////////////
 // PATH:    function/lua_log.h
-// SIZE:    235
-// SHA-256: b89d4872c7f66d2b0eb3e0afdfce58345c334529f7b96c3234a63c6649fbf26f
+// SIZE:    237
+// SHA-256: d999601fbca487a15487d64ac92954f119ce4f54d64964b2cc84fcfa964d80a8
 ////////////////////////////////////////////////////////////////////////////////
 #line 1 "function/lua_log.h"
 #ifndef __AMALGAMATE_FUNCTION_LUA_LOG_H__
 #define __AMALGAMATE_FUNCTION_LUA_LOG_H__
+
 /* AMALGAMATE_DISPLACE: #include "__init__.h" */
 
 #ifdef __cplusplus
@@ -184,6 +185,28 @@ extern "C" {
 #endif
 
 extern am_function_t am_func_log_i;
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif
+////////////////////////////////////////////////////////////////////////////////
+// PATH:    function/lua_searchfile.h
+// SIZE:    259
+// SHA-256: 84c9c22d6a20367239d1b3df4af89d4199a1dc240c7e17134e9ad00442994c8e
+////////////////////////////////////////////////////////////////////////////////
+#line 1 "function/lua_searchfile.h"
+#ifndef __AMALGAMATE_FUNCTION_LUA_SEARCH_FILE_H__
+#define __AMALGAMATE_FUNCTION_LUA_SEARCH_FILE_H__
+
+/* AMALGAMATE_DISPLACE: #include "__init__.h" */
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+extern am_function_t am_func_search_file;
 
 #ifdef __cplusplus
 }
@@ -428,8 +451,8 @@ int am_preproccess(lua_State* L);
 
 ////////////////////////////////////////////////////////////////////////////////
 // PATH:    amalgamate.c
-// SIZE:    4022
-// SHA-256: 5165743a1e32e6aaaa37bdfe1a4ede5969e89d6115f5b841ecee35ad4a74cd00
+// SIZE:    3169
+// SHA-256: 4eeb2f10ef4220e32aab8c59a1c7e254356d262ec5c00943bf06a1024711bae3
 ////////////////////////////////////////////////////////////////////////////////
 #line 1 "amalgamate.c"
 #define LF  "\n"
@@ -454,31 +477,6 @@ const char* amalgamate_script = "\n\n\n\n\n" LF // let's align the line number
 "    end" LF
 "end" LF
 "am.dump = dump" LF
-LF
-"-- @brief Search file in iquote table and return real path" LF
-"-- @param path The file that want to search" LF
-"-- @return The real path that can be opened or nil if failed" LF
-"local function search_file(path)" LF
-"    if am.is_abspath(path) then" LF
-"        if am.is_file_exist(path) then" LF
-"            return path" LF
-"        else" LF
-"            return nil" LF
-"        end" LF
-"    end" LF
-"    local tmp_path = am.dirname(am.config.input) .. \"/\" .. path" LF
-"    if am.is_file_exist(tmp_path) then" LF
-"        return tmp_path" LF
-"    end" LF
-"    for _,v in ipairs(am.config.iquote) do" LF
-"        tmp_path = v .. \"/\" .. path" LF
-"        if am.is_file_exist(tmp_path) then" LF
-"            return tmp_path" LF
-"        end" LF
-"    end" LF
-"    return nil" LF
-"end" LF
-"am.search_file = search_file" LF
 LF
 "-- Process data with addon configuration" LF
 "local function process_json_addon(data, config)" LF
@@ -645,13 +643,14 @@ int am_preproccess(lua_State* L)
 }
 ////////////////////////////////////////////////////////////////////////////////
 // PATH:    function/__init__.c
-// SIZE:    2232
-// SHA-256: ec1ea08f948fb304c972680985b142eaa769eb94f38f021303310c5723625454
+// SIZE:    2310
+// SHA-256: 74d573828c9bc63c23f08d6c4c74a6acfa2ca3bbda051815d49062415b6c038a
 ////////////////////////////////////////////////////////////////////////////////
 #line 1 "function/__init__.c"
 /* AMALGAMATE_DISPLACE: #include "__init__.h" */
 /* AMALGAMATE_DISPLACE: #include "lua_file.h" */
 /* AMALGAMATE_DISPLACE: #include "lua_log.h" */
+/* AMALGAMATE_DISPLACE: #include "lua_searchfile.h" */
 /* AMALGAMATE_DISPLACE: #include "lua_sha256.h" */
 /* AMALGAMATE_DISPLACE: #include "lua_string.h" */
 /* AMALGAMATE_DISPLACE: #include "lua_table.h" */
@@ -670,6 +669,8 @@ static am_function_t* am_apis[] = {
     &am_func_append_file,
     /* log */
     &am_func_log_i,
+    /* searchfile */
+    &am_func_search_file,
     /* sha256 */
     &am_func_sha256,
     /* string */
@@ -1165,6 +1166,176 @@ am_function_t am_func_log_i = {
 "log_i", _log_i, "nil log_i(string data)",
 "Append data into log file.",
 "Append data into log file."
+};
+////////////////////////////////////////////////////////////////////////////////
+// PATH:    function/lua_searchfile.c
+// SIZE:    3635
+// SHA-256: 711f68bf2509a1951e1b1f54e919e24a6c1d8c5ae80d51967452e23fb08152fc
+////////////////////////////////////////////////////////////////////////////////
+#line 1 "function/lua_searchfile.c"
+/* AMALGAMATE_DISPLACE: #include "lua_searchfile.h" */
+/* AMALGAMATE_DISPLACE: #include "lua_file.h" */
+
+/**
+ * @brief Check if path at \p idx is abspath.
+ *
+ * The stack is always unchanged.
+ *
+ * @return	boolean
+ */
+static int _am_search_file_is_abspath(lua_State* L, int idx)
+{
+	lua_pushcfunction(L, am_func_is_abspath.func);
+	lua_pushvalue(L, idx);
+	lua_call(L, 1, 1);
+
+	int ret = lua_toboolean(L, -1);
+	lua_pop(L, 1);
+
+	return ret;
+}
+
+/**
+ * @brief Check if file at \p idx is exist.
+ *
+ * The stack is always unchanged.
+ *
+ * @return	boolean
+ */
+static int _am_search_file_is_exist(lua_State* L, int idx)
+{
+	lua_pushcfunction(L, am_func_is_file_exist.func);
+	lua_pushvalue(L, idx);
+	lua_call(L, 1, 1);
+
+	int ret = lua_toboolean(L, -1);
+	lua_pop(L, 1);
+
+	return ret;
+}
+
+/**
+ * @brief Search file at \p idx_path in directory at \p idx_dirname
+ * 
+ * If found, the top of stack contains the actual file path. If not found, the
+ * stack is remain untouched.
+ * 
+ * @return 1 if found, 0 if not.
+ */
+static int _am_search_file_in_directory(lua_State* L, int idx_dirname, int idx_path)
+{
+	int sp = lua_gettop(L);
+
+	lua_pushvalue(L, idx_dirname);
+	lua_pushstring(L, "/");
+	lua_pushvalue(L, idx_path);
+	lua_concat(L, 3); // sp+1
+
+	if (_am_search_file_is_exist(L, sp + 1))
+	{
+		return 1;
+	}
+
+	lua_pop(L, 1);
+	return 0;
+}
+
+/**
+ * @brief Search file at \p idx from current directory.
+ *
+ * If found, the top of stack contains the actual file path. If not found, the
+ * stack is remain untouched.
+ *
+ * @return 1 if found, 0 if not.
+ */
+static int _am_serach_file_from_current_directory(lua_State* L, int idx)
+{
+	int sp = lua_gettop(L);
+
+	/* Get dirname from input */
+	lua_pushcfunction(L, am_func_dirname.func); // sp+1
+	lua_getglobal(L, AMALGAMATE_NAMESPACE); // sp+2
+	lua_getfield(L, -1, "config"); // sp+3
+	lua_getfield(L, -1, "input"); // sp+4
+	lua_remove(L, sp + 3); // sp+3
+	lua_remove(L, sp + 2); // sp+2
+	lua_call(L, 1, 1); // sp+1
+
+	if (_am_search_file_in_directory(L, sp + 1, idx))
+	{
+		lua_remove(L, sp + 1);
+		return 1;
+	}
+
+	lua_pop(L, 1);
+	return 0;
+}
+
+/**
+ * @brief Search file at \p idx from iquote table.
+ *
+ * If found, the top of stack contains the actual file path. If not found, the
+ * stack is remain untouched.
+ *
+ * @return 1 if found, 0 if not.
+ */
+static int _am_search_file_from_quote(lua_State* L, int idx)
+{
+	int i;
+	int sp = lua_gettop(L);
+
+	/* Get iquote table at sp+1 */
+	lua_getglobal(L, AMALGAMATE_NAMESPACE); // sp+1
+	lua_getfield(L, -1, "config"); // sp+2
+	lua_getfield(L, -1, "iquote"); // sp+3
+	lua_remove(L, sp + 2); // sp+2
+	lua_remove(L, sp + 1); // sp+1
+
+	for (i = 1; ; i++)
+	{
+		if (lua_geti(L, sp + 1, i) != LUA_TSTRING)
+		{
+			lua_pop(L, 1);
+			break;
+		}
+
+		if (_am_search_file_in_directory(L, sp + 2, idx))
+		{
+			lua_remove(L, sp + 1);
+			return 1;
+		}
+		lua_pop(L, 1);
+	}
+
+	return 0;
+}
+
+static int _am_search_file_from_current_and_quote(lua_State* L, int idx)
+{
+	if (_am_serach_file_from_current_directory(L, idx))
+	{
+		return 1;
+	}
+
+	return _am_search_file_from_quote(L, idx);
+}
+
+static int _am_search_file(lua_State* L)
+{
+	/* Check for abspath */
+	if (_am_search_file_is_abspath(L, 1) == 0)
+	{
+		return _am_search_file_from_current_and_quote(L, 1);
+	}
+
+	return !!_am_search_file_is_exist(L, 1);
+}
+
+am_function_t am_func_search_file = {
+"search_file", _am_search_file, "string search_file(string path)",
+"Search file in current directory and quote directory.",
+"Search file in current directory and quote directory. Return the real path that\n"
+"can be opened or nil if failed."
 };
 ////////////////////////////////////////////////////////////////////////////////
 // PATH:    function/lua_sha256.c

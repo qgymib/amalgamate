@@ -1,5 +1,6 @@
 #ifndef __AMALGAMATE_FUNCTION_LUA_LOG_H__
 #define __AMALGAMATE_FUNCTION_LUA_LOG_H__
+
 #include "__init__.h"
 
 #ifdef __cplusplus
