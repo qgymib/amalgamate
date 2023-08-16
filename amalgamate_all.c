@@ -248,213 +248,12 @@ extern const char* amalgamate_script;
 }
 #endif
 #endif
-////////////////////////////////////////////////////////////////////////////////
-// PATH:    preproccess.h
-// SIZE:    242
-// SHA-256: e7b26401bade0010f3f53dc5a72840cb82bc99763e2cfc375e8fb68af4015f26
-////////////////////////////////////////////////////////////////////////////////
-#line 1 "preproccess.h"
-#ifndef __AMALGAMATE_LUA_PREPROCCESS_H__
-#define __AMALGAMATE_LUA_PREPROCCESS_H__
-
-/* AMALGAMATE_DISPLACE: #include "function/__init__.h" */
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-int am_preproccess(lua_State* L);
-
-#ifdef __cplusplus
-}
-#endif
-
-#endif
 
 
 //////////////////////////////////////////////////////////////////////////
 // Embed source file
 //////////////////////////////////////////////////////////////////////////
 
-////////////////////////////////////////////////////////////////////////////////
-// PATH:    amalgamate.c
-// SIZE:    2667
-// SHA-256: a89d939d2fae8b84839e82851a675515661bd3dda1c48446de08c1d79e055988
-////////////////////////////////////////////////////////////////////////////////
-#line 1 "amalgamate.c"
-#define LF  "\n"
-const char* amalgamate_script = "\n\n\n\n\n" LF // let's align the line number
-
-//////////////////////////////////////////////////////////////////////////
-// Script begin
-//////////////////////////////////////////////////////////////////////////
-"-- Process data with addon configuration" LF
-"local function process_json_addon(data, config)" LF
-"    config.args = config.args or {}" LF
-"    if config.name == nil then" LF
-"        local errmsg = \"missing field `name` in json\"" LF
-"        error(errmsg)" LF
-"    end" LF
-"    local addon = require(config.name)" LF
-"    return addon.proc(data, config.args)" LF
-"end" LF
-LF
-"-- Process json block" LF
-"local function process_json_block(v)" LF
-"    local cjson = require(\"cjson\")" LF
-"    local config = cjson.from_json(v.code)" LF
-"    local data = v.data" LF
-"    if am.table_is_array(config) then" LF
-"        for _, e in ipairs(config) do" LF
-"            data = process_json_addon(data, e)" LF
-"        end" LF
-"    else" LF
-"        data = process_json_addon(data, config)" LF
-"    end" LF
-"    return data" LF
-"end" LF
-LF
-"-- Process lua block" LF
-"local function process_lua_block(v)" LF
-"    local trunk = load(v.code)" LF
-"    local b,addon = pcall(trunk)" LF
-"    if b ~= true then" LF
-"        error(addon)" LF
-"    end" LF
-"    return addon.proc(v.data, {})" LF
-"end" LF
-LF
-"-- All runtime information" LF
-"local rt = {}" LF
-LF
-"-- Read input file" LF
-"rt.input_content = am.load_txt_file(am.config.input)" LF
-LF
-"-- Split input file into sequence of token" LF
-"local payload = am.preproccess(rt.input_content)" LF
-LF
-"-- For each token let's do the magic" LF
-"for _,v in ipairs(payload) do" LF
-"    if v.lang == nil then" LF
-"        -- do nothing" LF
-"    elseif am.strcasecmp(v.lang, \"lua\") == 0 then" LF
-"        v.data = process_lua_block(v)" LF
-"    elseif am.strcasecmp(v.lang, \"json\") == 0 then" LF
-"        v.data = process_json_block(v)" LF
-"    else" LF
-"        local err_msg = \"unknown lang `\" .. v.lang .. \"`.\"" LF
-"        error(err_msg)" LF
-"    end" LF
-LF
-"    if v.data == nil then" LF
-"        v.data = \"\"" LF
-"    end" LF
-"end" LF
-LF
-"-- Generate content" LF
-"rt.output_content = \"\"" LF
-"for _,v in ipairs(payload) do" LF
-"    rt.output_content = rt.output_content .. v.data .. \"\\n\"" LF
-"end" LF
-LF
-"-- Write file" LF
-"am.write_file(am.config.output, rt.output_content)" LF
-
-//////////////////////////////////////////////////////////////////////////
-// Script end
-//////////////////////////////////////////////////////////////////////////
-;
-
-/* AMALGAMATE_DISPLACE: #include "amalgamate.h" */
-////////////////////////////////////////////////////////////////////////////////
-// PATH:    preproccess.c
-// SIZE:    2582
-// SHA-256: 49d135b1b5b4ce6bf5ef2a49104c216656fc9e7f6ac8ebd2733777deeebe9c4a
-////////////////////////////////////////////////////////////////////////////////
-#line 1 "preproccess.c"
-/* AMALGAMATE_DISPLACE: #include "preproccess.h" */
-/* AMALGAMATE_DISPLACE: #include "pcre2.lua.h" */
-/* AMALGAMATE_DISPLACE: #include "config.h" */
-#include <string.h>
-
-static int _split_template(lua_State* L, int ret_idx, int src_idx)
-{
-    int sp = lua_gettop(L);
-
-    static const char* pattern = AMALGAMATE_PARSER_PATTERN;
-        
-    lpcre2_code_t* code = lpcre2_compile(L, pattern, strlen(pattern),
-        LPCRE2_MULTILINE); // sp + 1
-
-    while (1)
-    {
-        size_t data_sz = 0;
-        const char* data = luaL_checklstring(L, src_idx, &data_sz);
-
-        lpcre2_match_data_t* match_data = lpcre2_match(L, code, data, data_sz, 0, 0); // sp + 2
-        if (match_data == NULL)
-        {/* no match */
-            lua_newtable(L);
-
-            lua_pushlstring(L, data, data_sz);
-            lua_setfield(L, -2, "data");
-
-            lua_seti(L, ret_idx, luaL_len(L, ret_idx) + 1);
-
-            break;
-        }
-
-        size_t capture_len = 0;
-        size_t capture_off = lpcre2_match_data_ovector(L, match_data, 0, &capture_len);
-
-        /* Save content before capture */
-        if (capture_off != 0)
-        {
-            lua_newtable(L);
-            lua_pushlstring(L, data, capture_off);
-            lua_setfield(L, -2, "data");
-            lua_seti(L, ret_idx, luaL_len(L, ret_idx) + 1);
-        }
-
-        lua_newtable(L);
-        {
-            /* Save language */
-            capture_off = lpcre2_match_data_ovector(L, match_data, 1, &capture_len);
-            lua_pushlstring(L, data + capture_off, capture_len);
-            lua_setfield(L, -2, "lang");
-            /* Save code */
-            capture_off = lpcre2_match_data_ovector(L, match_data, 2, &capture_len);
-            lua_pushlstring(L, data + capture_off, capture_len);
-            lua_setfield(L, -2, "code");
-            /* Save data */
-            capture_off = lpcre2_match_data_ovector(L, match_data, 3, &capture_len);
-            lua_pushlstring(L, data + capture_off, capture_len);
-            lua_setfield(L, -2, "data");
-        }
-        lua_seti(L, ret_idx, luaL_len(L, ret_idx) + 1);
-
-        /* Replace source data */
-        capture_off = lpcre2_match_data_ovector(L, match_data, 0, &capture_len);
-        lua_pushlstring(L, data + capture_off + capture_len, data_sz - capture_off - capture_len);
-        lua_replace(L, src_idx);
-
-        /* Release match_data */
-        lua_pop(L, 1);
-    }
-
-    lua_settop(L, sp);
-    return 0;
-}
-
-int am_preproccess(lua_State* L)
-{
-    int sp = lua_gettop(L);
-
-    lua_newtable(L); // sp + 1
-    _split_template(L, sp + 1, 1);
-
-    return 1;
-}
 ////////////////////////////////////////////////////////////////////////////////
 // PATH:    function/__init__.c
 // SIZE:    2005
@@ -1972,13 +1771,13 @@ am_addon_t am_a_c_dump_hex = {
 ////////////////////////////////////////////////////////////////////////////////
 // PATH:    addon/c_expand_include.c
 // SIZE:    4635
-// SHA-256: 82ec8d442f5be4484199859b6ac5a9748ff18ddb20065ae71539820a47fde922
+// SHA-256: 18fe1cab139317ab6535032da524a7edf8822351c1f699a0af222998a786fab6
 ////////////////////////////////////////////////////////////////////////////////
 #line 1 "addon/c_expand_include.c"
 #define LF  "\n"
 static const char* expand_include_script = "\n" LF
-LF
 "local pcre2 = require(\"pcre2\")" LF
+LF
 "local M = {}" LF
 "-- This is the pattern to search `#include` statement." LF
 "M.pattern = \"#\\\\s*include\\\\s+\\\"([-.\\\\w/]+)\\\"\"" LF
@@ -2198,6 +1997,122 @@ am_addon_t am_a_txt_pcre2_substitute = {
     "txt:pcre2_substitute",
     _am_txt_pcre2_substitute,
 };
+////////////////////////////////////////////////////////////////////////////////
+// PATH:    amalgamate.c
+// SIZE:    3611
+// SHA-256: 3fbb4a84690c145e7d46c47175d6967fce8b9113a9d12718d7c045de60ec9811
+////////////////////////////////////////////////////////////////////////////////
+#line 1 "amalgamate.c"
+#define LF  "\n"
+const char* amalgamate_script = "\n\n\n\n\n" LF // let's align the line number
+
+//////////////////////////////////////////////////////////////////////////
+// Script begin
+//////////////////////////////////////////////////////////////////////////
+"local pcre2 = require(\"pcre2\")" LF
+"local cjson = require(\"cjson\")" LF
+LF
+"-- Process data with addon configuration" LF
+"local function process_json_addon(data, config)" LF
+"    config.args = config.args or {}" LF
+"    if config.name == nil then" LF
+"        local errmsg = \"missing field `name` in json\"" LF
+"        error(errmsg)" LF
+"    end" LF
+"    local addon = require(config.name)" LF
+"    return addon.proc(data, config.args)" LF
+"end" LF
+LF
+"-- Process json block" LF
+"local function process_json_block(v)" LF
+"    local config = cjson.from_json(v.code)" LF
+"    local data = v.data" LF
+"    if am.table_is_array(config) then" LF
+"        for _, e in ipairs(config) do" LF
+"            data = process_json_addon(data, e)" LF
+"        end" LF
+"    else" LF
+"        data = process_json_addon(data, config)" LF
+"    end" LF
+"    return data" LF
+"end" LF
+LF
+"-- Process lua block" LF
+"local function process_lua_block(v)" LF
+"    local trunk = load(v.code)" LF
+"    local b,addon = pcall(trunk)" LF
+"    if b ~= true then" LF
+"        error(addon)" LF
+"    end" LF
+"    return addon.proc(v.data, {})" LF
+"end" LF
+LF
+"-- Preprocess file" LF
+"local function preprocess(data)" LF
+"    local ret = {}" LF
+"    local regex = pcre2.compile(am.config.parser_pattern)" LF
+"    while true do" LF
+"        local matchdata = regex:match(data)" LF
+"        if matchdata == nil then" LF
+"            ret[#ret + 1] = { data = data }" LF
+"            break" LF
+"        end" LF
+"        local off_beg,off_end = matchdata:group_offset(0)" LF
+"        if off_beg > 1 then" LF
+"            ret[#ret + 1] = { data = string.sub(data, 1, off_beg - 1) }" LF
+"        end" LF
+"        ret[#ret + 1] = {" LF
+"            lang = string.sub(data, matchdata:group_offset(1))," LF
+"            code = string.sub(data, matchdata:group_offset(2))," LF
+"            data = string.sub(data, matchdata:group_offset(3))," LF
+"        }" LF
+"        data = string.sub(data, off_end + 1)" LF
+"    end" LF
+"    return ret" LF
+"end" LF
+LF
+"-- All runtime information" LF
+"local rt = {}" LF
+LF
+"-- Read input file" LF
+"rt.input_content = am.load_txt_file(am.config.input)" LF
+LF
+"-- Split input file into sequence of token" LF
+"local payload = preprocess(rt.input_content)" LF
+LF
+"-- For each token let's do the magic" LF
+"for _,v in ipairs(payload) do" LF
+"    if v.lang == nil then" LF
+"        -- do nothing" LF
+"    elseif am.strcasecmp(v.lang, \"lua\") == 0 then" LF
+"        v.data = process_lua_block(v)" LF
+"    elseif am.strcasecmp(v.lang, \"json\") == 0 then" LF
+"        v.data = process_json_block(v)" LF
+"    else" LF
+"        local err_msg = \"unknown lang `\" .. v.lang .. \"`.\"" LF
+"        error(err_msg)" LF
+"    end" LF
+LF
+"    if v.data == nil then" LF
+"        v.data = \"\"" LF
+"    end" LF
+"end" LF
+LF
+"-- Generate content" LF
+"rt.output_content = \"\"" LF
+"for _,v in ipairs(payload) do" LF
+"    rt.output_content = rt.output_content .. v.data .. \"\\n\"" LF
+"end" LF
+LF
+"-- Write file" LF
+"am.write_file(am.config.output, rt.output_content)" LF
+
+//////////////////////////////////////////////////////////////////////////
+// Script end
+//////////////////////////////////////////////////////////////////////////
+;
+
+/* AMALGAMATE_DISPLACE: #include "amalgamate.h" */
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -2488,17 +2403,15 @@ static void _generate_arg_table(lua_State* L, int argc, char* argv[])
 static void _am_openlibs(lua_State* L)
 {
     /* open pcre2 */
-    luaL_requiref(L, "pcre2", luaopen_lpcre2, 1);
+    luaL_requiref(L, "pcre2", luaopen_lpcre2, 0);
     lua_pop(L, 1);
 
     /* open cjson */
-    luaL_requiref(L, "cjson", luaopen_cjson, 1);
+    luaL_requiref(L, "cjson", luaopen_cjson, 0);
     lua_pop(L, 1);
 
     /* Amalgamate API */
     luaopen_am(L);
-    lua_pushcfunction(L, am_preproccess);
-    lua_setfield(L, -2, "preproccess");
     lua_setglobal(L, AMALGAMATE_NAMESPACE);
 }
 

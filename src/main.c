@@ -32,7 +32,6 @@
 #include "function/__init__.h"
 #include "addon/__init__.h"
 #include "amalgamate.h"
-#include "preproccess.h"
 /**
  * @AMALGAMATE:END
  */
@@ -46,8 +45,6 @@
 { "name": "c:expand_include" }
 ```
  */
-#include "amalgamate.c"
-#include "preproccess.c"
 #include "function/__init__.c"
 #include "function/lua_dirname.c"
 #include "function/lua_dump_hex.c"
@@ -70,6 +67,7 @@
 #include "addon/c_expand_include.c"
 #include "addon/txt_black_hole.c"
 #include "addon/txt_pcre2_substitute.c"
+#include "amalgamate.c"
 /**
  * @AMALGAMATE:END
  */
@@ -362,17 +360,15 @@ static void _generate_arg_table(lua_State* L, int argc, char* argv[])
 static void _am_openlibs(lua_State* L)
 {
     /* open pcre2 */
-    luaL_requiref(L, "pcre2", luaopen_lpcre2, 1);
+    luaL_requiref(L, "pcre2", luaopen_lpcre2, 0);
     lua_pop(L, 1);
 
     /* open cjson */
-    luaL_requiref(L, "cjson", luaopen_cjson, 1);
+    luaL_requiref(L, "cjson", luaopen_cjson, 0);
     lua_pop(L, 1);
 
     /* Amalgamate API */
     luaopen_am(L);
-    lua_pushcfunction(L, am_preproccess);
-    lua_setfield(L, -2, "preproccess");
     lua_setglobal(L, AMALGAMATE_NAMESPACE);
 }
 
