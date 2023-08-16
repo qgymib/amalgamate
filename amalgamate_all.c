@@ -23,11 +23,13 @@
 //////////////////////////////////////////////////////////////////////////
 #include "pcre2.lua.h"
 
-////////////////////////////////////////////////////////////////////////////////
-// PATH:    config.h
-// SIZE:    908
-// SHA-256: 219905d60d6468fa83266bf4b24d2c6f981c17d697869ed6de7cd481e6b8203a
-////////////////////////////////////////////////////////////////////////////////
+/*
+ * ADDON:   c:expand_include
+ * PATH:    config.h
+ * SIZE:    908
+ * SHA-256: 219905d60d6468fa83266bf4b24d2c6f981c17d697869ed6de7cd481e6b8203a
+ */
+/* AMALGAMATE c:expand_include config.h [BEG] */
 #line 1 "config.h"
 #ifndef __AMALGAMATE_CONFIG_H__
 #define __AMALGAMATE_CONFIG_H__
@@ -65,11 +67,14 @@
 #endif
 
 #endif
-////////////////////////////////////////////////////////////////////////////////
-// PATH:    function/__init__.h
-// SIZE:    2332
-// SHA-256: d63e80bc43371bc340e0aaedd133684a78edf567b74b25b27d848e14690eb560
-////////////////////////////////////////////////////////////////////////////////
+/* AMALGAMATE c:expand_include config.h [END] */
+/*
+ * ADDON:   c:expand_include
+ * PATH:    function/__init__.h
+ * SIZE:    2332
+ * SHA-256: d63e80bc43371bc340e0aaedd133684a78edf567b74b25b27d848e14690eb560
+ */
+/* AMALGAMATE c:expand_include function/__init__.h [BEG] */
 #line 1 "function/__init__.h"
 #ifndef __AMALGAMATE_FUNCTION_INIT_H__
 #define __AMALGAMATE_FUNCTION_INIT_H__
@@ -164,16 +169,19 @@ extern am_function_t am_f_write_file;
 #endif
 
 #endif
-////////////////////////////////////////////////////////////////////////////////
-// PATH:    addon/__init__.h
-// SIZE:    1149
-// SHA-256: 7b8a45e61ede8c49eb204c4944c9bfeced24f78f573d948bf34d7408081473fc
-////////////////////////////////////////////////////////////////////////////////
+/* AMALGAMATE c:expand_include function/__init__.h [END] */
+/*
+ * ADDON:   c:expand_include
+ * PATH:    addon/__init__.h
+ * SIZE:    1149
+ * SHA-256: 7b8a45e61ede8c49eb204c4944c9bfeced24f78f573d948bf34d7408081473fc
+ */
+/* AMALGAMATE c:expand_include addon/__init__.h [BEG] */
 #line 1 "addon/__init__.h"
 #ifndef __AMALGAMATE_ADDON_INIT_H__
 #define __AMALGAMATE_ADDON_INIT_H__
 
-/* AMALGAMATE_DISPLACE: #include "function/__init__.h" */
+/* AMALGAMATE_DISPLACE_INCLUDE: function/__init__.h */
 
 #ifdef __cplusplus
 extern "C" {
@@ -230,11 +238,14 @@ extern am_addon_t am_a_txt_pcre2_substitute;
 #endif
 
 #endif
-////////////////////////////////////////////////////////////////////////////////
-// PATH:    amalgamate.h
-// SIZE:    190
-// SHA-256: 935d75a5b2d077d8aadfe111c57bb49fc9ce08b5887ab5321658dc2cb073f6ea
-////////////////////////////////////////////////////////////////////////////////
+/* AMALGAMATE c:expand_include addon/__init__.h [END] */
+/*
+ * ADDON:   c:expand_include
+ * PATH:    amalgamate.h
+ * SIZE:    190
+ * SHA-256: 935d75a5b2d077d8aadfe111c57bb49fc9ce08b5887ab5321658dc2cb073f6ea
+ */
+/* AMALGAMATE c:expand_include amalgamate.h [BEG] */
 #line 1 "amalgamate.h"
 #ifndef __AMALGAMATE_SCRIPT_H__
 #define __AMALGAMATE_SCRIPT_H__
@@ -248,19 +259,22 @@ extern const char* amalgamate_script;
 }
 #endif
 #endif
+/* AMALGAMATE c:expand_include amalgamate.h [END] */
 
 
 //////////////////////////////////////////////////////////////////////////
 // Embed source file
 //////////////////////////////////////////////////////////////////////////
 
-////////////////////////////////////////////////////////////////////////////////
-// PATH:    function/__init__.c
-// SIZE:    2005
-// SHA-256: e8d4633b7b7344628c24af52801b789bcb90fa1eff04810da36d5d856aba8e41
-////////////////////////////////////////////////////////////////////////////////
+/*
+ * ADDON:   c:expand_include
+ * PATH:    function/__init__.c
+ * SIZE:    2005
+ * SHA-256: e8d4633b7b7344628c24af52801b789bcb90fa1eff04810da36d5d856aba8e41
+ */
+/* AMALGAMATE c:expand_include function/__init__.c [BEG] */
 #line 1 "function/__init__.c"
-/* AMALGAMATE_DISPLACE: #include "__init__.h" */
+/* AMALGAMATE_DISPLACE_INCLUDE: __init__.h */
 #include <string.h>
 #include <errno.h>
 
@@ -353,13 +367,16 @@ int am_function_manual(lua_State* L)
 
     return 0;
 }
-////////////////////////////////////////////////////////////////////////////////
-// PATH:    function/lua_dirname.c
-// SIZE:    864
-// SHA-256: 949469fead3b2455531177f93e7e5bc2f6501fb5979018ec05e33928c68eca04
-////////////////////////////////////////////////////////////////////////////////
+/* AMALGAMATE c:expand_include function/__init__.c [END] */
+/*
+ * ADDON:   c:expand_include
+ * PATH:    function/lua_dirname.c
+ * SIZE:    864
+ * SHA-256: 949469fead3b2455531177f93e7e5bc2f6501fb5979018ec05e33928c68eca04
+ */
+/* AMALGAMATE c:expand_include function/lua_dirname.c [BEG] */
 #line 1 "function/lua_dirname.c"
-/* AMALGAMATE_DISPLACE: #include "__init__.h" */
+/* AMALGAMATE_DISPLACE_INCLUDE: __init__.h */
 
 static char* _am_dirname(char* s)
 {
@@ -391,13 +408,16 @@ am_function_t am_f_dirname = {
 "dirname() returns the string up to, but not including, the final '/'. If path\n"
 "does not contain a slash, dirname() returns the string \".\"."
 };
-////////////////////////////////////////////////////////////////////////////////
-// PATH:    function/lua_dump_hex.c
-// SIZE:    1831
-// SHA-256: 7c93a08b450368a5b333d6151615de09991084bbc95b38b469cd977824bc79ad
-////////////////////////////////////////////////////////////////////////////////
+/* AMALGAMATE c:expand_include function/lua_dirname.c [END] */
+/*
+ * ADDON:   c:expand_include
+ * PATH:    function/lua_dump_hex.c
+ * SIZE:    1831
+ * SHA-256: 7c93a08b450368a5b333d6151615de09991084bbc95b38b469cd977824bc79ad
+ */
+/* AMALGAMATE c:expand_include function/lua_dump_hex.c [BEG] */
 #line 1 "function/lua_dump_hex.c"
-/* AMALGAMATE_DISPLACE: #include "__init__.h" */
+/* AMALGAMATE_DISPLACE_INCLUDE: __init__.h */
 
 static char _mmc_ascii_to_char(unsigned char c)
 {
@@ -464,13 +484,16 @@ am_function_t am_f_dump_hex = {
 
 "Dump string as hex string with ASCII character shown.\n"
 };
-////////////////////////////////////////////////////////////////////////////////
-// PATH:    function/lua_dump_obj.c
-// SIZE:    1258
-// SHA-256: 65315e330bf767f1763c48cb89ab23379655227b4d9655634ecd6d0ccad92511
-////////////////////////////////////////////////////////////////////////////////
+/* AMALGAMATE c:expand_include function/lua_dump_hex.c [END] */
+/*
+ * ADDON:   c:expand_include
+ * PATH:    function/lua_dump_obj.c
+ * SIZE:    1258
+ * SHA-256: 65315e330bf767f1763c48cb89ab23379655227b4d9655634ecd6d0ccad92511
+ */
+/* AMALGAMATE c:expand_include function/lua_dump_obj.c [BEG] */
 #line 1 "function/lua_dump_obj.c"
-/* AMALGAMATE_DISPLACE: #include "__init__.h" */
+/* AMALGAMATE_DISPLACE_INCLUDE: __init__.h */
 
 static int _am_dump_obj(lua_State* L)
 {
@@ -527,13 +550,16 @@ am_function_t am_f_dump_obj = {
 "Dump object as string.",
 "Dump object as string."
 };
-////////////////////////////////////////////////////////////////////////////////
-// PATH:    function/lua_fmtpath.c
-// SIZE:    1478
-// SHA-256: 0b0026a1e86e667e0f3d0cb131d74ae80d67b4b28687f63833ba66843998b1f8
-////////////////////////////////////////////////////////////////////////////////
+/* AMALGAMATE c:expand_include function/lua_dump_obj.c [END] */
+/*
+ * ADDON:   c:expand_include
+ * PATH:    function/lua_fmtpath.c
+ * SIZE:    1478
+ * SHA-256: 0b0026a1e86e667e0f3d0cb131d74ae80d67b4b28687f63833ba66843998b1f8
+ */
+/* AMALGAMATE c:expand_include function/lua_fmtpath.c [BEG] */
 #line 1 "function/lua_fmtpath.c"
-/* AMALGAMATE_DISPLACE: #include "__init__.h" */
+/* AMALGAMATE_DISPLACE_INCLUDE: __init__.h */
 
 static int _am_fmtpath(lua_State* L)
 {
@@ -588,13 +614,16 @@ am_function_t am_f_fmtpath = {
 "`fmtpath(path, \"/\")` is:\n"
 "\"path/to/foo/bar\"."
 };
-////////////////////////////////////////////////////////////////////////////////
-// PATH:    function/lua_is_abspath.c
-// SIZE:    713
-// SHA-256: 21d337477d687c9586a968fe778ef49c73190379cb46f3158a15cb9925b970e2
-////////////////////////////////////////////////////////////////////////////////
+/* AMALGAMATE c:expand_include function/lua_fmtpath.c [END] */
+/*
+ * ADDON:   c:expand_include
+ * PATH:    function/lua_is_abspath.c
+ * SIZE:    713
+ * SHA-256: 21d337477d687c9586a968fe778ef49c73190379cb46f3158a15cb9925b970e2
+ */
+/* AMALGAMATE c:expand_include function/lua_is_abspath.c [BEG] */
 #line 1 "function/lua_is_abspath.c"
-/* AMALGAMATE_DISPLACE: #include "__init__.h" */
+/* AMALGAMATE_DISPLACE_INCLUDE: __init__.h */
 
 #define IS_LETTER(c) (((c) >= 'a' && (c) <= 'z') || ((c) >= 'A' && (c) <= 'Z'))
 
@@ -624,13 +653,16 @@ am_function_t am_f_is_abspath = {
 "Check if parameter is absolute path.",
 "Check if parameter is absolute path without actually access it."
 };
-////////////////////////////////////////////////////////////////////////////////
-// PATH:    function/lua_is_file_exist.c
-// SIZE:    714
-// SHA-256: b5e027d35098115d29b4941dd71d730b4ef2291186e07079022ab8037db40fc9
-////////////////////////////////////////////////////////////////////////////////
+/* AMALGAMATE c:expand_include function/lua_is_abspath.c [END] */
+/*
+ * ADDON:   c:expand_include
+ * PATH:    function/lua_is_file_exist.c
+ * SIZE:    714
+ * SHA-256: b5e027d35098115d29b4941dd71d730b4ef2291186e07079022ab8037db40fc9
+ */
+/* AMALGAMATE c:expand_include function/lua_is_file_exist.c [BEG] */
 #line 1 "function/lua_is_file_exist.c"
-/* AMALGAMATE_DISPLACE: #include "__init__.h" */
+/* AMALGAMATE_DISPLACE_INCLUDE: __init__.h */
 #include <stdio.h>
 
 static int _am_is_file_exist(lua_State* L)
@@ -664,13 +696,16 @@ am_function_t am_f_is_file_exist = {
 "Check if file is exist, return true if it is, false if not exist or cannot\n"
 "access it."
 };
-////////////////////////////////////////////////////////////////////////////////
-// PATH:    function/lua_load_file.c
-// SIZE:    2355
-// SHA-256: 499f431bf4089ef459b9f52501ae36be5659b33647af5e8fa053a67405610cdf
-////////////////////////////////////////////////////////////////////////////////
+/* AMALGAMATE c:expand_include function/lua_is_file_exist.c [END] */
+/*
+ * ADDON:   c:expand_include
+ * PATH:    function/lua_load_file.c
+ * SIZE:    2355
+ * SHA-256: 499f431bf4089ef459b9f52501ae36be5659b33647af5e8fa053a67405610cdf
+ */
+/* AMALGAMATE c:expand_include function/lua_load_file.c [BEG] */
 #line 1 "function/lua_load_file.c"
-/* AMALGAMATE_DISPLACE: #include "__init__.h" */
+/* AMALGAMATE_DISPLACE_INCLUDE: __init__.h */
 #include <stdio.h>
 
 typedef struct lua_file
@@ -769,13 +804,16 @@ am_function_t am_f_load_file = {
 "Load whole file as binary mode and return it.",
 "Load whole file as binary mode and return it."
 };
-////////////////////////////////////////////////////////////////////////////////
-// PATH:    function/lua_load_txt_file.c
-// SIZE:    913
-// SHA-256: abc28513bbd0ddbada84dd4104644d82a9c19f5d0c04b7c3e06686f0834e3021
-////////////////////////////////////////////////////////////////////////////////
+/* AMALGAMATE c:expand_include function/lua_load_file.c [END] */
+/*
+ * ADDON:   c:expand_include
+ * PATH:    function/lua_load_txt_file.c
+ * SIZE:    913
+ * SHA-256: abc28513bbd0ddbada84dd4104644d82a9c19f5d0c04b7c3e06686f0834e3021
+ */
+/* AMALGAMATE c:expand_include function/lua_load_txt_file.c [BEG] */
 #line 1 "function/lua_load_txt_file.c"
-/* AMALGAMATE_DISPLACE: #include "__init__.h" */
+/* AMALGAMATE_DISPLACE_INCLUDE: __init__.h */
 
 static int _am_load_txt_file(lua_State* L)
 {
@@ -809,13 +847,16 @@ am_function_t am_f_load_txt_file = {
 "Load while file as txt mode and return it.",
 "Load while file as txt mode and return it. Line endings is always convert to \"\\n\"."
 };
-////////////////////////////////////////////////////////////////////////////////
-// PATH:    function/lua_log_i.c
-// SIZE:    1112
-// SHA-256: 0037ccacefa18bd952b44e52f411abc566a8941764338db439250977a760b7aa
-////////////////////////////////////////////////////////////////////////////////
+/* AMALGAMATE c:expand_include function/lua_load_txt_file.c [END] */
+/*
+ * ADDON:   c:expand_include
+ * PATH:    function/lua_log_i.c
+ * SIZE:    1112
+ * SHA-256: 0037ccacefa18bd952b44e52f411abc566a8941764338db439250977a760b7aa
+ */
+/* AMALGAMATE c:expand_include function/lua_log_i.c [BEG] */
 #line 1 "function/lua_log_i.c"
-/* AMALGAMATE_DISPLACE: #include "__init__.h" */
+/* AMALGAMATE_DISPLACE_INCLUDE: __init__.h */
 #include <string.h>
 
 static int _log_i(lua_State* L)
@@ -859,13 +900,16 @@ am_function_t am_f_log_i = {
 "Append data into log file.",
 "Append data into log file."
 };
-////////////////////////////////////////////////////////////////////////////////
-// PATH:    function/lua_merge_line.c
-// SIZE:    1121
-// SHA-256: 6e52e32ccb5952d4f6d84d577bbd0c6b7a61aaca0c8f2a90d103240d3f8f9c45
-////////////////////////////////////////////////////////////////////////////////
+/* AMALGAMATE c:expand_include function/lua_log_i.c [END] */
+/*
+ * ADDON:   c:expand_include
+ * PATH:    function/lua_merge_line.c
+ * SIZE:    1121
+ * SHA-256: 6e52e32ccb5952d4f6d84d577bbd0c6b7a61aaca0c8f2a90d103240d3f8f9c45
+ */
+/* AMALGAMATE c:expand_include function/lua_merge_line.c [BEG] */
 #line 1 "function/lua_merge_line.c"
-/* AMALGAMATE_DISPLACE: #include "__init__.h" */
+/* AMALGAMATE_DISPLACE_INCLUDE: __init__.h */
 
 static int _am_merge_line(lua_State* L)
 {
@@ -912,13 +956,16 @@ am_function_t am_f_merge_line = {
 "The result of merge_line() will be:\n"
 "\"hello\\n \\nworld\"."
 };
-////////////////////////////////////////////////////////////////////////////////
-// PATH:    function/lua_search_file.c
-// SIZE:    3875
-// SHA-256: d77e05b493a855cea2dc2f133f9cbe53f91ddf6785122d1941da9e2ce0714b45
-////////////////////////////////////////////////////////////////////////////////
+/* AMALGAMATE c:expand_include function/lua_merge_line.c [END] */
+/*
+ * ADDON:   c:expand_include
+ * PATH:    function/lua_search_file.c
+ * SIZE:    3875
+ * SHA-256: d77e05b493a855cea2dc2f133f9cbe53f91ddf6785122d1941da9e2ce0714b45
+ */
+/* AMALGAMATE c:expand_include function/lua_search_file.c [BEG] */
 #line 1 "function/lua_search_file.c"
-/* AMALGAMATE_DISPLACE: #include "__init__.h" */
+/* AMALGAMATE_DISPLACE_INCLUDE: __init__.h */
 
 /**
  * @brief Check if path at \p idx is abspath.
@@ -1081,13 +1128,16 @@ am_function_t am_f_search_file = {
 "Search file in current directory and quote directory. Return the real path that\n"
 "can be opened or nil if failed."
 };
-////////////////////////////////////////////////////////////////////////////////
-// PATH:    function/lua_sha256.c
-// SIZE:    7762
-// SHA-256: 1b9ffed3e8024a3d6a5346f5d39d5cda87eba33d88611893743b3421b95ae577
-////////////////////////////////////////////////////////////////////////////////
+/* AMALGAMATE c:expand_include function/lua_search_file.c [END] */
+/*
+ * ADDON:   c:expand_include
+ * PATH:    function/lua_sha256.c
+ * SIZE:    7762
+ * SHA-256: 1b9ffed3e8024a3d6a5346f5d39d5cda87eba33d88611893743b3421b95ae577
+ */
+/* AMALGAMATE c:expand_include function/lua_sha256.c [BEG] */
 #line 1 "function/lua_sha256.c"
-/* AMALGAMATE_DISPLACE: #include "__init__.h" */
+/* AMALGAMATE_DISPLACE_INCLUDE: __init__.h */
 
 /*********************************************************************
 * Filename:   sha256.h
@@ -1308,13 +1358,16 @@ am_function_t am_f_sha256 = {
 
 "Calcualte SHA256 of `s` and return it's string value."
 };
-////////////////////////////////////////////////////////////////////////////////
-// PATH:    function/lua_split_line.c
-// SIZE:    1783
-// SHA-256: a28d60008fc3a823a748a38c308c8e331afd96a5ea09872264a62eb896ad7660
-////////////////////////////////////////////////////////////////////////////////
+/* AMALGAMATE c:expand_include function/lua_sha256.c [END] */
+/*
+ * ADDON:   c:expand_include
+ * PATH:    function/lua_split_line.c
+ * SIZE:    1783
+ * SHA-256: a28d60008fc3a823a748a38c308c8e331afd96a5ea09872264a62eb896ad7660
+ */
+/* AMALGAMATE c:expand_include function/lua_split_line.c [BEG] */
 #line 1 "function/lua_split_line.c"
-/* AMALGAMATE_DISPLACE: #include "__init__.h" */
+/* AMALGAMATE_DISPLACE_INCLUDE: __init__.h */
 
 static int _am_split_line(lua_State* L)
 {
@@ -1382,13 +1435,16 @@ am_function_t am_f_split_line = {
 "take care of different endings like `\\r`, `\\n` or `\\r\\n`. Empty line is not\n"
 "ignored."
 };
-////////////////////////////////////////////////////////////////////////////////
-// PATH:    function/lua_strcasecmp.c
-// SIZE:    814
-// SHA-256: eda786d14f01a79d3cb8c1af61fc2a14b230da7d1388b61be9aa5461f817fc2d
-////////////////////////////////////////////////////////////////////////////////
+/* AMALGAMATE c:expand_include function/lua_split_line.c [END] */
+/*
+ * ADDON:   c:expand_include
+ * PATH:    function/lua_strcasecmp.c
+ * SIZE:    814
+ * SHA-256: eda786d14f01a79d3cb8c1af61fc2a14b230da7d1388b61be9aa5461f817fc2d
+ */
+/* AMALGAMATE c:expand_include function/lua_strcasecmp.c [BEG] */
 #line 1 "function/lua_strcasecmp.c"
-/* AMALGAMATE_DISPLACE: #include "__init__.h" */
+/* AMALGAMATE_DISPLACE_INCLUDE: __init__.h */
 #include <string.h>
 
 #if defined(_WIN32)
@@ -1415,13 +1471,16 @@ am_function_t am_f_strcasecmp = {
 "equal to, or greater than zero if `s1` is found, respectively, to be less than,\n"
 "to match, or be greater than `s2`."
 };
-////////////////////////////////////////////////////////////////////////////////
-// PATH:    function/lua_table_is_array.c
-// SIZE:    467
-// SHA-256: 3cc019095e3cf941e406a22c318cd5e3426a17092a197042daa512d9f4c3f587
-////////////////////////////////////////////////////////////////////////////////
+/* AMALGAMATE c:expand_include function/lua_strcasecmp.c [END] */
+/*
+ * ADDON:   c:expand_include
+ * PATH:    function/lua_table_is_array.c
+ * SIZE:    467
+ * SHA-256: 3cc019095e3cf941e406a22c318cd5e3426a17092a197042daa512d9f4c3f587
+ */
+/* AMALGAMATE c:expand_include function/lua_table_is_array.c [BEG] */
 #line 1 "function/lua_table_is_array.c"
-/* AMALGAMATE_DISPLACE: #include "__init__.h" */
+/* AMALGAMATE_DISPLACE_INCLUDE: __init__.h */
 
 static int am_table_is_array(lua_State* L)
 {
@@ -1444,13 +1503,16 @@ am_function_t am_f_table_is_array = {
 
 "Check if parameter `t` is an array."
 };
-////////////////////////////////////////////////////////////////////////////////
-// PATH:    function/lua_write_file.c
-// SIZE:    1546
-// SHA-256: 53ed29e955f19651017d3f66a9cd0bc8d5dd1ff0c4e060796420762d98aa11d3
-////////////////////////////////////////////////////////////////////////////////
+/* AMALGAMATE c:expand_include function/lua_table_is_array.c [END] */
+/*
+ * ADDON:   c:expand_include
+ * PATH:    function/lua_write_file.c
+ * SIZE:    1546
+ * SHA-256: 53ed29e955f19651017d3f66a9cd0bc8d5dd1ff0c4e060796420762d98aa11d3
+ */
+/* AMALGAMATE c:expand_include function/lua_write_file.c [BEG] */
 #line 1 "function/lua_write_file.c"
-/* AMALGAMATE_DISPLACE: #include "__init__.h" */
+/* AMALGAMATE_DISPLACE_INCLUDE: __init__.h */
 #include <stdio.h>
 
 static int _am_file_op(lua_State* L, const char* path, const char* mode,
@@ -1518,13 +1580,16 @@ am_function_t am_f_write_file = {
 "\n"
 "By default `mode` is set to \"wb\"."
 };
-////////////////////////////////////////////////////////////////////////////////
-// PATH:    addon/__init__.c
-// SIZE:    3261
-// SHA-256: d4e16a4e6b7f855172cefc54dbbc3f2df5219d2f37abd967b153e8085cbb35b4
-////////////////////////////////////////////////////////////////////////////////
+/* AMALGAMATE c:expand_include function/lua_write_file.c [END] */
+/*
+ * ADDON:   c:expand_include
+ * PATH:    addon/__init__.c
+ * SIZE:    3261
+ * SHA-256: d4e16a4e6b7f855172cefc54dbbc3f2df5219d2f37abd967b153e8085cbb35b4
+ */
+/* AMALGAMATE c:expand_include addon/__init__.c [BEG] */
 #line 1 "addon/__init__.c"
-/* AMALGAMATE_DISPLACE: #include "__init__.h" */
+/* AMALGAMATE_DISPLACE_INCLUDE: __init__.h */
 #include <string.h>
 
 static am_addon_t* s_addon_list[] = {
@@ -1664,11 +1729,14 @@ int am_addon_call_script(lua_State* L, const char* script, const char* name)
     lua_call(L, 0, 1);
     return 1;
 }
-////////////////////////////////////////////////////////////////////////////////
-// PATH:    addon/c_dump_hex.c
-// SIZE:    3071
-// SHA-256: a93680e0147ce5972ffe17bd3dd29a43e8bc57a50283f6e6c9d1ffa59e80c426
-////////////////////////////////////////////////////////////////////////////////
+/* AMALGAMATE c:expand_include addon/__init__.c [END] */
+/*
+ * ADDON:   c:expand_include
+ * PATH:    addon/c_dump_hex.c
+ * SIZE:    3071
+ * SHA-256: a93680e0147ce5972ffe17bd3dd29a43e8bc57a50283f6e6c9d1ffa59e80c426
+ */
+/* AMALGAMATE c:expand_include addon/c_dump_hex.c [BEG] */
 #line 1 "addon/c_dump_hex.c"
 #define LF "\n"
 static const char* dump_hex_script = "\n" LF
@@ -1757,7 +1825,7 @@ LF
 "}" LF
 ;
 
-/* AMALGAMATE_DISPLACE: #include "__init__.h" */
+/* AMALGAMATE_DISPLACE_INCLUDE: __init__.h */
 
 static int _am_c_dump_hex(lua_State* L)
 {
@@ -1768,11 +1836,14 @@ am_addon_t am_a_c_dump_hex = {
 	"c:dump_hex",
 	_am_c_dump_hex,
 };
-////////////////////////////////////////////////////////////////////////////////
-// PATH:    addon/c_expand_include.c
-// SIZE:    4635
-// SHA-256: 18fe1cab139317ab6535032da524a7edf8822351c1f699a0af222998a786fab6
-////////////////////////////////////////////////////////////////////////////////
+/* AMALGAMATE c:expand_include addon/c_dump_hex.c [END] */
+/*
+ * ADDON:   c:expand_include
+ * PATH:    addon/c_expand_include.c
+ * SIZE:    5053
+ * SHA-256: be3588bdccaddc6676ce2c1a0fa5ae2a449f92217d701b19138c049169188e70
+ */
+/* AMALGAMATE c:expand_include addon/c_expand_include.c [BEG] */
 #line 1 "addon/c_expand_include.c"
 #define LF  "\n"
 static const char* expand_include_script = "\n" LF
@@ -1814,16 +1885,17 @@ LF
 "end" LF
 LF
 "-- Generate file header" LF
-"local function generate_header_info(info, args)" LF
+"local function generate_file_header(info, args)" LF
 "    if not args.fileinfo then" LF
 "        return \"\"" LF
 "    end" LF
-"    local ret = \"\"" LF
-"    ret = ret .. string.rep(\"/\", 80) .. \"\\n\"" LF
-"    ret = ret .. \"// PATH:    \" .. info.include_path .. \"\\n\"" LF
-"    ret = ret .. \"// SIZE:    \" .. string.format(\"%q\", info.bin_size) .. \"\\n\"" LF
-"    ret = ret .. \"// SHA-256: \" .. info.sha256 .. \"\\n\"" LF
-"    ret = ret .. string.rep(\"/\", 80) .. \"\\n\"" LF
+"    local ret = \"/*\\n\"" LF
+"    ret = ret .. \" * ADDON:   c:expand_include\\n\"" LF
+"    ret = ret .. \" * PATH:    \" .. info.include_path .. \"\\n\"" LF
+"    ret = ret .. \" * SIZE:    \" .. string.format(\"%q\", info.bin_size) .. \"\\n\"" LF
+"    ret = ret .. \" * SHA-256: \" .. info.sha256 .. \"\\n\"" LF
+"    ret = ret .. \" */\\n\"" LF
+"    ret = ret .. \"/* AMALGAMATE c:expand_include \" .. info.include_path .. \" [BEG] */\\n\"" LF
 "    return ret" LF
 "end" LF
 LF
@@ -1835,11 +1907,18 @@ LF
 "        ret = ret .. \"#line 1 \\\"\" .. info.include_path .. \"\\\"\\n\"" LF
 "    end" LF
 "    if args.displace_include then" LF
-"        temp = regex:substitute(info.txt_data, \"/* AMALGAMATE_DISPLACE: ${0} */\"," LF
+"        temp = regex:substitute(info.txt_data, \"/* AMALGAMATE_DISPLACE_INCLUDE: ${1} */\"," LF
 "            pcre2.PCRE2_SUBSTITUTE_GLOBAL | pcre2.PCRE2_SUBSTITUTE_EXTENDED)" LF
 "    end" LF
 "    ret = ret .. temp .. \"\\n\"" LF
 "    return ret" LF
+"end" LF
+LF
+"local function generate_file_tail(info, args)" LF
+"    if not args.fileinfo then" LF
+"        return \"\"" LF
+"    end" LF
+"    return \"/* AMALGAMATE c:expand_include \" .. info.include_path .. \" [END] */\\n\"" LF
 "end" LF
 LF
 "-- c:expand_include" LF
@@ -1869,11 +1948,14 @@ LF
 "        local info = generate_file_info(match_data, data)"
 LF
 "        -- Generate header" LF
-"        temp = generate_header_info(info, args)" LF
+"        temp = generate_file_header(info, args)" LF
 "        ret = ret .. temp" LF
 LF
 "        -- Append file content" LF
 "        temp = generate_file_content(info, args, regex)" LF
+"        ret = ret .. temp" LF
+LF
+"        temp = generate_file_tail(info, args)" LF
 "        ret = ret .. temp" LF
 LF
 "        -- Update data" LF
@@ -1901,7 +1983,7 @@ LF
 "}" LF
 ;
 
-/* AMALGAMATE_DISPLACE: #include "__init__.h" */
+/* AMALGAMATE_DISPLACE_INCLUDE: __init__.h */
 
 static int _am_c_expand_include(lua_State* L)
 {
@@ -1912,11 +1994,14 @@ am_addon_t am_a_c_expand_include = {
     "c:expand_include",
     _am_c_expand_include,
 };
-////////////////////////////////////////////////////////////////////////////////
-// PATH:    addon/txt_black_hole.c
-// SIZE:    587
-// SHA-256: b81ee2ebaf920f049b11b24d56361efa3b9016d63bb6d29051477a004f10c6df
-////////////////////////////////////////////////////////////////////////////////
+/* AMALGAMATE c:expand_include addon/c_expand_include.c [END] */
+/*
+ * ADDON:   c:expand_include
+ * PATH:    addon/txt_black_hole.c
+ * SIZE:    587
+ * SHA-256: b81ee2ebaf920f049b11b24d56361efa3b9016d63bb6d29051477a004f10c6df
+ */
+/* AMALGAMATE c:expand_include addon/txt_black_hole.c [BEG] */
 #line 1 "addon/txt_black_hole.c"
 #define LF "\n"
 static const char* black_hole_script = "\n" LF
@@ -1936,7 +2021,7 @@ LF
 "}" LF
 ;
 
-/* AMALGAMATE_DISPLACE: #include "__init__.h" */
+/* AMALGAMATE_DISPLACE_INCLUDE: __init__.h */
 
 static int _am_txt_black_hole(lua_State* L)
 {
@@ -1947,11 +2032,14 @@ am_addon_t am_a_txt_black_hole = {
     "txt:black_hole",
     _am_txt_black_hole,
 };
-////////////////////////////////////////////////////////////////////////////////
-// PATH:    addon/txt_pcre2_substitute.c
-// SIZE:    1277
-// SHA-256: a13259c471ffb7664b749bc6a40f330d3b6e851f0dedddeb9abb15e8c5539f60
-////////////////////////////////////////////////////////////////////////////////
+/* AMALGAMATE c:expand_include addon/txt_black_hole.c [END] */
+/*
+ * ADDON:   c:expand_include
+ * PATH:    addon/txt_pcre2_substitute.c
+ * SIZE:    1277
+ * SHA-256: a13259c471ffb7664b749bc6a40f330d3b6e851f0dedddeb9abb15e8c5539f60
+ */
+/* AMALGAMATE c:expand_include addon/txt_pcre2_substitute.c [BEG] */
 #line 1 "addon/txt_pcre2_substitute.c"
 #define LF "\n"
 static const char* pcre2_substitute_script = "\n" LF
@@ -1986,7 +2074,7 @@ LF
 "}" LF
 ;
 
-/* AMALGAMATE_DISPLACE: #include "__init__.h" */
+/* AMALGAMATE_DISPLACE_INCLUDE: __init__.h */
 
 static int _am_txt_pcre2_substitute(lua_State* L)
 {
@@ -1997,11 +2085,14 @@ am_addon_t am_a_txt_pcre2_substitute = {
     "txt:pcre2_substitute",
     _am_txt_pcre2_substitute,
 };
-////////////////////////////////////////////////////////////////////////////////
-// PATH:    amalgamate.c
-// SIZE:    3611
-// SHA-256: 3fbb4a84690c145e7d46c47175d6967fce8b9113a9d12718d7c045de60ec9811
-////////////////////////////////////////////////////////////////////////////////
+/* AMALGAMATE c:expand_include addon/txt_pcre2_substitute.c [END] */
+/*
+ * ADDON:   c:expand_include
+ * PATH:    amalgamate.c
+ * SIZE:    3611
+ * SHA-256: 3fbb4a84690c145e7d46c47175d6967fce8b9113a9d12718d7c045de60ec9811
+ */
+/* AMALGAMATE c:expand_include amalgamate.c [BEG] */
 #line 1 "amalgamate.c"
 #define LF  "\n"
 const char* amalgamate_script = "\n\n\n\n\n" LF // let's align the line number
@@ -2112,7 +2203,8 @@ LF
 //////////////////////////////////////////////////////////////////////////
 ;
 
-/* AMALGAMATE_DISPLACE: #include "amalgamate.h" */
+/* AMALGAMATE_DISPLACE_INCLUDE: amalgamate.h */
+/* AMALGAMATE c:expand_include amalgamate.c [END] */
 
 
 //////////////////////////////////////////////////////////////////////////

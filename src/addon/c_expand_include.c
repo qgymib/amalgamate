@@ -38,16 +38,17 @@ LF
 "end" LF
 LF
 "-- Generate file header" LF
-"local function generate_header_info(info, args)" LF
+"local function generate_file_header(info, args)" LF
 "    if not args.fileinfo then" LF
 "        return \"\"" LF
 "    end" LF
-"    local ret = \"\"" LF
-"    ret = ret .. string.rep(\"/\", 80) .. \"\\n\"" LF
-"    ret = ret .. \"// PATH:    \" .. info.include_path .. \"\\n\"" LF
-"    ret = ret .. \"// SIZE:    \" .. string.format(\"%q\", info.bin_size) .. \"\\n\"" LF
-"    ret = ret .. \"// SHA-256: \" .. info.sha256 .. \"\\n\"" LF
-"    ret = ret .. string.rep(\"/\", 80) .. \"\\n\"" LF
+"    local ret = \"/*\\n\"" LF
+"    ret = ret .. \" * ADDON:   c:expand_include\\n\"" LF
+"    ret = ret .. \" * PATH:    \" .. info.include_path .. \"\\n\"" LF
+"    ret = ret .. \" * SIZE:    \" .. string.format(\"%q\", info.bin_size) .. \"\\n\"" LF
+"    ret = ret .. \" * SHA-256: \" .. info.sha256 .. \"\\n\"" LF
+"    ret = ret .. \" */\\n\"" LF
+"    ret = ret .. \"/* AMALGAMATE c:expand_include \" .. info.include_path .. \" [BEG] */\\n\"" LF
 "    return ret" LF
 "end" LF
 LF
@@ -59,11 +60,18 @@ LF
 "        ret = ret .. \"#line 1 \\\"\" .. info.include_path .. \"\\\"\\n\"" LF
 "    end" LF
 "    if args.displace_include then" LF
-"        temp = regex:substitute(info.txt_data, \"/* AMALGAMATE_DISPLACE: ${0} */\"," LF
+"        temp = regex:substitute(info.txt_data, \"/* AMALGAMATE_DISPLACE_INCLUDE: ${1} */\"," LF
 "            pcre2.PCRE2_SUBSTITUTE_GLOBAL | pcre2.PCRE2_SUBSTITUTE_EXTENDED)" LF
 "    end" LF
 "    ret = ret .. temp .. \"\\n\"" LF
 "    return ret" LF
+"end" LF
+LF
+"local function generate_file_tail(info, args)" LF
+"    if not args.fileinfo then" LF
+"        return \"\"" LF
+"    end" LF
+"    return \"/* AMALGAMATE c:expand_include \" .. info.include_path .. \" [END] */\\n\"" LF
 "end" LF
 LF
 "-- c:expand_include" LF
@@ -93,11 +101,14 @@ LF
 "        local info = generate_file_info(match_data, data)"
 LF
 "        -- Generate header" LF
-"        temp = generate_header_info(info, args)" LF
+"        temp = generate_file_header(info, args)" LF
 "        ret = ret .. temp" LF
 LF
 "        -- Append file content" LF
 "        temp = generate_file_content(info, args, regex)" LF
+"        ret = ret .. temp" LF
+LF
+"        temp = generate_file_tail(info, args)" LF
 "        ret = ret .. temp" LF
 LF
 "        -- Update data" LF
