@@ -1,4 +1,4 @@
-#include "lua_sha256.h"
+#include "__init__.h"
 
 /*********************************************************************
 * Filename:   sha256.h
@@ -213,7 +213,7 @@ static int _am_sha256(lua_State* L)
     return 1;
 }
 
-am_function_t am_func_sha256 = {
+am_function_t am_f_sha256 = {
 "sha256", _am_sha256, "string sha256(string s)",
 "Calcualte SHA-256.",
 

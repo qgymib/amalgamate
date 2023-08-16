@@ -67,8 +67,8 @@
 #endif
 ////////////////////////////////////////////////////////////////////////////////
 // PATH:    function/__init__.h
-// SIZE:    1641
-// SHA-256: 7de168dee0cd6d8fe25761fadbbc84886154606a1c5f58fb6464df5d365c95e1
+// SIZE:    2332
+// SHA-256: d63e80bc43371bc340e0aaedd133684a78edf567b74b25b27d848e14690eb560
 ////////////////////////////////////////////////////////////////////////////////
 #line 1 "function/__init__.h"
 #ifndef __AMALGAMATE_FUNCTION_INIT_H__
@@ -108,7 +108,7 @@ int fopen_s(FILE** pFile, const char* filename, const char* mode);
 typedef struct am_function
 {
     const char*     name;
-    lua_CFunction   func;
+    lua_CFunction   addr;
     const char*     proto;
     const char*     brief;
     const char*     document;
@@ -135,147 +135,29 @@ int am_list_function(lua_State* L);
  */
 int am_function_manual(lua_State* L);
 
-#ifdef __cplusplus
-}
-#endif
-
-#endif
-////////////////////////////////////////////////////////////////////////////////
-// PATH:    function/lua_file.h
-// SIZE:    538
-// SHA-256: c44d7505271c9bd13be6295db0e2cf458b9e5202067dd458070f2c250dccb44d
-////////////////////////////////////////////////////////////////////////////////
-#line 1 "function/lua_file.h"
-#ifndef __AMALGAMATE_FUNCTION_LUA_FILE_H__
-#define __AMALGAMATE_FUNCTION_LUA_FILE_H__
-
-/* AMALGAMATE_DISPLACE: #include "__init__.h" */
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-extern am_function_t am_func_dirname;
-extern am_function_t am_func_fmtpath;
-extern am_function_t am_func_is_abspath;
-extern am_function_t am_func_is_file_exist;
-extern am_function_t am_func_load_file;
-extern am_function_t am_func_load_txt_file;
-extern am_function_t am_func_write_file;
-extern am_function_t am_func_append_file;
-
-#ifdef __cplusplus
-}
-#endif
-
-#endif
-////////////////////////////////////////////////////////////////////////////////
-// PATH:    function/lua_log.h
-// SIZE:    237
-// SHA-256: d999601fbca487a15487d64ac92954f119ce4f54d64964b2cc84fcfa964d80a8
-////////////////////////////////////////////////////////////////////////////////
-#line 1 "function/lua_log.h"
-#ifndef __AMALGAMATE_FUNCTION_LUA_LOG_H__
-#define __AMALGAMATE_FUNCTION_LUA_LOG_H__
-
-/* AMALGAMATE_DISPLACE: #include "__init__.h" */
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-extern am_function_t am_func_log_i;
-
-#ifdef __cplusplus
-}
-#endif
-
-#endif
-////////////////////////////////////////////////////////////////////////////////
-// PATH:    function/lua_searchfile.h
-// SIZE:    259
-// SHA-256: 84c9c22d6a20367239d1b3df4af89d4199a1dc240c7e17134e9ad00442994c8e
-////////////////////////////////////////////////////////////////////////////////
-#line 1 "function/lua_searchfile.h"
-#ifndef __AMALGAMATE_FUNCTION_LUA_SEARCH_FILE_H__
-#define __AMALGAMATE_FUNCTION_LUA_SEARCH_FILE_H__
-
-/* AMALGAMATE_DISPLACE: #include "__init__.h" */
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-extern am_function_t am_func_search_file;
-
-#ifdef __cplusplus
-}
-#endif
-
-#endif
-////////////////////////////////////////////////////////////////////////////////
-// PATH:    function/lua_sha256.h
-// SIZE:    244
-// SHA-256: 716b4139706cd0fa0ca0365463a59babc4fcbeda99c35069d5d24d7a3f651400
-////////////////////////////////////////////////////////////////////////////////
-#line 1 "function/lua_sha256.h"
-#ifndef __AMALGAMATE_FUNCTION_LUA_SHA256_H__
-#define __AMALGAMATE_FUNCTION_LUA_SHA256_H__
-
-/* AMALGAMATE_DISPLACE: #include "__init__.h" */
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-extern am_function_t am_func_sha256;
-
-#ifdef __cplusplus
-}
-#endif
-
-#endif
-////////////////////////////////////////////////////////////////////////////////
-// PATH:    function/lua_string.h
-// SIZE:    372
-// SHA-256: ab8aa7d15a33272e3f59cbae91e6a7070abd4c99c185a833e38032fc20b59361
-////////////////////////////////////////////////////////////////////////////////
-#line 1 "function/lua_string.h"
-#ifndef __AMALGAMATE_FUNCTION_LUA_STRING_H__
-#define __AMALGAMATE_FUNCTION_LUA_STRING_H__
-
-/* AMALGAMATE_DISPLACE: #include "__init__.h" */
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-extern am_function_t am_func_strcasecmp;
-extern am_function_t am_func_split_line;
-extern am_function_t am_func_merge_line;
-extern am_function_t am_func_dump_hex;
-
-#ifdef __cplusplus
-}
-#endif
-
-#endif
-////////////////////////////////////////////////////////////////////////////////
-// PATH:    function/lua_table.h
-// SIZE:    250
-// SHA-256: 15ebe5c2a1c4f73fb4583243cc74073c00b908f48966f5c967a6e487952cdc7a
-////////////////////////////////////////////////////////////////////////////////
-#line 1 "function/lua_table.h"
-#ifndef __AMALGAMATE_FUNCTION_LUA_TABLE_H__
-#define __AMALGAMATE_FUNCTION_LUA_TABLE_H__
-
-/* AMALGAMATE_DISPLACE: #include "__init__.h" */
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-extern am_function_t am_func_table_is_array;
+/**
+ * @brief Registered builtin functions
+ * @{
+ */
+extern am_function_t am_f_dirname;
+extern am_function_t am_f_dump_hex;
+extern am_function_t am_f_dump_obj;
+extern am_function_t am_f_fmtpath;
+extern am_function_t am_f_is_abspath;
+extern am_function_t am_f_is_file_exist;
+extern am_function_t am_f_load_file;
+extern am_function_t am_f_load_txt_file;
+extern am_function_t am_f_log_i;
+extern am_function_t am_f_merge_line;
+extern am_function_t am_f_search_file;
+extern am_function_t am_f_sha256;
+extern am_function_t am_f_split_line;
+extern am_function_t am_f_strcasecmp;
+extern am_function_t am_f_table_is_array;
+extern am_function_t am_f_write_file;
+/**
+ * @}
+ */
 
 #ifdef __cplusplus
 }
@@ -284,8 +166,8 @@ extern am_function_t am_func_table_is_array;
 #endif
 ////////////////////////////////////////////////////////////////////////////////
 // PATH:    addon/__init__.h
-// SIZE:    486
-// SHA-256: f13acf80301c7cd7bd790336f24c45808e0e0e5ed22cfb9e016faba9e9bc0c0d
+// SIZE:    1149
+// SHA-256: 7b8a45e61ede8c49eb204c4944c9bfeced24f78f573d948bf34d7408081473fc
 ////////////////////////////////////////////////////////////////////////////////
 #line 1 "addon/__init__.h"
 #ifndef __AMALGAMATE_ADDON_INIT_H__
@@ -303,100 +185,45 @@ typedef struct am_addon
     lua_CFunction   open;
 } am_addon_t;
 
+/**
+ * @brief Initialize addons as required mode.
+ */
 void am_addon_init(lua_State* L);
 
+/**
+ * @brief List addons
+ * @param[in] L     Lua VM.
+ * @return          Always 1.
+ */
 int am_addon_list(lua_State* L);
 
+/**
+ * @param[in] Load manual for specific addon.
+ * @param[in] L     Lua VM.
+ * @return          Always 1.
+ */
 int am_addon_manual(lua_State* L);
 
+/**
+ * @brief Call script
+ * @param[in] L         Lua VM.
+ * @param[in] script    Script.
+ * @param[in] name      Script name.
+ * @return Always 1.
+ */
 int am_addon_call_script(lua_State* L, const char* script, const char* name);
 
-#ifdef __cplusplus
-}
-#endif
-
-#endif
-////////////////////////////////////////////////////////////////////////////////
-// PATH:    addon/c_dump_hex.h
-// SIZE:    238
-// SHA-256: a25206702d1848179a573f30ccc29efcd94cd2c5ac790edb3be0d6ab59f8d926
-////////////////////////////////////////////////////////////////////////////////
-#line 1 "addon/c_dump_hex.h"
-#ifndef __AMALGAMATE_ADDON_C_DUMP_HEX_H__
-#define __AMALGAMATE_ADDON_C_DUMP_HEX_H__
-/* AMALGAMATE_DISPLACE: #include "__init__.h" */
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-extern am_addon_t am_addon_c_dump_hex;
-
-#ifdef __cplusplus
-}
-#endif
-
-#endif
-////////////////////////////////////////////////////////////////////////////////
-// PATH:    addon/c_expand_include.h
-// SIZE:    258
-// SHA-256: 8c174b847e8671bd874122679d58f002747c1ed09f8c07b9a219f0941104cc0f
-////////////////////////////////////////////////////////////////////////////////
-#line 1 "addon/c_expand_include.h"
-#ifndef __AMALGAMATE_ADDON_C_EXPAND_INCLUDE_H__
-#define __AMALGAMATE_ADDON_C_EXPAND_INCLUDE_H__
-
-/* AMALGAMATE_DISPLACE: #include "__init__.h" */
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-extern am_addon_t am_addon_c_expand_include;
-
-#ifdef __cplusplus
-}
-#endif
-
-#endif
-////////////////////////////////////////////////////////////////////////////////
-// PATH:    addon/txt_black_hole.h
-// SIZE:    252
-// SHA-256: e61711dbba3028153359a8c337b259a2708e02abd15de16b6cf25221a6d0edbc
-////////////////////////////////////////////////////////////////////////////////
-#line 1 "addon/txt_black_hole.h"
-#ifndef __AMALGAMATE_ADDON_TXT_BLACK_HOLE_H__
-#define __AMALGAMATE_ADDON_TXT_BLACK_HOLE_H__
-
-/* AMALGAMATE_DISPLACE: #include "__init__.h" */
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-extern am_addon_t am_addon_txt_black_hole;
-
-#ifdef __cplusplus
-}
-#endif
-
-#endif
-////////////////////////////////////////////////////////////////////////////////
-// PATH:    addon/txt_pcre2_substitute.h
-// SIZE:    270
-// SHA-256: 1fc65ab28f20fd3bb8664fa06e5c4aa688a847a03b4efa04cdf15f3f29f624eb
-////////////////////////////////////////////////////////////////////////////////
-#line 1 "addon/txt_pcre2_substitute.h"
-#ifndef __AMALGAMATE_ADDON_TXT_PCRE2_SUBSTITUTE_H__
-#define __AMALGAMATE_ADDON_TXT_PCRE2_SUBSTITUTE_H__
-
-/* AMALGAMATE_DISPLACE: #include "__init__.h" */
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-extern am_addon_t am_addon_txt_pcre2_substitute;
+/**
+ * @brief Registered builtin addons
+ * @{
+ */
+extern am_addon_t am_a_c_dump_hex;
+extern am_addon_t am_a_c_expand_include;
+extern am_addon_t am_a_txt_black_hole;
+extern am_addon_t am_a_txt_pcre2_substitute;
+/**
+ * @}
+ */
 
 #ifdef __cplusplus
 }
@@ -451,8 +278,8 @@ int am_preproccess(lua_State* L);
 
 ////////////////////////////////////////////////////////////////////////////////
 // PATH:    amalgamate.c
-// SIZE:    3169
-// SHA-256: 4eeb2f10ef4220e32aab8c59a1c7e254356d262ec5c00943bf06a1024711bae3
+// SIZE:    2667
+// SHA-256: a89d939d2fae8b84839e82851a675515661bd3dda1c48446de08c1d79e055988
 ////////////////////////////////////////////////////////////////////////////////
 #line 1 "amalgamate.c"
 #define LF  "\n"
@@ -461,23 +288,6 @@ const char* amalgamate_script = "\n\n\n\n\n" LF // let's align the line number
 //////////////////////////////////////////////////////////////////////////
 // Script begin
 //////////////////////////////////////////////////////////////////////////
-"-- @brief Dump any value as string" LF
-"-- @param o Any Lua object" LF
-"-- @return A string contains value of object \\p o" LF
-"local function dump(o)" LF
-"    if type(o) == 'table' then" LF
-"        local s = '{ '" LF
-"        for k,v in pairs(o) do" LF
-"            if type(k) ~= 'number' then k = '\"'..k..'\"' end" LF
-"            s = s .. '['..k..'] = ' .. dump(v) .. ','" LF
-"        end" LF
-"        return s .. '} '" LF
-"    else" LF
-"        return tostring(o)" LF
-"    end" LF
-"end" LF
-"am.dump = dump" LF
-LF
 "-- Process data with addon configuration" LF
 "local function process_json_addon(data, config)" LF
 "    config.args = config.args or {}" LF
@@ -489,18 +299,29 @@ LF
 "    return addon.proc(data, config.args)" LF
 "end" LF
 LF
-"-- Process json" LF
-"local function process_json(code, data)" LF
+"-- Process json block" LF
+"local function process_json_block(v)" LF
 "    local cjson = require(\"cjson\")" LF
-"    local config = cjson.from_json(code)" LF
+"    local config = cjson.from_json(v.code)" LF
+"    local data = v.data" LF
 "    if am.table_is_array(config) then" LF
-"        for _, v in ipairs(config) do" LF
-"            data = process_json_addon(data, v)" LF
+"        for _, e in ipairs(config) do" LF
+"            data = process_json_addon(data, e)" LF
 "        end" LF
 "    else" LF
 "        data = process_json_addon(data, config)" LF
 "    end" LF
 "    return data" LF
+"end" LF
+LF
+"-- Process lua block" LF
+"local function process_lua_block(v)" LF
+"    local trunk = load(v.code)" LF
+"    local b,addon = pcall(trunk)" LF
+"    if b ~= true then" LF
+"        error(addon)" LF
+"    end" LF
+"    return addon.proc(v.data, {})" LF
 "end" LF
 LF
 "-- All runtime information" LF
@@ -517,23 +338,16 @@ LF
 "    if v.lang == nil then" LF
 "        -- do nothing" LF
 "    elseif am.strcasecmp(v.lang, \"lua\") == 0 then" LF
-"        local trunk = load(v.code)" LF
-"        local b,addon = pcall(trunk)" LF
-"        if b ~= true then" LF
-"            error(addon)" LF
-"        end" LF
-"        v.data = addon.proc(v.data, {})" LF
-"        if v.data == nil then" LF
-"            v.data = \"\"" LF
-"        end" LF
+"        v.data = process_lua_block(v)" LF
 "    elseif am.strcasecmp(v.lang, \"json\") == 0 then" LF
-"        v.data = process_json(v.code, v.data)" LF
-"        if v.data == nil then" LF
-"            v.data = \"\"" LF
-"        end" LF
+"        v.data = process_json_block(v)" LF
 "    else" LF
 "        local err_msg = \"unknown lang `\" .. v.lang .. \"`.\"" LF
 "        error(err_msg)" LF
+"    end" LF
+LF
+"    if v.data == nil then" LF
+"        v.data = \"\"" LF
 "    end" LF
 "end" LF
 LF
@@ -643,43 +457,31 @@ int am_preproccess(lua_State* L)
 }
 ////////////////////////////////////////////////////////////////////////////////
 // PATH:    function/__init__.c
-// SIZE:    2310
-// SHA-256: 74d573828c9bc63c23f08d6c4c74a6acfa2ca3bbda051815d49062415b6c038a
+// SIZE:    2005
+// SHA-256: e8d4633b7b7344628c24af52801b789bcb90fa1eff04810da36d5d856aba8e41
 ////////////////////////////////////////////////////////////////////////////////
 #line 1 "function/__init__.c"
 /* AMALGAMATE_DISPLACE: #include "__init__.h" */
-/* AMALGAMATE_DISPLACE: #include "lua_file.h" */
-/* AMALGAMATE_DISPLACE: #include "lua_log.h" */
-/* AMALGAMATE_DISPLACE: #include "lua_searchfile.h" */
-/* AMALGAMATE_DISPLACE: #include "lua_sha256.h" */
-/* AMALGAMATE_DISPLACE: #include "lua_string.h" */
-/* AMALGAMATE_DISPLACE: #include "lua_table.h" */
 #include <string.h>
 #include <errno.h>
 
 static am_function_t* am_apis[] = {
-    /* file */
-    &am_func_dirname,
-    &am_func_fmtpath,
-    &am_func_is_abspath,
-    &am_func_is_file_exist,
-    &am_func_load_file,
-    &am_func_load_txt_file,
-    &am_func_write_file,
-    &am_func_append_file,
-    /* log */
-    &am_func_log_i,
-    /* searchfile */
-    &am_func_search_file,
-    /* sha256 */
-    &am_func_sha256,
-    /* string */
-    &am_func_strcasecmp,
-    &am_func_split_line,
-    &am_func_merge_line,
-    &am_func_dump_hex,
-    /* table */
-    &am_func_table_is_array,
+    &am_f_dirname,
+    &am_f_dump_hex,
+    &am_f_dump_obj,
+    &am_f_fmtpath,
+    &am_f_is_abspath,
+    &am_f_is_file_exist,
+    &am_f_load_file,
+    &am_f_load_txt_file,
+    &am_f_log_i,
+    &am_f_merge_line,
+    &am_f_search_file,
+    &am_f_sha256,
+    &am_f_split_line,
+    &am_f_strcasecmp,
+    &am_f_table_is_array,
+    &am_f_write_file,
 };
 
 #if !defined(_MSC_VER)
@@ -700,7 +502,7 @@ int luaopen_am(lua_State* L)
     size_t i;
     for (i = 0; i < ARRAY_SIZE(am_apis); i++)
     {
-        lua_pushcfunction(L, am_apis[i]->func);
+        lua_pushcfunction(L, am_apis[i]->addr);
         lua_setfield(L, -2, am_apis[i]->name);
     }
 
@@ -753,18 +555,324 @@ int am_function_manual(lua_State* L)
     return 0;
 }
 ////////////////////////////////////////////////////////////////////////////////
-// PATH:    function/lua_file.c
-// SIZE:    8994
-// SHA-256: a05d0c6fe7a0130576bb94ef8157ec8dab4a83066c8b2cfb2bad4c07415f59ef
+// PATH:    function/lua_dirname.c
+// SIZE:    864
+// SHA-256: 949469fead3b2455531177f93e7e5bc2f6501fb5979018ec05e33928c68eca04
 ////////////////////////////////////////////////////////////////////////////////
-#line 1 "function/lua_file.c"
-/* AMALGAMATE_DISPLACE: #include "lua_file.h" */
-/* AMALGAMATE_DISPLACE: #include "lua_string.h" */
-#include <stdlib.h>
-#include <errno.h>
-#include <string.h>
+#line 1 "function/lua_dirname.c"
+/* AMALGAMATE_DISPLACE: #include "__init__.h" */
+
+static char* _am_dirname(char* s)
+{
+    size_t i;
+    if (!s || !*s) return ".";
+    i = strlen(s) - 1;
+    for (; s[i] == '/'; i--) if (!i) return "/";
+    for (; s[i] != '/'; i--) if (!i) return ".";
+    for (; s[i] == '/'; i--) if (!i) return "/";
+    s[i + 1] = 0;
+    return s;
+}
+
+static int _lua_dirname(lua_State* L)
+{
+    const char* path = luaL_checkstring(L, 1);
+    char* cpy_path = strdup(path);
+
+    char* name = _am_dirname(cpy_path);
+    lua_pushstring(L, name);
+    free(cpy_path);
+
+    return 1;
+}
+
+am_function_t am_f_dirname = {
+"dirname", _lua_dirname, "string dirname(string s)",
+"Break string `s` into directory component and return it.",
+"dirname() returns the string up to, but not including, the final '/'. If path\n"
+"does not contain a slash, dirname() returns the string \".\"."
+};
+////////////////////////////////////////////////////////////////////////////////
+// PATH:    function/lua_dump_hex.c
+// SIZE:    1831
+// SHA-256: 7c93a08b450368a5b333d6151615de09991084bbc95b38b469cd977824bc79ad
+////////////////////////////////////////////////////////////////////////////////
+#line 1 "function/lua_dump_hex.c"
+/* AMALGAMATE_DISPLACE: #include "__init__.h" */
+
+static char _mmc_ascii_to_char(unsigned char c)
+{
+    if (c >= 32 && c <= 126)
+    {
+        return c;
+    }
+    return '.';
+}
+
+static void mmc_dump_hex(luaL_Buffer* buf, const void* data, size_t size, size_t width)
+{
+    char tmp[64];
+    const unsigned char* pdat = (unsigned char*)data;
+
+    size_t idx_line;
+    for (idx_line = 0; idx_line < size; idx_line += width)
+    {
+        snprintf(tmp, sizeof(tmp), "%p: ", (void*)(uintptr_t)idx_line);
+        luaL_addstring(buf, tmp);
+
+        /* printf hex */
+        size_t idx_colume;
+        for (idx_colume = 0; idx_colume < width; idx_colume++)
+        {
+            const char* postfix = (idx_colume < width - 1) ? "" : "|";
+
+            if (idx_colume + idx_line < size)
+            {
+                snprintf(tmp, sizeof(tmp), "%02x %s", pdat[idx_colume + idx_line], postfix);
+            }
+            else
+            {
+                snprintf(tmp, sizeof(tmp), "   %s", postfix);
+            }
+            luaL_addstring(buf, tmp);
+        }
+        luaL_addchar(buf, ' ');
+        /* printf char */
+        for (idx_colume = 0; (idx_colume < width) && (idx_colume + idx_line < size); idx_colume++)
+        {
+            luaL_addchar(buf, _mmc_ascii_to_char(pdat[idx_colume + idx_line]));
+        }
+        luaL_addchar(buf, '\n');
+    }
+}
+
+static int _am_dump_hex(lua_State* L)
+{
+    size_t data_sz = 0;
+    const char* data = luaL_checklstring(L, 1, &data_sz);
+
+    luaL_Buffer buf;
+    luaL_buffinit(L, &buf);
+    mmc_dump_hex(&buf, data, data_sz, 16);
+    luaL_pushresult(&buf);
+
+    return 1;
+}
+
+am_function_t am_f_dump_hex = {
+"dump_hex", _am_dump_hex, "string dump_hex(string s)",
+"Dump string as hex string.",
+
+"Dump string as hex string with ASCII character shown.\n"
+};
+////////////////////////////////////////////////////////////////////////////////
+// PATH:    function/lua_dump_obj.c
+// SIZE:    1258
+// SHA-256: 65315e330bf767f1763c48cb89ab23379655227b4d9655634ecd6d0ccad92511
+////////////////////////////////////////////////////////////////////////////////
+#line 1 "function/lua_dump_obj.c"
+/* AMALGAMATE_DISPLACE: #include "__init__.h" */
+
+static int _am_dump_obj(lua_State* L)
+{
+    if (lua_type(L, 1) != LUA_TTABLE)
+    {
+        lua_getglobal(L, "tostring");
+        lua_pushvalue(L, 1);
+        lua_call(L, 1, 1);
+        return 1;
+    }
+
+    int sp = lua_gettop(L);
+    lua_pushstring(L, "{ "); // sp+1: return value
+
+    lua_pushnil(L); // sp+2
+    while (lua_next(L, 1) != 0) // sp+3
+    {
+        lua_pushvalue(L, sp + 1);
+        lua_pushstring(L, "[");
+
+        if (lua_type(L, sp + 2) != LUA_TNUMBER)
+        {
+            lua_pushstring(L, "\"");
+            lua_pushvalue(L, sp + 2);
+            lua_pushstring(L, "\"");
+            lua_concat(L, 3);
+        }
+        else
+        {
+            lua_pushvalue(L, sp + 2);
+        }
+        lua_pushstring(L, "] = ");
+
+        lua_pushcfunction(L, _am_dump_obj);
+        lua_pushvalue(L, sp + 3);
+        lua_call(L, 1, 1);
+
+        lua_pushstring(L, ",");
+
+        lua_concat(L, 6);
+        lua_replace(L, sp + 1);
+
+        lua_pop(L, 1);
+    }
+
+    lua_pushstring(L, "} ");
+    lua_concat(L, 2);
+
+    return 1;
+}
+
+am_function_t am_f_dump_obj = {
+"dump_obj",_am_dump_obj, "string dump_obj(object o)",
+"Dump object as string.",
+"Dump object as string."
+};
+////////////////////////////////////////////////////////////////////////////////
+// PATH:    function/lua_fmtpath.c
+// SIZE:    1478
+// SHA-256: 0b0026a1e86e667e0f3d0cb131d74ae80d67b4b28687f63833ba66843998b1f8
+////////////////////////////////////////////////////////////////////////////////
+#line 1 "function/lua_fmtpath.c"
+/* AMALGAMATE_DISPLACE: #include "__init__.h" */
+
+static int _am_fmtpath(lua_State* L)
+{
+    int sp = lua_gettop(L);
+    luaL_checktype(L, 1, LUA_TSTRING);
+
+    const char* delim = "/";
+    if (lua_type(L, 2) == LUA_TSTRING)
+    {
+        delim = lua_tostring(L, 2);
+    }
+
+    /*
+     * ```lua
+     * param_1 = string.gsub(param_1, "\\\\", "/")
+     * ```
+     */
+    lua_getglobal(L, "string"); // sp+1
+    lua_getfield(L, sp + 1, "gsub"); // sp+2
+    lua_pushvalue(L, 1); // sp+3
+    lua_pushstring(L, "\\\\"); // sp+4
+    lua_pushstring(L, "/"); // sp+5
+    lua_call(L, 3, 1); // sp+2
+    lua_replace(L, 1); // sp+1
+
+    /*
+     * ```lua
+     * param_1 = string.gsub(param_1, "/", param_2)
+     * ```
+     */
+    lua_getfield(L, sp + 1, "gsub"); // sp+2
+    lua_pushvalue(L, 1); // sp+3
+    lua_pushstring(L, "/"); // sp+4
+    lua_pushstring(L, delim); // sp+5
+    lua_call(L, 3, 1); // sp+2
+    lua_replace(L, 1); // sp+1
+
+    lua_pop(L, 1);
+    lua_pushvalue(L, 1);
+
+    return 1;
+}
+
+am_function_t am_f_fmtpath = {
+"fmtpath", _am_fmtpath, "string fmtpath(string path[, string delim])",
+"Format path into unified path string.",
+"The first parameter is a string contains the path to format. The second optional\n"
+"parameter is a string decide what the delimiter is, which by default is \"\\n\".\n"
+"\n"
+"EXAMPLE\n"
+"If we have path string \"path/to\\\\foo\\\\bar\", the result of call\n"
+"`fmtpath(path, \"/\")` is:\n"
+"\"path/to/foo/bar\"."
+};
+////////////////////////////////////////////////////////////////////////////////
+// PATH:    function/lua_is_abspath.c
+// SIZE:    713
+// SHA-256: 21d337477d687c9586a968fe778ef49c73190379cb46f3158a15cb9925b970e2
+////////////////////////////////////////////////////////////////////////////////
+#line 1 "function/lua_is_abspath.c"
+/* AMALGAMATE_DISPLACE: #include "__init__.h" */
 
 #define IS_LETTER(c) (((c) >= 'a' && (c) <= 'z') || ((c) >= 'A' && (c) <= 'Z'))
+
+static int _am_is_abspath(lua_State* L)
+{
+    int ret = 0;
+    const char* path = luaL_checkstring(L, 1);
+
+    if (path[0] == '/')
+    {
+        ret = 1;
+        goto finish;
+    }
+    if (IS_LETTER(path[0]) && path[1] == ':' && (path[2] == '/' || path[2] == '\\'))
+    {
+        ret = 1;
+        goto finish;
+    }
+
+finish:
+    lua_pushboolean(L, ret);
+    return 1;
+}
+
+am_function_t am_f_is_abspath = {
+"is_abspath", _am_is_abspath, "boolean is_abspath(string path)",
+"Check if parameter is absolute path.",
+"Check if parameter is absolute path without actually access it."
+};
+////////////////////////////////////////////////////////////////////////////////
+// PATH:    function/lua_is_file_exist.c
+// SIZE:    714
+// SHA-256: b5e027d35098115d29b4941dd71d730b4ef2291186e07079022ab8037db40fc9
+////////////////////////////////////////////////////////////////////////////////
+#line 1 "function/lua_is_file_exist.c"
+/* AMALGAMATE_DISPLACE: #include "__init__.h" */
+#include <stdio.h>
+
+static int _am_is_file_exist(lua_State* L)
+{
+    FILE* file = NULL;
+    const char* path = luaL_checkstring(L, 1);
+
+    int ret = 1;
+#if defined(_WIN32)
+    if (fopen_s(&file, path, "rb") != 0)
+#else
+    if ((file = fopen(path, "rb")) == NULL)
+#endif
+    {
+        ret = 0;
+    }
+
+    if (file != NULL)
+    {
+        fclose(file);
+        file = NULL;
+    }
+
+    lua_pushboolean(L, ret);
+    return 1;
+}
+
+am_function_t am_f_is_file_exist = {
+"is_file_exist", _am_is_file_exist, "boolean is_file_exist(string path)",
+"Check if file is exist.",
+"Check if file is exist, return true if it is, false if not exist or cannot\n"
+"access it."
+};
+////////////////////////////////////////////////////////////////////////////////
+// PATH:    function/lua_load_file.c
+// SIZE:    2355
+// SHA-256: 499f431bf4089ef459b9f52501ae36be5659b33647af5e8fa053a67405610cdf
+////////////////////////////////////////////////////////////////////////////////
+#line 1 "function/lua_load_file.c"
+/* AMALGAMATE_DISPLACE: #include "__init__.h" */
+#include <stdio.h>
 
 typedef struct lua_file
 {
@@ -857,13 +965,20 @@ static int _am_load_file(lua_State* L)
     return _lua_file_load(L, path);
 }
 
-am_function_t am_func_load_file = {
+am_function_t am_f_load_file = {
 "load_file", _am_load_file, "string load_file(string path)",
 "Load whole file as binary mode and return it.",
 "Load whole file as binary mode and return it."
 };
+////////////////////////////////////////////////////////////////////////////////
+// PATH:    function/lua_load_txt_file.c
+// SIZE:    913
+// SHA-256: abc28513bbd0ddbada84dd4104644d82a9c19f5d0c04b7c3e06686f0834e3021
+////////////////////////////////////////////////////////////////////////////////
+#line 1 "function/lua_load_txt_file.c"
+/* AMALGAMATE_DISPLACE: #include "__init__.h" */
 
-static int am_load_txt_file(lua_State* L)
+static int _am_load_txt_file(lua_State* L)
 {
     int sp = lua_gettop(L);
     const char* file_type = "\n";
@@ -873,16 +988,16 @@ static int am_load_txt_file(lua_State* L)
     }
 
     /* Load file */
-    lua_pushcfunction(L, _am_load_file);
+    lua_pushcfunction(L, am_f_load_file.addr);
     lua_pushvalue(L, 1);
     lua_call(L, 1, 1); // sp+1
 
     /* Split line */
-    lua_pushcfunction(L, am_func_split_line.func);
+    lua_pushcfunction(L, am_f_split_line.addr);
     lua_insert(L, sp + 1);
     lua_call(L, 1, 1); // sp+1
 
-    lua_pushcfunction(L, am_func_merge_line.func);
+    lua_pushcfunction(L, am_f_merge_line.addr);
     lua_insert(L, sp + 1);
     lua_pushstring(L, file_type);
     lua_call(L, 2, 1); // sp+1
@@ -890,242 +1005,18 @@ static int am_load_txt_file(lua_State* L)
     return 1;
 }
 
-am_function_t am_func_load_txt_file = {
-"load_txt_file", am_load_txt_file, "string load_txt_file(string path)",
+am_function_t am_f_load_txt_file = {
+"load_txt_file", _am_load_txt_file, "string load_txt_file(string path)",
 "Load while file as txt mode and return it.",
 "Load while file as txt mode and return it. Line endings is always convert to \"\\n\"."
 };
-
-static int _am_is_file_exist(lua_State* L)
-{
-    FILE* file = NULL;
-    const char* path = luaL_checkstring(L, 1);
-
-    int ret = 1;
-#if defined(_WIN32)
-    if (fopen_s(&file, path, "rb") != 0)
-#else
-    if ((file = fopen(path, "rb")) == NULL)
-#endif
-    {
-        ret = 0;
-    }
-
-    if (file != NULL)
-    {
-        fclose(file);
-        file = NULL;
-    }
-
-    lua_pushboolean(L, ret);
-    return 1;
-}
-
-am_function_t am_func_is_file_exist = {
-"is_file_exist", _am_is_file_exist, "boolean is_file_exist(string path)",
-"Check if file is exist.",
-"Check if file is exist, return true if it is, false if not exist or cannot\n"
-"access it."
-};
-
-static char* _am_dirname(char* s)
-{
-    size_t i;
-    if (!s || !*s) return ".";
-    i = strlen(s) - 1;
-    for (; s[i] == '/'; i--) if (!i) return "/";
-    for (; s[i] != '/'; i--) if (!i) return ".";
-    for (; s[i] == '/'; i--) if (!i) return "/";
-    s[i + 1] = 0;
-    return s;
-}
-
-static int _lua_dirname(lua_State* L)
-{
-    const char* path = luaL_checkstring(L, 1);
-    char* cpy_path = strdup(path);
-
-    char* name = _am_dirname(cpy_path);
-    lua_pushstring(L, name);
-    free(cpy_path);
-
-    return 1;
-}
-
-am_function_t am_func_dirname = {
-"dirname", _lua_dirname, "string dirname(string s)",
-"Break string `s` into directory component and return it.",
-"dirname() returns the string up to, but not including, the final '/'. If path\n"
-"does not contain a slash, dirname() returns the string \".\"."
-};
-
-static int _am_fmtpath(lua_State* L)
-{
-    int sp = lua_gettop(L);
-    luaL_checktype(L, 1, LUA_TSTRING);
-
-    const char* delim = "/";
-    if (lua_type(L, 2) == LUA_TSTRING)
-    {
-        delim = lua_tostring(L, 2);
-    }
-
-    /*
-     * ```lua
-     * param_1 = string.gsub(param_1, "\\\\", "/")
-     * ```
-     */
-    lua_getglobal(L, "string"); // sp+1
-    lua_getfield(L, sp + 1, "gsub"); // sp+2
-    lua_pushvalue(L, 1); // sp+3
-    lua_pushstring(L, "\\\\"); // sp+4
-    lua_pushstring(L, "/"); // sp+5
-    lua_call(L, 3, 1); // sp+2
-    lua_replace(L, 1); // sp+1
-
-    /*
-     * ```lua
-     * param_1 = string.gsub(param_1, "/", param_2)
-     * ```
-     */
-    lua_getfield(L, sp + 1, "gsub"); // sp+2
-    lua_pushvalue(L, 1); // sp+3
-    lua_pushstring(L, "/"); // sp+4
-    lua_pushstring(L, delim); // sp+5
-    lua_call(L, 3, 1); // sp+2
-    lua_replace(L, 1); // sp+1
-
-    lua_pop(L, 1);
-    lua_pushvalue(L, 1);
-
-    return 1;
-}
-
-am_function_t am_func_fmtpath = {
-"fmtpath", _am_fmtpath, "string fmtpath(string path[, string delim])",
-"Format path into unified path string.",
-"The first parameter is a string contains the path to format. The second optional\n"
-"parameter is a string decide what the delimiter is, which by default is \"\\n\".\n"
-"\n"
-"EXAMPLE\n"
-"If we have path string \"path/to\\\\foo\\\\bar\", the result of call\n"
-"`fmtpath(path, \"/\")` is:\n"
-"\"path/to/foo/bar\"."
-};
-
-static int _am_file_op(lua_State* L, const char* path, const char* mode,
-    const char* data, size_t data_sz)
-{
-    int ret;
-    int file_need_close = 0;
-    FILE* file = NULL;
-
-    if (strcmp(path, ":stdout") == 0)
-    {
-        file = stdout;
-    }
-    else if (strcmp(path, ":stderr") == 0)
-    {
-        file = stderr;
-    }
-    else
-    {
-        if ((ret = fopen_s(&file, path, mode)) != 0)
-        {
-            char buf[64];
-            strerror_r(ret, buf, sizeof(buf));
-            return luaL_error(L, "open `%s` failed: %s(%d).", path, buf, ret);
-        }
-        file_need_close = 1;
-    }
-
-    size_t write_cnt = fwrite(data, data_sz, 1, file);
-    if (file_need_close)
-    {
-        fclose(file);
-        file = NULL;
-    }
-
-    if (write_cnt != 1)
-    {
-        return luaL_error(L, "write file `%s` failed.", path);
-    }
-
-    return 0;
-}
-
-static int _am_write_file(lua_State* L)
-{
-    const char* path = luaL_checkstring(L, 1);
-
-    size_t data_sz = 0;
-    const char* data = luaL_checklstring(L, 2, &data_sz);
-
-    return _am_file_op(L, path, "wb", data, data_sz);
-}
-
-am_function_t am_func_write_file = {
-"write_file", _am_write_file, "nil write_file(string path, string data)",
-"Write data to file with clear previously data.",
-
-"Open file as binary mode and write data into it.\n"
-"\n"
-"If the file is not exist, the file will be created. If the file is exist, the\n"
-"content of the file is cleared before write."
-};
-
-static int _am_is_abspath(lua_State* L)
-{
-    int ret = 0;
-    const char* path = luaL_checkstring(L, 1);
-
-    if (path[0] == '/')
-    {
-        ret = 1;
-        goto finish;
-    }
-    if (IS_LETTER(path[0]) && path[1] == ':' && (path[2] == '/' || path[2] == '\\'))
-    {
-        ret = 1;
-        goto finish;
-    }
-
-finish:
-    lua_pushboolean(L, ret);
-    return 1;
-}
-
-am_function_t am_func_is_abspath = {
-"is_abspath", _am_is_abspath, "boolean is_abspath(string path)",
-"Check if parameter is absolute path.",
-"Check if parameter is absolute path without actually access it."
-};
-
-static int _am_append_file(lua_State* L)
-{
-    const char* path = luaL_checkstring(L, 1);
-
-    size_t data_sz = 0;
-    const char* data = luaL_checklstring(L, 2, &data_sz);
-
-    return _am_file_op(L, path, "a+b", data, data_sz);
-}
-
-am_function_t am_func_append_file = {
-"append_file", _am_append_file, "nil append_file(string path, string data)",
-"Append data to file.",
-"Open file as binary mode and append data into it.\n"
-"\n"
-"If the file is not exist, the file will be created."
-};
 ////////////////////////////////////////////////////////////////////////////////
-// PATH:    function/lua_log.c
-// SIZE:    1100
-// SHA-256: a8efc8ce26ac5a57b63e837892605cad024115571430d37f531ab55f9c4ea5dc
+// PATH:    function/lua_log_i.c
+// SIZE:    1112
+// SHA-256: 0037ccacefa18bd952b44e52f411abc566a8941764338db439250977a760b7aa
 ////////////////////////////////////////////////////////////////////////////////
-#line 1 "function/lua_log.c"
-/* AMALGAMATE_DISPLACE: #include "lua_log.h" */
-/* AMALGAMATE_DISPLACE: #include "lua_file.h" */
+#line 1 "function/lua_log_i.c"
+/* AMALGAMATE_DISPLACE: #include "__init__.h" */
 #include <string.h>
 
 static int _log_i(lua_State* L)
@@ -1146,7 +1037,7 @@ static int _log_i(lua_State* L)
     lua_getstack(L, 1, &ar);
     lua_getinfo(L, "nSl", &ar);
 
-    lua_pushcfunction(L, am_func_append_file.func); // sp=2
+    lua_pushcfunction(L, am_f_write_file.addr); // sp=2
 
     lua_getglobal(L, "arg"); // sp=3
     lua_getfield(L, -1, "logfile"); //sp=4
@@ -1157,42 +1048,96 @@ static int _log_i(lua_State* L)
     lua_pushstring(L, "\n"); // sp=6
     lua_concat(L, 3); // sp=4
 
-    lua_call(L, 2, 0); // sp=1
+    lua_pushstring(L, "a+b"); // sp+5
+
+    lua_call(L, 3, 0); // sp=1
 
     return 0;
 }
 
-am_function_t am_func_log_i = {
+am_function_t am_f_log_i = {
 "log_i", _log_i, "nil log_i(string data)",
 "Append data into log file.",
 "Append data into log file."
 };
 ////////////////////////////////////////////////////////////////////////////////
-// PATH:    function/lua_searchfile.c
-// SIZE:    3635
-// SHA-256: 711f68bf2509a1951e1b1f54e919e24a6c1d8c5ae80d51967452e23fb08152fc
+// PATH:    function/lua_merge_line.c
+// SIZE:    1121
+// SHA-256: 6e52e32ccb5952d4f6d84d577bbd0c6b7a61aaca0c8f2a90d103240d3f8f9c45
 ////////////////////////////////////////////////////////////////////////////////
-#line 1 "function/lua_searchfile.c"
-/* AMALGAMATE_DISPLACE: #include "lua_searchfile.h" */
-/* AMALGAMATE_DISPLACE: #include "lua_file.h" */
+#line 1 "function/lua_merge_line.c"
+/* AMALGAMATE_DISPLACE: #include "__init__.h" */
+
+static int _am_merge_line(lua_State* L)
+{
+    luaL_checktype(L, 1, LUA_TTABLE);
+    luaL_checktype(L, 2, LUA_TSTRING);
+    lua_settop(L, 2);
+
+    lua_pushstring(L, ""); // sp:3
+
+    lua_pushnil(L); // key:4
+
+    size_t cnt;
+    for (cnt = 0; lua_next(L, 1) != 0; cnt++) // value:5
+    {
+        lua_pushvalue(L, 3); //sp:6
+
+        if (cnt != 0)
+        {
+            lua_pushvalue(L, 2); //sp:7
+        }
+
+        lua_pushvalue(L, 5); //sp:8
+        lua_concat(L, cnt != 0 ? 3 : 2); // sp:6
+        lua_replace(L, 3); // sp:5
+
+        lua_pop(L, 1);
+    }
+
+    return 1;
+}
+
+am_function_t am_f_merge_line = {
+"merge_line", _am_merge_line, "string merge_line(table t[, string token])",
+"Merge array of strings into a large string.",
+
+"Merge array of strings into a large string, with `token` specific combinator.\n"
+"If `token` is not assign, it is treat as `\\n`.\n"
+"\n"
+"EXAMPLE\n"
+"If we have following table:\n"
+"```lua\n"
+"{ [1]=\"hello\", [2]=\" \", [3]=\"world\" }\n"
+"```\n"
+"The result of merge_line() will be:\n"
+"\"hello\\n \\nworld\"."
+};
+////////////////////////////////////////////////////////////////////////////////
+// PATH:    function/lua_search_file.c
+// SIZE:    3875
+// SHA-256: d77e05b493a855cea2dc2f133f9cbe53f91ddf6785122d1941da9e2ce0714b45
+////////////////////////////////////////////////////////////////////////////////
+#line 1 "function/lua_search_file.c"
+/* AMALGAMATE_DISPLACE: #include "__init__.h" */
 
 /**
  * @brief Check if path at \p idx is abspath.
  *
  * The stack is always unchanged.
  *
- * @return	boolean
+ * @return  boolean
  */
 static int _am_search_file_is_abspath(lua_State* L, int idx)
 {
-	lua_pushcfunction(L, am_func_is_abspath.func);
-	lua_pushvalue(L, idx);
-	lua_call(L, 1, 1);
+    lua_pushcfunction(L, am_f_is_abspath.addr);
+    lua_pushvalue(L, idx);
+    lua_call(L, 1, 1);
 
-	int ret = lua_toboolean(L, -1);
-	lua_pop(L, 1);
+    int ret = lua_toboolean(L, -1);
+    lua_pop(L, 1);
 
-	return ret;
+    return ret;
 }
 
 /**
@@ -1200,18 +1145,18 @@ static int _am_search_file_is_abspath(lua_State* L, int idx)
  *
  * The stack is always unchanged.
  *
- * @return	boolean
+ * @return  boolean
  */
 static int _am_search_file_is_exist(lua_State* L, int idx)
 {
-	lua_pushcfunction(L, am_func_is_file_exist.func);
-	lua_pushvalue(L, idx);
-	lua_call(L, 1, 1);
+    lua_pushcfunction(L, am_f_is_file_exist.addr);
+    lua_pushvalue(L, idx);
+    lua_call(L, 1, 1);
 
-	int ret = lua_toboolean(L, -1);
-	lua_pop(L, 1);
+    int ret = lua_toboolean(L, -1);
+    lua_pop(L, 1);
 
-	return ret;
+    return ret;
 }
 
 /**
@@ -1224,20 +1169,20 @@ static int _am_search_file_is_exist(lua_State* L, int idx)
  */
 static int _am_search_file_in_directory(lua_State* L, int idx_dirname, int idx_path)
 {
-	int sp = lua_gettop(L);
+    int sp = lua_gettop(L);
 
-	lua_pushvalue(L, idx_dirname);
-	lua_pushstring(L, "/");
-	lua_pushvalue(L, idx_path);
-	lua_concat(L, 3); // sp+1
+    lua_pushvalue(L, idx_dirname);
+    lua_pushstring(L, "/");
+    lua_pushvalue(L, idx_path);
+    lua_concat(L, 3); // sp+1
 
-	if (_am_search_file_is_exist(L, sp + 1))
-	{
-		return 1;
-	}
+    if (_am_search_file_is_exist(L, sp + 1))
+    {
+        return 1;
+    }
 
-	lua_pop(L, 1);
-	return 0;
+    lua_pop(L, 1);
+    return 0;
 }
 
 /**
@@ -1250,25 +1195,25 @@ static int _am_search_file_in_directory(lua_State* L, int idx_dirname, int idx_p
  */
 static int _am_serach_file_from_current_directory(lua_State* L, int idx)
 {
-	int sp = lua_gettop(L);
+    int sp = lua_gettop(L);
 
-	/* Get dirname from input */
-	lua_pushcfunction(L, am_func_dirname.func); // sp+1
-	lua_getglobal(L, AMALGAMATE_NAMESPACE); // sp+2
-	lua_getfield(L, -1, "config"); // sp+3
-	lua_getfield(L, -1, "input"); // sp+4
-	lua_remove(L, sp + 3); // sp+3
-	lua_remove(L, sp + 2); // sp+2
-	lua_call(L, 1, 1); // sp+1
+    /* Get dirname from input */
+    lua_pushcfunction(L, am_f_dirname.addr); // sp+1
+    lua_getglobal(L, AMALGAMATE_NAMESPACE); // sp+2
+    lua_getfield(L, -1, "config"); // sp+3
+    lua_getfield(L, -1, "input"); // sp+4
+    lua_remove(L, sp + 3); // sp+3
+    lua_remove(L, sp + 2); // sp+2
+    lua_call(L, 1, 1); // sp+1
 
-	if (_am_search_file_in_directory(L, sp + 1, idx))
-	{
-		lua_remove(L, sp + 1);
-		return 1;
-	}
+    if (_am_search_file_in_directory(L, sp + 1, idx))
+    {
+        lua_remove(L, sp + 1);
+        return 1;
+    }
 
-	lua_pop(L, 1);
-	return 0;
+    lua_pop(L, 1);
+    return 0;
 }
 
 /**
@@ -1281,57 +1226,57 @@ static int _am_serach_file_from_current_directory(lua_State* L, int idx)
  */
 static int _am_search_file_from_quote(lua_State* L, int idx)
 {
-	int i;
-	int sp = lua_gettop(L);
+    int i;
+    int sp = lua_gettop(L);
 
-	/* Get iquote table at sp+1 */
-	lua_getglobal(L, AMALGAMATE_NAMESPACE); // sp+1
-	lua_getfield(L, -1, "config"); // sp+2
-	lua_getfield(L, -1, "iquote"); // sp+3
-	lua_remove(L, sp + 2); // sp+2
-	lua_remove(L, sp + 1); // sp+1
+    /* Get iquote table at sp+1 */
+    lua_getglobal(L, AMALGAMATE_NAMESPACE); // sp+1
+    lua_getfield(L, -1, "config"); // sp+2
+    lua_getfield(L, -1, "iquote"); // sp+3
+    lua_remove(L, sp + 2); // sp+2
+    lua_remove(L, sp + 1); // sp+1
 
-	for (i = 1; ; i++)
-	{
-		if (lua_geti(L, sp + 1, i) != LUA_TSTRING)
-		{
-			lua_pop(L, 1);
-			break;
-		}
+    for (i = 1; ; i++)
+    {
+        if (lua_geti(L, sp + 1, i) != LUA_TSTRING)
+        {
+            lua_pop(L, 1);
+            break;
+        }
 
-		if (_am_search_file_in_directory(L, sp + 2, idx))
-		{
-			lua_remove(L, sp + 1);
-			return 1;
-		}
-		lua_pop(L, 1);
-	}
+        if (_am_search_file_in_directory(L, sp + 2, idx))
+        {
+            lua_remove(L, sp + 1);
+            return 1;
+        }
+        lua_pop(L, 1);
+    }
 
-	return 0;
+    return 0;
 }
 
 static int _am_search_file_from_current_and_quote(lua_State* L, int idx)
 {
-	if (_am_serach_file_from_current_directory(L, idx))
-	{
-		return 1;
-	}
+    if (_am_serach_file_from_current_directory(L, idx))
+    {
+        return 1;
+    }
 
-	return _am_search_file_from_quote(L, idx);
+    return _am_search_file_from_quote(L, idx);
 }
 
 static int _am_search_file(lua_State* L)
 {
-	/* Check for abspath */
-	if (_am_search_file_is_abspath(L, 1) == 0)
-	{
-		return _am_search_file_from_current_and_quote(L, 1);
-	}
+    /* Check for abspath */
+    if (_am_search_file_is_abspath(L, 1) == 0)
+    {
+        return _am_search_file_from_current_and_quote(L, 1);
+    }
 
-	return !!_am_search_file_is_exist(L, 1);
+    return !!_am_search_file_is_exist(L, 1);
 }
 
-am_function_t am_func_search_file = {
+am_function_t am_f_search_file = {
 "search_file", _am_search_file, "string search_file(string path)",
 "Search file in current directory and quote directory.",
 "Search file in current directory and quote directory. Return the real path that\n"
@@ -1339,11 +1284,11 @@ am_function_t am_func_search_file = {
 };
 ////////////////////////////////////////////////////////////////////////////////
 // PATH:    function/lua_sha256.c
-// SIZE:    7767
-// SHA-256: de96732437aa84b86deb8f2a01e1909596229387f3c27838a49381294c1fb3e6
+// SIZE:    7762
+// SHA-256: 1b9ffed3e8024a3d6a5346f5d39d5cda87eba33d88611893743b3421b95ae577
 ////////////////////////////////////////////////////////////////////////////////
 #line 1 "function/lua_sha256.c"
-/* AMALGAMATE_DISPLACE: #include "lua_sha256.h" */
+/* AMALGAMATE_DISPLACE: #include "__init__.h" */
 
 /*********************************************************************
 * Filename:   sha256.h
@@ -1558,45 +1503,19 @@ static int _am_sha256(lua_State* L)
     return 1;
 }
 
-am_function_t am_func_sha256 = {
+am_function_t am_f_sha256 = {
 "sha256", _am_sha256, "string sha256(string s)",
 "Calcualte SHA-256.",
 
 "Calcualte SHA256 of `s` and return it's string value."
 };
 ////////////////////////////////////////////////////////////////////////////////
-// PATH:    function/lua_string.c
-// SIZE:    5490
-// SHA-256: ba69319ad11de75e9db8deb12d6f9df460108ccdd9f873178f30ce56fb1c37ba
+// PATH:    function/lua_split_line.c
+// SIZE:    1783
+// SHA-256: a28d60008fc3a823a748a38c308c8e331afd96a5ea09872264a62eb896ad7660
 ////////////////////////////////////////////////////////////////////////////////
-#line 1 "function/lua_string.c"
-/* AMALGAMATE_DISPLACE: #include "lua_string.h" */
-#include <string.h>
-
-#if defined(_WIN32)
-#   define strcasecmp(s1, s2) _stricmp(s1, s2)
-#endif
-
-static int _am_strcasecmp(lua_State* L)
-{
-    const char* s1 = luaL_checkstring(L, 1);
-    const char* s2 = luaL_checkstring(L, 2);
-
-    int ret = strcasecmp(s1, s2);
-    lua_pushnumber(L, ret);
-
-    return 1;
-}
-
-am_function_t am_func_strcasecmp = {
-"strcasecmp", _am_strcasecmp, "number strcasecmp(string s1, string s2)",
-"Compare string ignoring the case of the characters.",
-
-"The strcasecmp() function performs a byte-by-byte comparison of the strings `s1`\n"
-"and `s2`, ignoring the case of the characters. It returns an integer less than,\n"
-"equal to, or greater than zero if `s1` is found, respectively, to be less than,\n"
-"to match, or be greater than `s2`."
-};
+#line 1 "function/lua_split_line.c"
+/* AMALGAMATE_DISPLACE: #include "__init__.h" */
 
 static int _am_split_line(lua_State* L)
 {
@@ -1656,7 +1575,7 @@ static int _am_split_line(lua_State* L)
     return 1;
 }
 
-am_function_t am_func_split_line = {
+am_function_t am_f_split_line = {
 "split_line", _am_split_line, "table split_line(string s)",
 "Split string into array.",
 
@@ -1664,125 +1583,46 @@ am_function_t am_func_split_line = {
 "take care of different endings like `\\r`, `\\n` or `\\r\\n`. Empty line is not\n"
 "ignored."
 };
+////////////////////////////////////////////////////////////////////////////////
+// PATH:    function/lua_strcasecmp.c
+// SIZE:    814
+// SHA-256: eda786d14f01a79d3cb8c1af61fc2a14b230da7d1388b61be9aa5461f817fc2d
+////////////////////////////////////////////////////////////////////////////////
+#line 1 "function/lua_strcasecmp.c"
+/* AMALGAMATE_DISPLACE: #include "__init__.h" */
+#include <string.h>
 
-static int _am_merge_line(lua_State* L)
+#if defined(_WIN32)
+#   define strcasecmp(s1, s2) _stricmp(s1, s2)
+#endif
+
+static int _am_strcasecmp(lua_State* L)
 {
-    luaL_checktype(L, 1, LUA_TTABLE);
-    luaL_checktype(L, 2, LUA_TSTRING);
-    lua_settop(L, 2);
+    const char* s1 = luaL_checkstring(L, 1);
+    const char* s2 = luaL_checkstring(L, 2);
 
-    lua_pushstring(L, ""); // sp:3
-
-    lua_pushnil(L); // key:4
-
-    size_t cnt;
-    for (cnt = 0; lua_next(L, 1) != 0; cnt++) // value:5
-    {
-        lua_pushvalue(L, 3); //sp:6
-
-        if (cnt != 0)
-        {
-            lua_pushvalue(L, 2); //sp:7
-        }
-
-        lua_pushvalue(L, 5); //sp:8
-        lua_concat(L, cnt != 0 ? 3 : 2); // sp:6
-        lua_replace(L, 3); // sp:5
-
-        lua_pop(L, 1);
-    }
+    int ret = strcasecmp(s1, s2);
+    lua_pushnumber(L, ret);
 
     return 1;
 }
 
-am_function_t am_func_merge_line = {
-"merge_line", _am_merge_line, "string merge_line(table t[, string token])",
-"Merge array of strings into a large string.",
+am_function_t am_f_strcasecmp = {
+"strcasecmp", _am_strcasecmp, "number strcasecmp(string s1, string s2)",
+"Compare string ignoring the case of the characters.",
 
-"Merge array of strings into a large string, with `token` specific combinator.\n"
-"If `token` is not assign, it is treat as `\\n`.\n"
-"\n"
-"EXAMPLE\n"
-"If we have following table:\n"
-"```lua\n"
-"{ [1]=\"hello\", [2]=\" \", [3]=\"world\" }\n"
-"```\n"
-"The result of merge_line() will be:\n"
-"\"hello\\n \\nworld\"."
-};
-
-static char _mmc_ascii_to_char(unsigned char c)
-{
-    if (c >= 32 && c <= 126)
-    {
-        return c;
-    }
-    return '.';
-}
-
-static void mmc_dump_hex(luaL_Buffer* buf, const void* data, size_t size, size_t width)
-{
-    char tmp[64];
-    const unsigned char* pdat = (unsigned char*)data;
-
-    size_t idx_line;
-    for (idx_line = 0; idx_line < size; idx_line += width)
-    {
-        snprintf(tmp, sizeof(tmp), "%p: ", (void*)(uintptr_t)idx_line);
-        luaL_addstring(buf, tmp);
-
-        /* printf hex */
-        size_t idx_colume;
-        for (idx_colume = 0; idx_colume < width; idx_colume++)
-        {
-            const char* postfix = (idx_colume < width - 1) ? "" : "|";
-
-            if (idx_colume + idx_line < size)
-            {
-                snprintf(tmp, sizeof(tmp), "%02x %s", pdat[idx_colume + idx_line], postfix);
-            }
-            else
-            {
-                snprintf(tmp, sizeof(tmp), "   %s", postfix);
-            }
-            luaL_addstring(buf, tmp);
-        }
-        luaL_addchar(buf, ' ');
-        /* printf char */
-        for (idx_colume = 0; (idx_colume < width) && (idx_colume + idx_line < size); idx_colume++)
-        {
-            luaL_addchar(buf, _mmc_ascii_to_char(pdat[idx_colume + idx_line]));
-        }
-        luaL_addchar(buf, '\n');
-    }
-}
-
-static int _am_dumphex(lua_State* L)
-{
-    size_t data_sz = 0;
-    const char* data = luaL_checklstring(L, 1, &data_sz);
-
-    luaL_Buffer buf;
-    luaL_buffinit(L, &buf);
-    mmc_dump_hex(&buf, data, data_sz, 16);
-    luaL_pushresult(&buf);
-
-    return 1;
-}
-
-am_function_t am_func_dump_hex = {
-"dumphex", _am_dumphex, "string dumphex(string s)",
-"Dump string as hex string.",
-
-"Dump string as hex string with ASCII character shown.\n"
+"The strcasecmp() function performs a byte-by-byte comparison of the strings `s1`\n"
+"and `s2`, ignoring the case of the characters. It returns an integer less than,\n"
+"equal to, or greater than zero if `s1` is found, respectively, to be less than,\n"
+"to match, or be greater than `s2`."
 };
 ////////////////////////////////////////////////////////////////////////////////
-// PATH:    function/lua_table.c
-// SIZE:    471
-// SHA-256: 46ce57273620de44c36345d0a85c5590873e1ba0748bf27282f43d8c342d9f4e
+// PATH:    function/lua_table_is_array.c
+// SIZE:    467
+// SHA-256: 3cc019095e3cf941e406a22c318cd5e3426a17092a197042daa512d9f4c3f587
 ////////////////////////////////////////////////////////////////////////////////
-#line 1 "function/lua_table.c"
-/* AMALGAMATE_DISPLACE: #include "lua_table.h" */
+#line 1 "function/lua_table_is_array.c"
+/* AMALGAMATE_DISPLACE: #include "__init__.h" */
 
 static int am_table_is_array(lua_State* L)
 {
@@ -1799,30 +1639,100 @@ static int am_table_is_array(lua_State* L)
     return 1;
 }
 
-am_function_t am_func_table_is_array = {
+am_function_t am_f_table_is_array = {
 "table_is_array", am_table_is_array, "boolean table_is_array(table t)",
 "Check if a Lua table is array.",
 
 "Check if parameter `t` is an array."
 };
 ////////////////////////////////////////////////////////////////////////////////
+// PATH:    function/lua_write_file.c
+// SIZE:    1546
+// SHA-256: 53ed29e955f19651017d3f66a9cd0bc8d5dd1ff0c4e060796420762d98aa11d3
+////////////////////////////////////////////////////////////////////////////////
+#line 1 "function/lua_write_file.c"
+/* AMALGAMATE_DISPLACE: #include "__init__.h" */
+#include <stdio.h>
+
+static int _am_file_op(lua_State* L, const char* path, const char* mode,
+    const char* data, size_t data_sz)
+{
+    int ret;
+    int file_need_close = 0;
+    FILE* file = NULL;
+
+    if (strcmp(path, ":stdout") == 0)
+    {
+        file = stdout;
+    }
+    else if (strcmp(path, ":stderr") == 0)
+    {
+        file = stderr;
+    }
+    else
+    {
+        if ((ret = fopen_s(&file, path, mode)) != 0)
+        {
+            char buf[64];
+            strerror_r(ret, buf, sizeof(buf));
+            return luaL_error(L, "open `%s` failed: %s(%d).", path, buf, ret);
+        }
+        file_need_close = 1;
+    }
+
+    size_t write_cnt = fwrite(data, data_sz, 1, file);
+    if (file_need_close)
+    {
+        fclose(file);
+        file = NULL;
+    }
+
+    if (write_cnt != 1)
+    {
+        return luaL_error(L, "write file `%s` failed.", path);
+    }
+
+    return 0;
+}
+
+static int _am_write_file(lua_State* L)
+{
+    const char* path = luaL_checkstring(L, 1);
+
+    size_t data_sz = 0;
+    const char* data = luaL_checklstring(L, 2, &data_sz);
+
+    const char* mode = "wb";
+    if (lua_type(L, 3) == LUA_TSTRING)
+    {
+        mode = lua_tostring(L, 3);
+    }
+
+    return _am_file_op(L, path, mode, data, data_sz);
+}
+
+am_function_t am_f_write_file = {
+"write_file", _am_write_file, "nil write_file(string path, string data[, string mode])",
+"Write data to file.",
+
+"Open file and write data into it.\n"
+"\n"
+"By default `mode` is set to \"wb\"."
+};
+////////////////////////////////////////////////////////////////////////////////
 // PATH:    addon/__init__.c
-// SIZE:    3397
-// SHA-256: 0e617800319b14a6ab821a8ae9d07e5acfc6e73a15a642c185e003a56fcfa7a8
+// SIZE:    3261
+// SHA-256: d4e16a4e6b7f855172cefc54dbbc3f2df5219d2f37abd967b153e8085cbb35b4
 ////////////////////////////////////////////////////////////////////////////////
 #line 1 "addon/__init__.c"
 /* AMALGAMATE_DISPLACE: #include "__init__.h" */
-/* AMALGAMATE_DISPLACE: #include "c_dump_hex.h" */
-/* AMALGAMATE_DISPLACE: #include "c_expand_include.h" */
-/* AMALGAMATE_DISPLACE: #include "txt_black_hole.h" */
-/* AMALGAMATE_DISPLACE: #include "txt_pcre2_substitute.h" */
 #include <string.h>
 
 static am_addon_t* s_addon_list[] = {
-    &am_addon_c_dump_hex,
-    &am_addon_c_expand_include,
-    &am_addon_txt_black_hole,
-    &am_addon_txt_pcre2_substitute,
+    &am_a_c_dump_hex,
+    &am_a_c_expand_include,
+    &am_a_txt_black_hole,
+    &am_a_txt_pcre2_substitute,
 };
 
 typedef void (*am_addon_load_cb)(lua_State* L, const char* name, int idx, void* arg);
@@ -1957,8 +1867,8 @@ int am_addon_call_script(lua_State* L, const char* script, const char* name)
 }
 ////////////////////////////////////////////////////////////////////////////////
 // PATH:    addon/c_dump_hex.c
-// SIZE:    3077
-// SHA-256: 012b2dd60f83d0600f5543fcf85b51db483dac3010534f137e557be9e88d17c1
+// SIZE:    3071
+// SHA-256: a93680e0147ce5972ffe17bd3dd29a43e8bc57a50283f6e6c9d1ffa59e80c426
 ////////////////////////////////////////////////////////////////////////////////
 #line 1 "addon/c_dump_hex.c"
 #define LF "\n"
@@ -2048,21 +1958,21 @@ LF
 "}" LF
 ;
 
-/* AMALGAMATE_DISPLACE: #include "c_dump_hex.h" */
+/* AMALGAMATE_DISPLACE: #include "__init__.h" */
 
 static int _am_c_dump_hex(lua_State* L)
 {
 	return am_addon_call_script(L, dump_hex_script, "c:dump_hex.lua");
 }
 
-am_addon_t am_addon_c_dump_hex = {
+am_addon_t am_a_c_dump_hex = {
 	"c:dump_hex",
 	_am_c_dump_hex,
 };
 ////////////////////////////////////////////////////////////////////////////////
 // PATH:    addon/c_expand_include.c
-// SIZE:    4647
-// SHA-256: de42405b9423860c77e91b22e65098f4807c796f2d4776ce4139c295b2f3fe08
+// SIZE:    4635
+// SHA-256: 82ec8d442f5be4484199859b6ac5a9748ff18ddb20065ae71539820a47fde922
 ////////////////////////////////////////////////////////////////////////////////
 #line 1 "addon/c_expand_include.c"
 #define LF  "\n"
@@ -2192,21 +2102,21 @@ LF
 "}" LF
 ;
 
-/* AMALGAMATE_DISPLACE: #include "c_expand_include.h" */
+/* AMALGAMATE_DISPLACE: #include "__init__.h" */
 
 static int _am_c_expand_include(lua_State* L)
 {
     return am_addon_call_script(L, expand_include_script, "c:expand_include.lua");
 }
 
-am_addon_t am_addon_c_expand_include = {
+am_addon_t am_a_c_expand_include = {
     "c:expand_include",
     _am_c_expand_include,
 };
 ////////////////////////////////////////////////////////////////////////////////
 // PATH:    addon/txt_black_hole.c
-// SIZE:    597
-// SHA-256: f20a2ea704bb81a7265eacbefd83e2e3dd25662b66ebea58d8e55bf4ea14f5c4
+// SIZE:    587
+// SHA-256: b81ee2ebaf920f049b11b24d56361efa3b9016d63bb6d29051477a004f10c6df
 ////////////////////////////////////////////////////////////////////////////////
 #line 1 "addon/txt_black_hole.c"
 #define LF "\n"
@@ -2227,21 +2137,21 @@ LF
 "}" LF
 ;
 
-/* AMALGAMATE_DISPLACE: #include "txt_black_hole.h" */
+/* AMALGAMATE_DISPLACE: #include "__init__.h" */
 
 static int _am_txt_black_hole(lua_State* L)
 {
     return am_addon_call_script(L, black_hole_script, "txt:black_hole.lua");
 }
 
-am_addon_t am_addon_txt_black_hole = {
+am_addon_t am_a_txt_black_hole = {
     "txt:black_hole",
     _am_txt_black_hole,
 };
 ////////////////////////////////////////////////////////////////////////////////
 // PATH:    addon/txt_pcre2_substitute.c
-// SIZE:    1293
-// SHA-256: 40348bbccadbc291154da35738d013032fb08a3f759b9b78a7b3cc62a122e4fb
+// SIZE:    1277
+// SHA-256: a13259c471ffb7664b749bc6a40f330d3b6e851f0dedddeb9abb15e8c5539f60
 ////////////////////////////////////////////////////////////////////////////////
 #line 1 "addon/txt_pcre2_substitute.c"
 #define LF "\n"
@@ -2277,14 +2187,14 @@ LF
 "}" LF
 ;
 
-/* AMALGAMATE_DISPLACE: #include "txt_pcre2_substitute.h" */
+/* AMALGAMATE_DISPLACE: #include "__init__.h" */
 
 static int _am_txt_pcre2_substitute(lua_State* L)
 {
     return am_addon_call_script(L, pcre2_substitute_script, "txt:pcre2_substitute.lua");
 }
 
-am_addon_t am_addon_txt_pcre2_substitute = {
+am_addon_t am_a_txt_pcre2_substitute = {
     "txt:pcre2_substitute",
     _am_txt_pcre2_substitute,
 };
@@ -2349,7 +2259,7 @@ static const char* s_help =
 
 static int _setup_arg_output(lua_State* L, int idx, char* str)
 {
-    lua_pushcfunction(L, am_func_fmtpath.func);
+    lua_pushcfunction(L, am_f_fmtpath.addr);
     lua_pushstring(L, str);
     lua_call(L, 1, 1);
     lua_setfield(L, idx, "output");
@@ -2359,7 +2269,7 @@ static int _setup_arg_output(lua_State* L, int idx, char* str)
 static int _setup_arg_input(lua_State* L, int idx, char* str)
 {
     /* Save input file path */
-    lua_pushcfunction(L, am_func_fmtpath.func);
+    lua_pushcfunction(L, am_f_fmtpath.addr);
     lua_pushstring(L, str);
     lua_call(L, 1, 1);
     lua_setfield(L, idx, "input");

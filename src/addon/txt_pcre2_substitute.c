@@ -31,14 +31,14 @@ LF
 "}" LF
 ;
 
-#include "txt_pcre2_substitute.h"
+#include "__init__.h"
 
 static int _am_txt_pcre2_substitute(lua_State* L)
 {
     return am_addon_call_script(L, pcre2_substitute_script, "txt:pcre2_substitute.lua");
 }
 
-am_addon_t am_addon_txt_pcre2_substitute = {
+am_addon_t am_a_txt_pcre2_substitute = {
     "txt:pcre2_substitute",
     _am_txt_pcre2_substitute,
 };

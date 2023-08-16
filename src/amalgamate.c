@@ -4,23 +4,6 @@ const char* amalgamate_script = "\n\n\n\n\n" LF // let's align the line number
 //////////////////////////////////////////////////////////////////////////
 // Script begin
 //////////////////////////////////////////////////////////////////////////
-"-- @brief Dump any value as string" LF
-"-- @param o Any Lua object" LF
-"-- @return A string contains value of object \\p o" LF
-"local function dump(o)" LF
-"    if type(o) == 'table' then" LF
-"        local s = '{ '" LF
-"        for k,v in pairs(o) do" LF
-"            if type(k) ~= 'number' then k = '\"'..k..'\"' end" LF
-"            s = s .. '['..k..'] = ' .. dump(v) .. ','" LF
-"        end" LF
-"        return s .. '} '" LF
-"    else" LF
-"        return tostring(o)" LF
-"    end" LF
-"end" LF
-"am.dump = dump" LF
-LF
 "-- Process data with addon configuration" LF
 "local function process_json_addon(data, config)" LF
 "    config.args = config.args or {}" LF
@@ -32,18 +15,29 @@ LF
 "    return addon.proc(data, config.args)" LF
 "end" LF
 LF
-"-- Process json" LF
-"local function process_json(code, data)" LF
+"-- Process json block" LF
+"local function process_json_block(v)" LF
 "    local cjson = require(\"cjson\")" LF
-"    local config = cjson.from_json(code)" LF
+"    local config = cjson.from_json(v.code)" LF
+"    local data = v.data" LF
 "    if am.table_is_array(config) then" LF
-"        for _, v in ipairs(config) do" LF
-"            data = process_json_addon(data, v)" LF
+"        for _, e in ipairs(config) do" LF
+"            data = process_json_addon(data, e)" LF
 "        end" LF
 "    else" LF
 "        data = process_json_addon(data, config)" LF
 "    end" LF
 "    return data" LF
+"end" LF
+LF
+"-- Process lua block" LF
+"local function process_lua_block(v)" LF
+"    local trunk = load(v.code)" LF
+"    local b,addon = pcall(trunk)" LF
+"    if b ~= true then" LF
+"        error(addon)" LF
+"    end" LF
+"    return addon.proc(v.data, {})" LF
 "end" LF
 LF
 "-- All runtime information" LF
@@ -60,23 +54,16 @@ LF
 "    if v.lang == nil then" LF
 "        -- do nothing" LF
 "    elseif am.strcasecmp(v.lang, \"lua\") == 0 then" LF
-"        local trunk = load(v.code)" LF
-"        local b,addon = pcall(trunk)" LF
-"        if b ~= true then" LF
-"            error(addon)" LF
-"        end" LF
-"        v.data = addon.proc(v.data, {})" LF
-"        if v.data == nil then" LF
-"            v.data = \"\"" LF
-"        end" LF
+"        v.data = process_lua_block(v)" LF
 "    elseif am.strcasecmp(v.lang, \"json\") == 0 then" LF
-"        v.data = process_json(v.code, v.data)" LF
-"        if v.data == nil then" LF
-"            v.data = \"\"" LF
-"        end" LF
+"        v.data = process_json_block(v)" LF
 "    else" LF
 "        local err_msg = \"unknown lang `\" .. v.lang .. \"`.\"" LF
 "        error(err_msg)" LF
+"    end" LF
+LF
+"    if v.data == nil then" LF
+"        v.data = \"\"" LF
 "    end" LF
 "end" LF
 LF

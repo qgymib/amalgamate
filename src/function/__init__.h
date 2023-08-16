@@ -35,7 +35,7 @@ int fopen_s(FILE** pFile, const char* filename, const char* mode);
 typedef struct am_function
 {
     const char*     name;
-    lua_CFunction   func;
+    lua_CFunction   addr;
     const char*     proto;
     const char*     brief;
     const char*     document;
@@ -61,6 +61,30 @@ int am_list_function(lua_State* L);
  * @return          1 if found, or 0 if not found.
  */
 int am_function_manual(lua_State* L);
+
+/**
+ * @brief Registered builtin functions
+ * @{
+ */
+extern am_function_t am_f_dirname;
+extern am_function_t am_f_dump_hex;
+extern am_function_t am_f_dump_obj;
+extern am_function_t am_f_fmtpath;
+extern am_function_t am_f_is_abspath;
+extern am_function_t am_f_is_file_exist;
+extern am_function_t am_f_load_file;
+extern am_function_t am_f_load_txt_file;
+extern am_function_t am_f_log_i;
+extern am_function_t am_f_merge_line;
+extern am_function_t am_f_search_file;
+extern am_function_t am_f_sha256;
+extern am_function_t am_f_split_line;
+extern am_function_t am_f_strcasecmp;
+extern am_function_t am_f_table_is_array;
+extern am_function_t am_f_write_file;
+/**
+ * @}
+ */
 
 #ifdef __cplusplus
 }

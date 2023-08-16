@@ -1,5 +1,4 @@
-#include "lua_searchfile.h"
-#include "lua_file.h"
+#include "__init__.h"
 
 /**
  * @brief Check if path at \p idx is abspath.
@@ -10,7 +9,7 @@
  */
 static int _am_search_file_is_abspath(lua_State* L, int idx)
 {
-    lua_pushcfunction(L, am_func_is_abspath.func);
+    lua_pushcfunction(L, am_f_is_abspath.addr);
     lua_pushvalue(L, idx);
     lua_call(L, 1, 1);
 
@@ -29,7 +28,7 @@ static int _am_search_file_is_abspath(lua_State* L, int idx)
  */
 static int _am_search_file_is_exist(lua_State* L, int idx)
 {
-    lua_pushcfunction(L, am_func_is_file_exist.func);
+    lua_pushcfunction(L, am_f_is_file_exist.addr);
     lua_pushvalue(L, idx);
     lua_call(L, 1, 1);
 
@@ -78,7 +77,7 @@ static int _am_serach_file_from_current_directory(lua_State* L, int idx)
     int sp = lua_gettop(L);
 
     /* Get dirname from input */
-    lua_pushcfunction(L, am_func_dirname.func); // sp+1
+    lua_pushcfunction(L, am_f_dirname.addr); // sp+1
     lua_getglobal(L, AMALGAMATE_NAMESPACE); // sp+2
     lua_getfield(L, -1, "config"); // sp+3
     lua_getfield(L, -1, "input"); // sp+4
@@ -156,7 +155,7 @@ static int _am_search_file(lua_State* L)
     return !!_am_search_file_is_exist(L, 1);
 }
 
-am_function_t am_func_search_file = {
+am_function_t am_f_search_file = {
 "search_file", _am_search_file, "string search_file(string path)",
 "Search file in current directory and quote directory.",
 "Search file in current directory and quote directory. Return the real path that\n"

@@ -30,17 +30,7 @@
  */
 #include "config.h"
 #include "function/__init__.h"
-#include "function/lua_file.h"
-#include "function/lua_log.h"
-#include "function/lua_searchfile.h"
-#include "function/lua_sha256.h"
-#include "function/lua_string.h"
-#include "function/lua_table.h"
 #include "addon/__init__.h"
-#include "addon/c_dump_hex.h"
-#include "addon/c_expand_include.h"
-#include "addon/txt_black_hole.h"
-#include "addon/txt_pcre2_substitute.h"
 #include "amalgamate.h"
 #include "preproccess.h"
 /**
@@ -59,12 +49,22 @@
 #include "amalgamate.c"
 #include "preproccess.c"
 #include "function/__init__.c"
-#include "function/lua_file.c"
-#include "function/lua_log.c"
-#include "function/lua_searchfile.c"
+#include "function/lua_dirname.c"
+#include "function/lua_dump_hex.c"
+#include "function/lua_dump_obj.c"
+#include "function/lua_fmtpath.c"
+#include "function/lua_is_abspath.c"
+#include "function/lua_is_file_exist.c"
+#include "function/lua_load_file.c"
+#include "function/lua_load_txt_file.c"
+#include "function/lua_log_i.c"
+#include "function/lua_merge_line.c"
+#include "function/lua_search_file.c"
 #include "function/lua_sha256.c"
-#include "function/lua_string.c"
-#include "function/lua_table.c"
+#include "function/lua_split_line.c"
+#include "function/lua_strcasecmp.c"
+#include "function/lua_table_is_array.c"
+#include "function/lua_write_file.c"
 #include "addon/__init__.c"
 #include "addon/c_dump_hex.c"
 #include "addon/c_expand_include.c"
@@ -133,7 +133,7 @@ static const char* s_help =
 
 static int _setup_arg_output(lua_State* L, int idx, char* str)
 {
-    lua_pushcfunction(L, am_func_fmtpath.func);
+    lua_pushcfunction(L, am_f_fmtpath.addr);
     lua_pushstring(L, str);
     lua_call(L, 1, 1);
     lua_setfield(L, idx, "output");
@@ -143,7 +143,7 @@ static int _setup_arg_output(lua_State* L, int idx, char* str)
 static int _setup_arg_input(lua_State* L, int idx, char* str)
 {
     /* Save input file path */
-    lua_pushcfunction(L, am_func_fmtpath.func);
+    lua_pushcfunction(L, am_f_fmtpath.addr);
     lua_pushstring(L, str);
     lua_call(L, 1, 1);
     lua_setfield(L, idx, "input");

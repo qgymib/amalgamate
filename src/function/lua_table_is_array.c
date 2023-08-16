@@ -1,4 +1,4 @@
-#include "lua_table.h"
+#include "__init__.h"
 
 static int am_table_is_array(lua_State* L)
 {
@@ -15,7 +15,7 @@ static int am_table_is_array(lua_State* L)
     return 1;
 }
 
-am_function_t am_func_table_is_array = {
+am_function_t am_f_table_is_array = {
 "table_is_array", am_table_is_array, "boolean table_is_array(table t)",
 "Check if a Lua table is array.",
 

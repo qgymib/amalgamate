@@ -1,36 +1,24 @@
 #include "__init__.h"
-#include "lua_file.h"
-#include "lua_log.h"
-#include "lua_searchfile.h"
-#include "lua_sha256.h"
-#include "lua_string.h"
-#include "lua_table.h"
 #include <string.h>
 #include <errno.h>
 
 static am_function_t* am_apis[] = {
-    /* file */
-    &am_func_dirname,
-    &am_func_fmtpath,
-    &am_func_is_abspath,
-    &am_func_is_file_exist,
-    &am_func_load_file,
-    &am_func_load_txt_file,
-    &am_func_write_file,
-    &am_func_append_file,
-    /* log */
-    &am_func_log_i,
-    /* searchfile */
-    &am_func_search_file,
-    /* sha256 */
-    &am_func_sha256,
-    /* string */
-    &am_func_strcasecmp,
-    &am_func_split_line,
-    &am_func_merge_line,
-    &am_func_dump_hex,
-    /* table */
-    &am_func_table_is_array,
+    &am_f_dirname,
+    &am_f_dump_hex,
+    &am_f_dump_obj,
+    &am_f_fmtpath,
+    &am_f_is_abspath,
+    &am_f_is_file_exist,
+    &am_f_load_file,
+    &am_f_load_txt_file,
+    &am_f_log_i,
+    &am_f_merge_line,
+    &am_f_search_file,
+    &am_f_sha256,
+    &am_f_split_line,
+    &am_f_strcasecmp,
+    &am_f_table_is_array,
+    &am_f_write_file,
 };
 
 #if !defined(_MSC_VER)
@@ -51,7 +39,7 @@ int luaopen_am(lua_State* L)
     size_t i;
     for (i = 0; i < ARRAY_SIZE(am_apis); i++)
     {
-        lua_pushcfunction(L, am_apis[i]->func);
+        lua_pushcfunction(L, am_apis[i]->addr);
         lua_setfield(L, -2, am_apis[i]->name);
     }
 

@@ -125,14 +125,14 @@ LF
 "}" LF
 ;
 
-#include "c_expand_include.h"
+#include "__init__.h"
 
 static int _am_c_expand_include(lua_State* L)
 {
     return am_addon_call_script(L, expand_include_script, "c:expand_include.lua");
 }
 
-am_addon_t am_addon_c_expand_include = {
+am_addon_t am_a_c_expand_include = {
     "c:expand_include",
     _am_c_expand_include,
 };
