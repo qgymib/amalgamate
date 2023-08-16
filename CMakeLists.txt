@@ -43,11 +43,6 @@ target_link_libraries(${PROJECT_NAME} PRIVATE cJSON)
 include(third_party/cjson.lua.cmake)
 target_link_libraries(${PROJECT_NAME} PRIVATE cjson.lua)
 
-# lua_pcre2
-include(third_party/pcre2.cmake)
-include(third_party/pcre2.lua.cmake)
-target_link_libraries(${PROJECT_NAME} PRIVATE pcre2.lua)
-
 ###############################################################################
 # Amalgamate
 ###############################################################################
@@ -67,7 +62,6 @@ setup_target_wall(${PROJECT_NAME}_all)
 target_link_libraries(${PROJECT_NAME}_all PRIVATE lua54)
 target_link_libraries(${PROJECT_NAME}_all PRIVATE cJSON)
 target_link_libraries(${PROJECT_NAME}_all PRIVATE cjson.lua)
-target_link_libraries(${PROJECT_NAME}_all PRIVATE pcre2.lua)
 
 ###############################################################################
 # Test

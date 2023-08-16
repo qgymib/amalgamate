@@ -21,13 +21,12 @@
 //////////////////////////////////////////////////////////////////////////
 // User header
 //////////////////////////////////////////////////////////////////////////
-#include "pcre2.lua.h"
 
 /*
  * ADDON:   c:expand_include
  * PATH:    config.h
- * SIZE:    908
- * SHA-256: 219905d60d6468fa83266bf4b24d2c6f981c17d697869ed6de7cd481e6b8203a
+ * SIZE:    906
+ * SHA-256: 0b01319bb336beeb09082fc70201af1d25663aa327d1ca72e6142d1862564e26
  */
 /* AMALGAMATE c:expand_include config.h [BEG] */
 #line 1 "config.h"
@@ -46,16 +45,16 @@
  */
 #ifndef AMALGAMATE_PARSER_PATTERN
 #define AMALGAMATE_PARSER_PATTERN   \
-    "/\\*\\*\\n"                    \
-    " \\* @AMALGAMATE:BEG\\n"       \
-    "```(\\w+)\\n"                  \
-    "([\\w\\W]*?)\\n"               \
-    "```\\n"                        \
-    " \\*/\\n"                      \
-    "([\\w\\W]*?)\\n"               \
-    "/\\*\\*\\n"                    \
-    " \\* @AMALGAMATE:END\\n"       \
-    " \\*/\\n"
+    "/%*%*\n"                       \
+    " %* @AMALGAMATE:BEG\n"         \
+    "```(%w+)\n"                    \
+    "(.-)\n"                        \
+    "```\n"                         \
+    " %*/\n"                        \
+    "(.-)\n"                        \
+    "/%*%*\n"                       \
+    " %* @AMALGAMATE:END\n"         \
+    " %*/\n"
 #endif
 
 #ifndef AMALGAMATE_DEFAULT_OUTPUT
@@ -68,6 +67,7 @@
 
 #endif
 /* AMALGAMATE c:expand_include config.h [END] */
+
 /*
  * ADDON:   c:expand_include
  * PATH:    function/__init__.h
@@ -170,11 +170,12 @@ extern am_function_t am_f_write_file;
 
 #endif
 /* AMALGAMATE c:expand_include function/__init__.h [END] */
+
 /*
  * ADDON:   c:expand_include
  * PATH:    addon/__init__.h
- * SIZE:    1149
- * SHA-256: 7b8a45e61ede8c49eb204c4944c9bfeced24f78f573d948bf34d7408081473fc
+ * SIZE:    1103
+ * SHA-256: e1aa73fcd13e955077ba7bffa54283a171b17c9b2719d4e430b9434384393a00
  */
 /* AMALGAMATE c:expand_include addon/__init__.h [BEG] */
 #line 1 "addon/__init__.h"
@@ -228,7 +229,6 @@ int am_addon_call_script(lua_State* L, const char* script, const char* name);
 extern am_addon_t am_a_c_dump_hex;
 extern am_addon_t am_a_c_expand_include;
 extern am_addon_t am_a_txt_black_hole;
-extern am_addon_t am_a_txt_pcre2_substitute;
 /**
  * @}
  */
@@ -239,6 +239,7 @@ extern am_addon_t am_a_txt_pcre2_substitute;
 
 #endif
 /* AMALGAMATE c:expand_include addon/__init__.h [END] */
+
 /*
  * ADDON:   c:expand_include
  * PATH:    amalgamate.h
@@ -368,6 +369,7 @@ int am_function_manual(lua_State* L)
     return 0;
 }
 /* AMALGAMATE c:expand_include function/__init__.c [END] */
+
 /*
  * ADDON:   c:expand_include
  * PATH:    function/lua_dirname.c
@@ -409,6 +411,7 @@ am_function_t am_f_dirname = {
 "does not contain a slash, dirname() returns the string \".\"."
 };
 /* AMALGAMATE c:expand_include function/lua_dirname.c [END] */
+
 /*
  * ADDON:   c:expand_include
  * PATH:    function/lua_dump_hex.c
@@ -485,6 +488,7 @@ am_function_t am_f_dump_hex = {
 "Dump string as hex string with ASCII character shown.\n"
 };
 /* AMALGAMATE c:expand_include function/lua_dump_hex.c [END] */
+
 /*
  * ADDON:   c:expand_include
  * PATH:    function/lua_dump_obj.c
@@ -551,6 +555,7 @@ am_function_t am_f_dump_obj = {
 "Dump object as string."
 };
 /* AMALGAMATE c:expand_include function/lua_dump_obj.c [END] */
+
 /*
  * ADDON:   c:expand_include
  * PATH:    function/lua_fmtpath.c
@@ -615,6 +620,7 @@ am_function_t am_f_fmtpath = {
 "\"path/to/foo/bar\"."
 };
 /* AMALGAMATE c:expand_include function/lua_fmtpath.c [END] */
+
 /*
  * ADDON:   c:expand_include
  * PATH:    function/lua_is_abspath.c
@@ -654,6 +660,7 @@ am_function_t am_f_is_abspath = {
 "Check if parameter is absolute path without actually access it."
 };
 /* AMALGAMATE c:expand_include function/lua_is_abspath.c [END] */
+
 /*
  * ADDON:   c:expand_include
  * PATH:    function/lua_is_file_exist.c
@@ -697,6 +704,7 @@ am_function_t am_f_is_file_exist = {
 "access it."
 };
 /* AMALGAMATE c:expand_include function/lua_is_file_exist.c [END] */
+
 /*
  * ADDON:   c:expand_include
  * PATH:    function/lua_load_file.c
@@ -805,6 +813,7 @@ am_function_t am_f_load_file = {
 "Load whole file as binary mode and return it."
 };
 /* AMALGAMATE c:expand_include function/lua_load_file.c [END] */
+
 /*
  * ADDON:   c:expand_include
  * PATH:    function/lua_load_txt_file.c
@@ -848,6 +857,7 @@ am_function_t am_f_load_txt_file = {
 "Load while file as txt mode and return it. Line endings is always convert to \"\\n\"."
 };
 /* AMALGAMATE c:expand_include function/lua_load_txt_file.c [END] */
+
 /*
  * ADDON:   c:expand_include
  * PATH:    function/lua_log_i.c
@@ -901,6 +911,7 @@ am_function_t am_f_log_i = {
 "Append data into log file."
 };
 /* AMALGAMATE c:expand_include function/lua_log_i.c [END] */
+
 /*
  * ADDON:   c:expand_include
  * PATH:    function/lua_merge_line.c
@@ -957,6 +968,7 @@ am_function_t am_f_merge_line = {
 "\"hello\\n \\nworld\"."
 };
 /* AMALGAMATE c:expand_include function/lua_merge_line.c [END] */
+
 /*
  * ADDON:   c:expand_include
  * PATH:    function/lua_search_file.c
@@ -1129,6 +1141,7 @@ am_function_t am_f_search_file = {
 "can be opened or nil if failed."
 };
 /* AMALGAMATE c:expand_include function/lua_search_file.c [END] */
+
 /*
  * ADDON:   c:expand_include
  * PATH:    function/lua_sha256.c
@@ -1359,6 +1372,7 @@ am_function_t am_f_sha256 = {
 "Calcualte SHA256 of `s` and return it's string value."
 };
 /* AMALGAMATE c:expand_include function/lua_sha256.c [END] */
+
 /*
  * ADDON:   c:expand_include
  * PATH:    function/lua_split_line.c
@@ -1436,6 +1450,7 @@ am_function_t am_f_split_line = {
 "ignored."
 };
 /* AMALGAMATE c:expand_include function/lua_split_line.c [END] */
+
 /*
  * ADDON:   c:expand_include
  * PATH:    function/lua_strcasecmp.c
@@ -1472,6 +1487,7 @@ am_function_t am_f_strcasecmp = {
 "to match, or be greater than `s2`."
 };
 /* AMALGAMATE c:expand_include function/lua_strcasecmp.c [END] */
+
 /*
  * ADDON:   c:expand_include
  * PATH:    function/lua_table_is_array.c
@@ -1504,6 +1520,7 @@ am_function_t am_f_table_is_array = {
 "Check if parameter `t` is an array."
 };
 /* AMALGAMATE c:expand_include function/lua_table_is_array.c [END] */
+
 /*
  * ADDON:   c:expand_include
  * PATH:    function/lua_write_file.c
@@ -1581,11 +1598,12 @@ am_function_t am_f_write_file = {
 "By default `mode` is set to \"wb\"."
 };
 /* AMALGAMATE c:expand_include function/lua_write_file.c [END] */
+
 /*
  * ADDON:   c:expand_include
  * PATH:    addon/__init__.c
- * SIZE:    3261
- * SHA-256: d4e16a4e6b7f855172cefc54dbbc3f2df5219d2f37abd967b153e8085cbb35b4
+ * SIZE:    3228
+ * SHA-256: e5e336dd371c14f1174c4df336f1fca1399a16af1b1c5809510033973f67f3de
  */
 /* AMALGAMATE c:expand_include addon/__init__.c [BEG] */
 #line 1 "addon/__init__.c"
@@ -1596,7 +1614,6 @@ static am_addon_t* s_addon_list[] = {
     &am_a_c_dump_hex,
     &am_a_c_expand_include,
     &am_a_txt_black_hole,
-    &am_a_txt_pcre2_substitute,
 };
 
 typedef void (*am_addon_load_cb)(lua_State* L, const char* name, int idx, void* arg);
@@ -1730,6 +1747,7 @@ int am_addon_call_script(lua_State* L, const char* script, const char* name)
     return 1;
 }
 /* AMALGAMATE c:expand_include addon/__init__.c [END] */
+
 /*
  * ADDON:   c:expand_include
  * PATH:    addon/c_dump_hex.c
@@ -1837,22 +1855,21 @@ am_addon_t am_a_c_dump_hex = {
 	_am_c_dump_hex,
 };
 /* AMALGAMATE c:expand_include addon/c_dump_hex.c [END] */
+
 /*
  * ADDON:   c:expand_include
  * PATH:    addon/c_expand_include.c
- * SIZE:    5053
- * SHA-256: be3588bdccaddc6676ce2c1a0fa5ae2a449f92217d701b19138c049169188e70
+ * SIZE:    4780
+ * SHA-256: 5d553f34c8711094d77dce8bcb62c8fc9b186176614f04126e19a905332c5cbf
  */
 /* AMALGAMATE c:expand_include addon/c_expand_include.c [BEG] */
 #line 1 "addon/c_expand_include.c"
 #define LF  "\n"
 static const char* expand_include_script = "\n" LF
-"local pcre2 = require(\"pcre2\")" LF
 LF
 "local M = {}" LF
 "-- This is the pattern to search `#include` statement." LF
-"M.pattern = \"#\\\\s*include\\\\s+\\\"([-.\\\\w/]+)\\\"\"" LF
-"M.regex = pcre2.compile(M.pattern, pcre2.PCRE2_MULTILINE)" LF
+"M.pattern = \"#%s*include%s+\\\"([-_/%.%w]+)\\\"\"" LF
 LF
 "-- Set default value if not exist" LF
 "local function format_default_arguments(args)" LF
@@ -1869,9 +1886,9 @@ LF
 "end" LF
 LF
 "-- Get file information for matched regex pattern" LF
-"local function generate_file_info(match_data, data)" LF
+"local function generate_file_info(include_path, data)" LF
 "    local info = {}" LF
-"    info.include_path = match_data:group(data, 1)" LF
+"    info.include_path = include_path" LF
 "    info.real_path = am.search_file(info.include_path)" LF
 "    if info.real_path == nil then" LF
 "        local err_msg = \"file `\" .. info.include_path .. \"` not found.\"" LF
@@ -1907,8 +1924,7 @@ LF
 "        ret = ret .. \"#line 1 \\\"\" .. info.include_path .. \"\\\"\\n\"" LF
 "    end" LF
 "    if args.displace_include then" LF
-"        temp = regex:substitute(info.txt_data, \"/* AMALGAMATE_DISPLACE_INCLUDE: ${1} */\"," LF
-"            pcre2.PCRE2_SUBSTITUTE_GLOBAL | pcre2.PCRE2_SUBSTITUTE_EXTENDED)" LF
+"        temp = string.gsub(info.txt_data, M.pattern, \"/* AMALGAMATE_DISPLACE_INCLUDE: %1 */\")" LF
 "    end" LF
 "    ret = ret .. temp .. \"\\n\"" LF
 "    return ret" LF
@@ -1931,36 +1947,34 @@ LF
 "    args = format_default_arguments(args)" LF
 LF
 "    while true do" LF
-"        local match_data = regex:match(data)" LF
-"        if match_data == nil then" LF
+"        local off_beg, off_end, group_include = string.find(data, M.pattern)" LF
+"        if off_beg == nil then" LF
 "            ret = ret .. data" LF
 "            break" LF
 "        end" LF
 LF
 "        -- Append data before pattern" LF
-"        local off,len = match_data:group_offset(0)" LF
-"        if off >= 2 then" LF
-"            temp = string.sub(data, 1, off)" LF
+"        if off_beg >= 2 then" LF
+"            temp = string.sub(data, 1, off_beg - 1)" LF
 "            ret = ret .. temp" LF
 "        end" LF
 LF
 "        -- Get file information" LF
-"        local info = generate_file_info(match_data, data)"
+"        local info = generate_file_info(group_include, data)"
 LF
 "        -- Generate header" LF
 "        temp = generate_file_header(info, args)" LF
 "        ret = ret .. temp" LF
 LF
 "        -- Append file content" LF
-"        temp = generate_file_content(info, args, regex)" LF
+"        temp = generate_file_content(info, args)" LF
 "        ret = ret .. temp" LF
 LF
 "        temp = generate_file_tail(info, args)" LF
 "        ret = ret .. temp" LF
 LF
 "        -- Update data" LF
-"        off,len = match_data:group_offset(0)" LF
-"        data = string.sub(data, off + len + 1)" LF
+"        data = string.sub(data, off_end + 1)" LF
 "    end" LF
 "    return ret" LF
 "end" LF
@@ -1995,6 +2009,7 @@ am_addon_t am_a_c_expand_include = {
     _am_c_expand_include,
 };
 /* AMALGAMATE c:expand_include addon/c_expand_include.c [END] */
+
 /*
  * ADDON:   c:expand_include
  * PATH:    addon/txt_black_hole.c
@@ -2033,64 +2048,12 @@ am_addon_t am_a_txt_black_hole = {
     _am_txt_black_hole,
 };
 /* AMALGAMATE c:expand_include addon/txt_black_hole.c [END] */
-/*
- * ADDON:   c:expand_include
- * PATH:    addon/txt_pcre2_substitute.c
- * SIZE:    1277
- * SHA-256: a13259c471ffb7664b749bc6a40f330d3b6e851f0dedddeb9abb15e8c5539f60
- */
-/* AMALGAMATE c:expand_include addon/txt_pcre2_substitute.c [BEG] */
-#line 1 "addon/txt_pcre2_substitute.c"
-#define LF "\n"
-static const char* pcre2_substitute_script = "\n" LF
-"local pcre2 = require(\"pcre2\")" LF
-LF
-"local function pcre2_substitute_proc(data, args)" LF
-"    -- Check arguments" LF
-"    if args.pattern == nil then" LF
-"        error(\"missing argument `pattern`.\")" LF
-"    end" LF
-"    if args.replace == nil then" LF
-"        error(\"missing argument `replace`.\")" LF
-"    end" LF
-LF
-"    local code = pcre2.compile(args.pattern, pcre2.PCRE2_MULTILINE)" LF
-"    return code:substitute(data, args.replace," LF
-"        pcre2.PCRE2_SUBSTITUTE_GLOBAL | pcre2.PCRE2_SUBSTITUTE_EXTENDED)" LF
-"end" LF
-LF
-"return {" LF
-"    proc = pcre2_substitute_proc," LF
-"    desc = " LF
-"[[DESCRIPTION:" LF
-"    Find and substituting a replacement string for what was matched." LF
-LF
-"ATTRIBUTES:" LF
-"    \"pattern\": [string]" LF
-"        A regex pattern for find match string." LF
-"    \"replace\": [string]" LF
-"        Replacement string." LF
-"]]," LF
-"}" LF
-;
 
-/* AMALGAMATE_DISPLACE_INCLUDE: __init__.h */
-
-static int _am_txt_pcre2_substitute(lua_State* L)
-{
-    return am_addon_call_script(L, pcre2_substitute_script, "txt:pcre2_substitute.lua");
-}
-
-am_addon_t am_a_txt_pcre2_substitute = {
-    "txt:pcre2_substitute",
-    _am_txt_pcre2_substitute,
-};
-/* AMALGAMATE c:expand_include addon/txt_pcre2_substitute.c [END] */
 /*
  * ADDON:   c:expand_include
  * PATH:    amalgamate.c
- * SIZE:    3611
- * SHA-256: 3fbb4a84690c145e7d46c47175d6967fce8b9113a9d12718d7c045de60ec9811
+ * SIZE:    3442
+ * SHA-256: 199af3ab932c921cb4db661711ba1af2ea87ba7374a380af4135e1e2cbaba008
  */
 /* AMALGAMATE c:expand_include amalgamate.c [BEG] */
 #line 1 "amalgamate.c"
@@ -2100,7 +2063,6 @@ const char* amalgamate_script = "\n\n\n\n\n" LF // let's align the line number
 //////////////////////////////////////////////////////////////////////////
 // Script begin
 //////////////////////////////////////////////////////////////////////////
-"local pcre2 = require(\"pcre2\")" LF
 "local cjson = require(\"cjson\")" LF
 LF
 "-- Process data with addon configuration" LF
@@ -2141,23 +2103,22 @@ LF
 "-- Preprocess file" LF
 "local function preprocess(data)" LF
 "    local ret = {}" LF
-"    local regex = pcre2.compile(am.config.parser_pattern)" LF
 "    while true do" LF
-"        local matchdata = regex:match(data)" LF
-"        if matchdata == nil then" LF
+"        local off_beg_0, off_end_0, group_lang, group_code, group_data" LF
+"            = string.find(data, am.config.parser_pattern)" LF
+"        if off_beg_0 == nil then" LF
 "            ret[#ret + 1] = { data = data }" LF
 "            break" LF
 "        end" LF
-"        local off_beg,off_end = matchdata:group_offset(0)" LF
-"        if off_beg > 1 then" LF
-"            ret[#ret + 1] = { data = string.sub(data, 1, off_beg - 1) }" LF
+"        if off_beg_0 > 1 then" LF
+"            ret[#ret + 1] = { data = string.sub(data, 1, off_beg_0 - 1) }" LF
 "        end" LF
 "        ret[#ret + 1] = {" LF
-"            lang = string.sub(data, matchdata:group_offset(1))," LF
-"            code = string.sub(data, matchdata:group_offset(2))," LF
-"            data = string.sub(data, matchdata:group_offset(3))," LF
+"            lang = group_lang," LF
+"            code = group_code," LF
+"            data = group_data," LF
 "        }" LF
-"        data = string.sub(data, off_end + 1)" LF
+"        data = string.sub(data, off_end_0 + 1)" LF
 "    end" LF
 "    return ret" LF
 "end" LF
@@ -2494,10 +2455,6 @@ static void _generate_arg_table(lua_State* L, int argc, char* argv[])
 
 static void _am_openlibs(lua_State* L)
 {
-    /* open pcre2 */
-    luaL_requiref(L, "pcre2", luaopen_lpcre2, 0);
-    lua_pop(L, 1);
-
     /* open cjson */
     luaL_requiref(L, "cjson", luaopen_cjson, 0);
     lua_pop(L, 1);

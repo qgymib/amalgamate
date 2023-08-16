@@ -5,7 +5,6 @@ static am_addon_t* s_addon_list[] = {
     &am_a_c_dump_hex,
     &am_a_c_expand_include,
     &am_a_txt_black_hole,
-    &am_a_txt_pcre2_substitute,
 };
 
 typedef void (*am_addon_load_cb)(lua_State* L, const char* name, int idx, void* arg);

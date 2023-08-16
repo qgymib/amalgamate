@@ -4,12 +4,6 @@
 [submodule "third_party/lua"]
 	path = third_party/lua
 	url = https://github.com/lua/lua.git
-[submodule "third_party/pcre2"]
-	path = third_party/pcre2
-	url = https://github.com/PCRE2Project/pcre2.git
-[submodule "third_party/lua_pcre2"]
-	path = third_party/pcre2.lua
-	url = https://github.com/qgymib/lua_pcre2.git
 [submodule "third_party/cjson.lua"]
 	path = third_party/cjson.lua
 	url = https://github.com/qgymib/cjson.lua.git

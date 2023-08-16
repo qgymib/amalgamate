@@ -21,7 +21,6 @@
 //////////////////////////////////////////////////////////////////////////
 // User header
 //////////////////////////////////////////////////////////////////////////
-#include "pcre2.lua.h"
 /**
  * @AMALGAMATE:BEG
 ```json
@@ -66,7 +65,6 @@
 #include "addon/c_dump_hex.c"
 #include "addon/c_expand_include.c"
 #include "addon/txt_black_hole.c"
-#include "addon/txt_pcre2_substitute.c"
 #include "amalgamate.c"
 /**
  * @AMALGAMATE:END
@@ -359,10 +357,6 @@ static void _generate_arg_table(lua_State* L, int argc, char* argv[])
 
 static void _am_openlibs(lua_State* L)
 {
-    /* open pcre2 */
-    luaL_requiref(L, "pcre2", luaopen_lpcre2, 0);
-    lua_pop(L, 1);
-
     /* open cjson */
     luaL_requiref(L, "cjson", luaopen_cjson, 0);
     lua_pop(L, 1);

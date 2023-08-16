@@ -4,7 +4,6 @@ const char* amalgamate_script = "\n\n\n\n\n" LF // let's align the line number
 //////////////////////////////////////////////////////////////////////////
 // Script begin
 //////////////////////////////////////////////////////////////////////////
-"local pcre2 = require(\"pcre2\")" LF
 "local cjson = require(\"cjson\")" LF
 LF
 "-- Process data with addon configuration" LF
@@ -45,23 +44,22 @@ LF
 "-- Preprocess file" LF
 "local function preprocess(data)" LF
 "    local ret = {}" LF
-"    local regex = pcre2.compile(am.config.parser_pattern)" LF
 "    while true do" LF
-"        local matchdata = regex:match(data)" LF
-"        if matchdata == nil then" LF
+"        local off_beg_0, off_end_0, group_lang, group_code, group_data" LF
+"            = string.find(data, am.config.parser_pattern)" LF
+"        if off_beg_0 == nil then" LF
 "            ret[#ret + 1] = { data = data }" LF
 "            break" LF
 "        end" LF
-"        local off_beg,off_end = matchdata:group_offset(0)" LF
-"        if off_beg > 1 then" LF
-"            ret[#ret + 1] = { data = string.sub(data, 1, off_beg - 1) }" LF
+"        if off_beg_0 > 1 then" LF
+"            ret[#ret + 1] = { data = string.sub(data, 1, off_beg_0 - 1) }" LF
 "        end" LF
 "        ret[#ret + 1] = {" LF
-"            lang = string.sub(data, matchdata:group_offset(1))," LF
-"            code = string.sub(data, matchdata:group_offset(2))," LF
-"            data = string.sub(data, matchdata:group_offset(3))," LF
+"            lang = group_lang," LF
+"            code = group_code," LF
+"            data = group_data," LF
 "        }" LF
-"        data = string.sub(data, off_end + 1)" LF
+"        data = string.sub(data, off_end_0 + 1)" LF
 "    end" LF
 "    return ret" LF
 "end" LF

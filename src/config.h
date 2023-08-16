@@ -13,16 +13,16 @@
  */
 #ifndef AMALGAMATE_PARSER_PATTERN
 #define AMALGAMATE_PARSER_PATTERN   \
-    "/\\*\\*\\n"                    \
-    " \\* @AMALGAMATE:BEG\\n"       \
-    "```(\\w+)\\n"                  \
-    "([\\w\\W]*?)\\n"               \
-    "```\\n"                        \
-    " \\*/\\n"                      \
-    "([\\w\\W]*?)\\n"               \
-    "/\\*\\*\\n"                    \
-    " \\* @AMALGAMATE:END\\n"       \
-    " \\*/\\n"
+    "/%*%*\n"                       \
+    " %* @AMALGAMATE:BEG\n"         \
+    "```(%w+)\n"                    \
+    "(.-)\n"                        \
+    "```\n"                         \
+    " %*/\n"                        \
+    "(.-)\n"                        \
+    "/%*%*\n"                       \
+    " %* @AMALGAMATE:END\n"         \
+    " %*/\n"
 #endif
 
 #ifndef AMALGAMATE_DEFAULT_OUTPUT

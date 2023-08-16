@@ -1,11 +1,9 @@
 #define LF  "\n"
 static const char* expand_include_script = "\n" LF
-"local pcre2 = require(\"pcre2\")" LF
 LF
 "local M = {}" LF
 "-- This is the pattern to search `#include` statement." LF
-"M.pattern = \"#\\\\s*include\\\\s+\\\"([-.\\\\w/]+)\\\"\"" LF
-"M.regex = pcre2.compile(M.pattern, pcre2.PCRE2_MULTILINE)" LF
+"M.pattern = \"#%s*include%s+\\\"([-_/%.%w]+)\\\"\"" LF
 LF
 "-- Set default value if not exist" LF
 "local function format_default_arguments(args)" LF
@@ -22,9 +20,9 @@ LF
 "end" LF
 LF
 "-- Get file information for matched regex pattern" LF
-"local function generate_file_info(match_data, data)" LF
+"local function generate_file_info(include_path, data)" LF
 "    local info = {}" LF
-"    info.include_path = match_data:group(data, 1)" LF
+"    info.include_path = include_path" LF
 "    info.real_path = am.search_file(info.include_path)" LF
 "    if info.real_path == nil then" LF
 "        local err_msg = \"file `\" .. info.include_path .. \"` not found.\"" LF
@@ -60,8 +58,7 @@ LF
 "        ret = ret .. \"#line 1 \\\"\" .. info.include_path .. \"\\\"\\n\"" LF
 "    end" LF
 "    if args.displace_include then" LF
-"        temp = regex:substitute(info.txt_data, \"/* AMALGAMATE_DISPLACE_INCLUDE: ${1} */\"," LF
-"            pcre2.PCRE2_SUBSTITUTE_GLOBAL | pcre2.PCRE2_SUBSTITUTE_EXTENDED)" LF
+"        temp = string.gsub(info.txt_data, M.pattern, \"/* AMALGAMATE_DISPLACE_INCLUDE: %1 */\")" LF
 "    end" LF
 "    ret = ret .. temp .. \"\\n\"" LF
 "    return ret" LF
@@ -84,36 +81,34 @@ LF
 "    args = format_default_arguments(args)" LF
 LF
 "    while true do" LF
-"        local match_data = regex:match(data)" LF
-"        if match_data == nil then" LF
+"        local off_beg, off_end, group_include = string.find(data, M.pattern)" LF
+"        if off_beg == nil then" LF
 "            ret = ret .. data" LF
 "            break" LF
 "        end" LF
 LF
 "        -- Append data before pattern" LF
-"        local off,len = match_data:group_offset(0)" LF
-"        if off >= 2 then" LF
-"            temp = string.sub(data, 1, off)" LF
+"        if off_beg >= 2 then" LF
+"            temp = string.sub(data, 1, off_beg - 1)" LF
 "            ret = ret .. temp" LF
 "        end" LF
 LF
 "        -- Get file information" LF
-"        local info = generate_file_info(match_data, data)"
+"        local info = generate_file_info(group_include, data)"
 LF
 "        -- Generate header" LF
 "        temp = generate_file_header(info, args)" LF
 "        ret = ret .. temp" LF
 LF
 "        -- Append file content" LF
-"        temp = generate_file_content(info, args, regex)" LF
+"        temp = generate_file_content(info, args)" LF
 "        ret = ret .. temp" LF
 LF
 "        temp = generate_file_tail(info, args)" LF
 "        ret = ret .. temp" LF
 LF
 "        -- Update data" LF
-"        off,len = match_data:group_offset(0)" LF
-"        data = string.sub(data, off + len + 1)" LF
+"        data = string.sub(data, off_end + 1)" LF
 "    end" LF
 "    return ret" LF
 "end" LF

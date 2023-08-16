@@ -48,7 +48,6 @@ int am_addon_call_script(lua_State* L, const char* script, const char* name);
 extern am_addon_t am_a_c_dump_hex;
 extern am_addon_t am_a_c_expand_include;
 extern am_addon_t am_a_txt_black_hole;
-extern am_addon_t am_a_txt_pcre2_substitute;
 /**
  * @}
  */
