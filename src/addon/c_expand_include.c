@@ -16,14 +16,16 @@ LF
 "    if args.displace_include == nil then" LF
 "        args.displace_include = true" LF
 "    end" LF
+"    if args.quote_group == nil then" LF
+"        args.quote_group = \"\"" LF
+"    end" LF
 "    return args" LF
 "end" LF
 LF
 "-- Get file information for matched regex pattern" LF
-"local function generate_file_info(include_path, data)" LF
-"    local info = {}" LF
-"    info.include_path = include_path" LF
-"    info.real_path = am.search_file(info.include_path)" LF
+"local function generate_file_info(include_path, data, args)" LF
+"    local info = { include_path = include_path }" LF
+"    info.real_path = am.search_file(info.include_path, args.quote_group)" LF
 "    if info.real_path == nil then" LF
 "        local err_msg = \"file `\" .. info.include_path .. \"` not found.\"" LF
 "        error(err_msg)" LF
@@ -94,7 +96,7 @@ LF
 "        end" LF
 LF
 "        -- Get file information" LF
-"        local info = generate_file_info(group_include, data)"
+"        local info = generate_file_info(group_include, data, args)"
 LF
 "        -- Generate header" LF
 "        temp = generate_file_header(info, args)" LF
@@ -120,8 +122,10 @@ LF
 "[[Read #include file content and replace the #include statement."LF
 LF
 "[ATTRIBUTES]" LF
+"\"quote_group\": [string]. Default: \"\"" LF
+"    Specific which group to search." LF
 "\"lineno\": true|false. Default: true." LF
-"    Enable `#line [path] 1` syntax so that if compile error, you known what" LF
+"    Enable `#line 1 [path]` syntax so that if compile error, you known what" LF
 "    is wrong." LF
 "\"fileinfo\": true|false. Default: true" LF
 "    Add file path, size, SHA-256 information before replacement." LF

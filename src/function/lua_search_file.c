@@ -7,10 +7,10 @@
  *
  * @return  boolean
  */
-static int _am_search_file_is_abspath(lua_State* L, int idx)
+static int _am_search_file_is_abspath(lua_State* L, const char* file)
 {
     lua_pushcfunction(L, am_f_is_abspath.addr);
-    lua_pushvalue(L, idx);
+    lua_pushstring(L, file);
     lua_call(L, 1, 1);
 
     int ret = lua_toboolean(L, -1);
@@ -26,10 +26,10 @@ static int _am_search_file_is_abspath(lua_State* L, int idx)
  *
  * @return  boolean
  */
-static int _am_search_file_is_exist(lua_State* L, int idx)
+static int _am_search_file_is_exist(lua_State* L, const char* file)
 {
     lua_pushcfunction(L, am_f_is_file_exist.addr);
-    lua_pushvalue(L, idx);
+    lua_pushstring(L, file);
     lua_call(L, 1, 1);
 
     int ret = lua_toboolean(L, -1);
@@ -46,16 +46,16 @@ static int _am_search_file_is_exist(lua_State* L, int idx)
  * 
  * @return 1 if found, 0 if not.
  */
-static int _am_search_file_in_directory(lua_State* L, int idx_dirname, int idx_path)
+static int _am_search_file_in_directory(lua_State* L, const char* dir, const char* file)
 {
     int sp = lua_gettop(L);
 
-    lua_pushvalue(L, idx_dirname);
+    lua_pushstring(L, dir);
     lua_pushstring(L, "/");
-    lua_pushvalue(L, idx_path);
+    lua_pushstring(L, file);
     lua_concat(L, 3); // sp+1
 
-    if (_am_search_file_is_exist(L, sp + 1))
+    if (_am_search_file_is_exist(L, lua_tostring(L, sp + 1)))
     {
         return 1;
     }
@@ -72,7 +72,7 @@ static int _am_search_file_in_directory(lua_State* L, int idx_dirname, int idx_p
  *
  * @return 1 if found, 0 if not.
  */
-static int _am_serach_file_from_current_directory(lua_State* L, int idx)
+static int _am_serach_file_from_current_directory(lua_State* L, const char* file)
 {
     int sp = lua_gettop(L);
 
@@ -85,13 +85,41 @@ static int _am_serach_file_from_current_directory(lua_State* L, int idx)
     lua_remove(L, sp + 2); // sp+2
     lua_call(L, 1, 1); // sp+1
 
-    if (_am_search_file_in_directory(L, sp + 1, idx))
+    const char* dir = lua_tostring(L, sp + 1);
+    int ret = _am_search_file_in_directory(L, dir, file);
+    lua_remove(L, sp + 1);
+
+    return ret;
+}
+
+static int _am_search_file_in_quote(lua_State* L, int quote_idx, const char* group, const char* file)
+{
+    int i;
+    int sp = lua_gettop(L);
+
+    if (lua_getfield(L, quote_idx, group) != LUA_TTABLE) // sp+1
     {
-        lua_remove(L, sp + 1);
-        return 1;
+        lua_pop(L, 1);
+        return 0;
     }
 
-    lua_pop(L, 1);
+    for (i = 1;; i++)
+    {
+        if (lua_geti(L, -1, i) != LUA_TSTRING) // sp+2: directory
+        {
+            lua_pop(L, 1);
+            break;
+        }
+
+        const char* dir = lua_tostring(L, sp + 2);
+        if (_am_search_file_in_directory(L, dir, file))
+        {
+            lua_remove(L, sp + 1);
+            return 1;
+        }
+        lua_pop(L, 1);
+    }
+
     return 0;
 }
 
@@ -103,9 +131,9 @@ static int _am_serach_file_from_current_directory(lua_State* L, int idx)
  *
  * @return 1 if found, 0 if not.
  */
-static int _am_search_file_from_quote(lua_State* L, int idx)
+static int _am_search_file_from_quote(lua_State* L, const char* group, const char* path)
 {
-    int i;
+    int ret = 0;
     int sp = lua_gettop(L);
 
     /* Get iquote table at sp+1 */
@@ -115,49 +143,55 @@ static int _am_search_file_from_quote(lua_State* L, int idx)
     lua_remove(L, sp + 2); // sp+2
     lua_remove(L, sp + 1); // sp+1
 
-    for (i = 1; ; i++)
+    if ((ret = _am_search_file_in_quote(L, sp + 1, group, path)) != 0)
     {
-        if (lua_geti(L, sp + 1, i) != LUA_TSTRING)
-        {
-            lua_pop(L, 1);
-            break;
-        }
-
-        if (_am_search_file_in_directory(L, sp + 2, idx))
-        {
-            lua_remove(L, sp + 1);
-            return 1;
-        }
-        lua_pop(L, 1);
+        goto finish;
     }
 
-    return 0;
+	if ((ret = _am_search_file_in_quote(L, sp + 1, "", path)) != 0)
+	{
+        goto finish;
+	}
+
+finish:
+    lua_remove(L, sp + 1);
+    return ret;
 }
 
-static int _am_search_file_from_current_and_quote(lua_State* L, int idx)
+static int _am_search_file_from_current_and_quote(lua_State* L,
+    const char* group, const char* file)
 {
-    if (_am_serach_file_from_current_directory(L, idx))
+    if (_am_serach_file_from_current_directory(L, file))
     {
         return 1;
     }
 
-    return _am_search_file_from_quote(L, idx);
+    return _am_search_file_from_quote(L, group, file);
 }
 
 static int _am_search_file(lua_State* L)
 {
+    const char* file = luaL_checkstring(L, 1);
+    const char* group = luaL_optstring(L, 2, "");
+
     /* Check for abspath */
-    if (_am_search_file_is_abspath(L, 1) == 0)
+    if (_am_search_file_is_abspath(L, file) == 0)
     {
-        return _am_search_file_from_current_and_quote(L, 1);
+        return _am_search_file_from_current_and_quote(L, group, file);
     }
 
-    return !!_am_search_file_is_exist(L, 1);
+    return !!_am_search_file_is_exist(L, file);
 }
 
 am_function_t am_f_search_file = {
-"search_file", _am_search_file, "string search_file(string path)",
+"search_file", _am_search_file, "string search_file(string path[, string group])",
 "Search file in current directory and quote directory.",
+
 "Search file in current directory and quote directory. Return the real path that\n"
-"can be opened or nil if failed."
+"can be opened or nil if failed.\n"
+"\n"
+"The search policy is:\n"
+"1) Search in current directory where input file is.\n"
+"2) Search in quote group if `group` option exists.\n"
+"3) Search in default quote group \"\".\n"
 };

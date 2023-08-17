@@ -103,7 +103,10 @@ static const char* s_help =
 "    Path to output file.\n"
 "\n"
 "  --iquote=PATH\n"
-"    Add the directory dir to the list of directories to be searched.\n"
+"  --iquote=GROUP:PATH\n"
+"    Add the directory dir to the list of directories to be searched. If `GROUP`\n"
+"    exist, add the directory to the group. This option affect how to search the\n"
+"    file (see `--man=search_file` for details).\n"
 "\n"
 "  --logfile=PATH\n"
 "    Where to store log output. And exists content will be erased.\n"
@@ -147,15 +150,41 @@ static int _setup_arg_input(lua_State* L, int idx, char* str)
     return 0;
 }
 
+static int _setup_arg_iquote_with_group(lua_State* L, int idx, const char* group, const char* path)
+{
+    int sp = lua_gettop(L);
+
+    lua_getfield(L, idx, "iquote"); // sp+1
+    if (lua_getfield(L, -1, group) != LUA_TTABLE) // sp+2
+    {
+        lua_pop(L, 1);
+        lua_newtable(L);
+    }
+
+    lua_pushstring(L, path); // sp+3
+    lua_seti(L, sp + 2, luaL_len(L, sp + 2) + 1); // sp+2
+
+    lua_setfield(L, sp + 1, group); // sp+1
+    lua_setfield(L, idx, "iquote");
+
+    return 0;
+}
+
 static int _setup_arg_iquote(lua_State* L, int idx, char* str)
 {
-    lua_getfield(L, idx, "iquote");
+    const char* pos = strstr(str, ":");
+    if (pos == NULL)
+    {
+        return _setup_arg_iquote_with_group(L, idx, "", str);
+    }
 
-    lua_pushstring(L, str);
-    lua_seti(L, -2, luaL_len(L, -2) + 1);
+    lua_pushlstring(L, str, pos - str);
 
-    lua_setfield(L, idx, "iquote");
-    return 0;
+    const char* group = lua_tostring(L, -1);
+    int ret = _setup_arg_iquote_with_group(L, idx, group, pos + 1);
+    lua_pop(L, 1);
+
+    return ret;
 }
 
 static int _setup_arg_man(lua_State* L, int idx, char* str)
