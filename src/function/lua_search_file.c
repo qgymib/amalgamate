@@ -148,10 +148,10 @@ static int _am_search_file_from_quote(lua_State* L, const char* group, const cha
         goto finish;
     }
 
-	if ((ret = _am_search_file_in_quote(L, sp + 1, "", path)) != 0)
-	{
+    if ((ret = _am_search_file_in_quote(L, sp + 1, "", path)) != 0)
+    {
         goto finish;
-	}
+    }
 
 finish:
     lua_remove(L, sp + 1);

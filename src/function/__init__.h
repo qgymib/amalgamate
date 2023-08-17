@@ -76,6 +76,7 @@ extern am_function_t am_f_load_file;
 extern am_function_t am_f_load_txt_file;
 extern am_function_t am_f_log_i;
 extern am_function_t am_f_merge_line;
+extern am_function_t am_f_msvc_suppress_warning;
 extern am_function_t am_f_search_file;
 extern am_function_t am_f_sha256;
 extern am_function_t am_f_split_line;

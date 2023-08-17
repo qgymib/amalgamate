@@ -53,15 +53,18 @@ add_custom_command(
     COMMAND $<TARGET_FILE:amalgamate>
         --input=${CMAKE_CURRENT_SOURCE_DIR}/src/main.c
         --output=${CMAKE_CURRENT_SOURCE_DIR}/amalgamate_all.c
-        --iquote=${CMAKE_CURRENT_SOURCE_DIR}/src)
+        --iquote=${CMAKE_CURRENT_SOURCE_DIR}/src
+        --iquote=cjson=${CJSON_LUA_ROOT}/include
+        --iquote=cjson=${CJSON_LUA_ROOT}/src
+        --iquote=cjson=${CJSON_SOURCE_PATH}
+        --iquote=lua=${LUA54_ROOT}
+)
 add_custom_target(my_custom_target_that_always_runs ALL
     DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/__always_run.h)
 add_executable(${PROJECT_NAME}_all
     ${CMAKE_CURRENT_SOURCE_DIR}/amalgamate_all.c)
 setup_target_wall(${PROJECT_NAME}_all)
 target_link_libraries(${PROJECT_NAME}_all PRIVATE lua54)
-target_link_libraries(${PROJECT_NAME}_all PRIVATE cJSON)
-target_link_libraries(${PROJECT_NAME}_all PRIVATE cjson.lua)
 
 ###############################################################################
 # Test

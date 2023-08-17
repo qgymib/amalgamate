@@ -89,10 +89,10 @@ LF
 
 static int _am_c_dump_hex(lua_State* L)
 {
-	return am_addon_call_script(L, dump_hex_script, "c:dump_hex.lua");
+    return am_addon_call_script(L, dump_hex_script, "c:dump_hex.lua");
 }
 
 am_addon_t am_a_c_dump_hex = {
-	"c:dump_hex",
-	_am_c_dump_hex,
+    "c:dump_hex",
+    _am_c_dump_hex,
 };

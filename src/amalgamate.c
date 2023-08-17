@@ -33,7 +33,10 @@ LF
 LF
 "-- Process lua block" LF
 "local function process_lua_block(v)" LF
-"    local trunk = load(v.code)" LF
+"    local trunk, errmsg = load(v.code)" LF
+"    if not trunk then" LF
+"        error(errmsg)" LF
+"    end" LF
 "    local b,addon = pcall(trunk)" LF
 "    if b ~= true then" LF
 "        error(addon)" LF

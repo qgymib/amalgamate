@@ -13,6 +13,7 @@ static am_function_t* am_apis[] = {
     &am_f_load_txt_file,
     &am_f_log_i,
     &am_f_merge_line,
+    &am_f_msvc_suppress_warning,
     &am_f_search_file,
     &am_f_sha256,
     &am_f_split_line,

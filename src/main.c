@@ -12,11 +12,56 @@
 #include <string.h>
 #include <stdio.h>
 
+
+//////////////////////////////////////////////////////////////////////////
+// 3rd: Lua
+//////////////////////////////////////////////////////////////////////////
+#include <lua.h>
+#include <lauxlib.h>
+#include <lualib.h>
+
+//////////////////////////////////////////////////////////////////////////
+// 3rd: cJSON
+//////////////////////////////////////////////////////////////////////////
+/**
+ * @AMALGAMATE:BEG
+```lua
+local expand_include = require("c:expand_include")
+local function proc(data, args)
+    local fake_cjson_h = "#include \"cJSON.h\""
+    local cjson_h = expand_include.proc(fake_cjson_h, { quote_group = "cjson" })
+    local fake_cjson_c = "#include \"cJSON.c\""
+    local cjson_c = expand_include.proc(fake_cjson_c, { quote_group = "cjson" })
+    local ret = cjson_h .. "\n" .. cjson_c .. "\n"
+    return am.msvc_suppress_warning(ret, 4996)
+end
+return { proc = proc }
+```
+ */
+/**
+ * @AMALGAMATE:END
+ */
+
 //////////////////////////////////////////////////////////////////////////
 // 3rd: cjson.lua
 //////////////////////////////////////////////////////////////////////////
+/**
+ * @AMALGAMATE:BEG
+```lua
+local expand_include = require("c:expand_include")
+local function proc(data, args)
+    local data_h = expand_include.proc(data, { quote_group = "cjson" })
+    local fake_data = "#include \"cjson.lua.c\""
+    local data_c = expand_include.proc(fake_data, { quote_group = "cjson" })
+    return data_h .. "\n" .. data_c .. "\n"
+end
+return { proc = proc }
+```
+ */
 #include "cjson.lua.h"
-
+/**
+ * @AMALGAMATE:END
+ */
 
 //////////////////////////////////////////////////////////////////////////
 // User header
@@ -55,6 +100,7 @@
 #include "function/lua_load_txt_file.c"
 #include "function/lua_log_i.c"
 #include "function/lua_merge_line.c"
+#include "function/lua_msvc_suppress_warning.c"
 #include "function/lua_search_file.c"
 #include "function/lua_sha256.c"
 #include "function/lua_split_line.c"
@@ -103,7 +149,7 @@ static const char* s_help =
 "    Path to output file.\n"
 "\n"
 "  --iquote=PATH\n"
-"  --iquote=GROUP:PATH\n"
+"  --iquote=GROUP=PATH\n"
 "    Add the directory dir to the list of directories to be searched. If `GROUP`\n"
 "    exist, add the directory to the group. This option affect how to search the\n"
 "    file (see `--man=search_file` for details).\n"
@@ -172,7 +218,7 @@ static int _setup_arg_iquote_with_group(lua_State* L, int idx, const char* group
 
 static int _setup_arg_iquote(lua_State* L, int idx, char* str)
 {
-    const char* pos = strstr(str, ":");
+    const char* pos = strstr(str, "=");
     if (pos == NULL)
     {
         return _setup_arg_iquote_with_group(L, idx, "", str);

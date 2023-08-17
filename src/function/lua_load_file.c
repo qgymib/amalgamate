@@ -65,7 +65,7 @@ static int _lua_file_load(lua_State* L, const char* path)
     {
         if ((errcode = ferror(pfile)) != 0)
         {
-            goto error;
+            goto err;
         }
 
         size_t nread = fread(addr, 1, bufsz, pfile);
@@ -80,7 +80,7 @@ static int _lua_file_load(lua_State* L, const char* path)
 
     return 1;
 
-error:
+err:
     strerror_r(errcode, errbuf, sizeof(errbuf));
     return luaL_error(L, "Cannot read file `%s': %s(%d).",
         path, errbuf, errcode);
