@@ -47,22 +47,19 @@ LF
 "-- Preprocess file" LF
 "local function preprocess(data)" LF
 "    local ret = {}" LF
-"    while true do" LF
-"        local off_beg_0, off_end_0, group_lang, group_code, group_data" LF
-"            = string.find(data, am.config.parser_pattern)" LF
-"        if off_beg_0 == nil then" LF
-"            ret[#ret + 1] = { data = data }" LF
-"            break" LF
-"        end" LF
-"        if off_beg_0 > 1 then" LF
-"            ret[#ret + 1] = { data = string.sub(data, 1, off_beg_0 - 1) }" LF
-"        end" LF
-"        ret[#ret + 1] = {" LF
-"            lang = group_lang," LF
-"            code = group_code," LF
-"            data = group_data," LF
+"    local split_ret = am.split_line_by_pattern(data, am.config.parser_pattern)" LF
+"    for _,v in ipairs(split_ret) do" LF
+"        local tmp = {" LF
+"            data = v.data," LF
+"            line_beg = v.line_beg," LF
+"            line_end = v.line_end," LF
 "        }" LF
-"        data = string.sub(data, off_end_0 + 1)" LF
+"        if v.group ~= nil then" LF
+"            tmp.lang = v.group[1]" LF
+"            tmp.code = v.group[2]" LF
+"            tmp.data = v.group[3]" LF
+"        end" LF
+"        ret[#ret + 1] = tmp" LF
 "    end" LF
 "    return ret" LF
 "end" LF

@@ -17,6 +17,7 @@ static am_function_t* am_apis[] = {
     &am_f_search_file,
     &am_f_sha256,
     &am_f_split_line,
+    &am_f_split_line_by_pattern,
     &am_f_strcasecmp,
     &am_f_table_is_array,
     &am_f_write_file,

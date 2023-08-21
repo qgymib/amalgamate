@@ -104,6 +104,7 @@ return { proc = proc }
 #include "function/lua_search_file.c"
 #include "function/lua_sha256.c"
 #include "function/lua_split_line.c"
+#include "function/lua_split_line_by_pattern.c"
 #include "function/lua_strcasecmp.c"
 #include "function/lua_table_is_array.c"
 #include "function/lua_write_file.c"

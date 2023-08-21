@@ -4047,8 +4047,8 @@ int lua_cjson_deserialize(lua_State* L, int idx)
 /*
  * ADDON:   c:expand_include
  * PATH:    function/__init__.h
- * SIZE:    2382
- * SHA-256: ade3ef18be79627b27690cb895b252c5f567fe69f404f16b7f07eed75c708136
+ * SIZE:    2432
+ * SHA-256: 4ecab206876636f7b8d33f89c8401e4cb2955a24f6997aa04d222a53c90f0fec
  */
 /* AMALGAMATE c:expand_include function/__init__.h [BEG] */
 #line 1 "function/__init__.h"
@@ -4134,6 +4134,7 @@ extern am_function_t am_f_msvc_suppress_warning;
 extern am_function_t am_f_search_file;
 extern am_function_t am_f_sha256;
 extern am_function_t am_f_split_line;
+extern am_function_t am_f_split_line_by_pattern;
 extern am_function_t am_f_strcasecmp;
 extern am_function_t am_f_table_is_array;
 extern am_function_t am_f_write_file;
@@ -4248,8 +4249,8 @@ extern const char* amalgamate_script;
 /*
  * ADDON:   c:expand_include
  * PATH:    function/__init__.c
- * SIZE:    2039
- * SHA-256: 5c1620f20748292982cc4538348abac7bb405ba28cc80a2a2ac72fcc3d33aef0
+ * SIZE:    2073
+ * SHA-256: 9978775f247d967deb1ff6999e905d8e8217fda1a5770323e75edb1b593b71b5
  */
 /* AMALGAMATE c:expand_include function/__init__.c [BEG] */
 #line 1 "function/__init__.c"
@@ -4272,6 +4273,7 @@ static am_function_t* am_apis[] = {
     &am_f_search_file,
     &am_f_sha256,
     &am_f_split_line,
+    &am_f_split_line_by_pattern,
     &am_f_strcasecmp,
     &am_f_table_is_array,
     &am_f_write_file,
@@ -5513,6 +5515,213 @@ am_function_t am_f_split_line = {
 "ignored."
 };
 /* AMALGAMATE c:expand_include function/lua_split_line.c [END] */
+
+/*
+ * ADDON:   c:expand_include
+ * PATH:    function/lua_split_line_by_pattern.c
+ * SIZE:    5230
+ * SHA-256: abe2d7d9ac398c0b400b06a3faaee381c3418ecc58aba37bb91fca58631b8ea5
+ */
+/* AMALGAMATE c:expand_include function/lua_split_line_by_pattern.c [BEG] */
+#line 1 "function/lua_split_line_by_pattern.c"
+/* AMALGAMATE_DISPLACE_INCLUDE: __init__.h */
+
+/**
+ * @see string.find
+ */
+static int _split_line_by_pattern_wrap_string_find(lua_State* L, int idx_s, int idx_p)
+{
+    int sp = lua_gettop(L);
+
+    /* Prepare function */
+    lua_getglobal(L, "string"); // sp+1
+    lua_getfield(L, -1, "find"); // sp+2
+    lua_remove(L, sp + 1); // sp+1
+
+    /* Prepare arguments */
+    lua_pushvalue(L, idx_s); // sp+2
+    lua_pushvalue(L, idx_p); // sp+3
+
+    /* Do function call */
+    lua_call(L, 2, LUA_MULTRET);
+
+    /* Check result */
+    if (lua_type(L, sp + 1) == LUA_TNIL)
+    {
+        lua_settop(L, sp);
+        return 0;
+    }
+
+    /* Return the number of values */
+    int now_sp = lua_gettop(L);
+    return now_sp - sp;
+}
+
+static int _split_line_by_pattern_wrap_string_sub(lua_State* L, int idx, size_t offset, size_t len)
+{
+    int cnt_arg = 2;
+    int sp = lua_gettop(L);
+
+    /* Prepare function */
+    lua_getglobal(L, "string"); // sp+1
+    lua_getfield(L, -1, "sub"); // sp+2
+    lua_remove(L, sp + 1); // sp+1
+
+    /* Prepare arguments */
+    lua_pushvalue(L, idx);
+    lua_pushinteger(L, offset + 1);
+    if (len != (size_t)-1)
+    {
+        lua_pushinteger(L, offset + 1 + len - 1);
+        cnt_arg = 3;
+    }
+
+    /* Do function call */
+    lua_call(L, cnt_arg, 1);
+
+    return 1;
+}
+
+static void _split_line_by_pattern_check_args(lua_State* L)
+{
+    luaL_checktype(L, 1, LUA_TSTRING);
+    luaL_checktype(L, 2, LUA_TSTRING);
+    lua_settop(L, 2);
+}
+
+static size_t _split_line_by_pattern_count_line(lua_State* L, int idx)
+{
+    size_t cnt = 0;
+
+    size_t data_sz = 0;
+    const char* data = luaL_checklstring(L, idx, &data_sz);
+
+    size_t i;
+    for (i = 0; i < data_sz; i++)
+    {
+        if (data[i] == '\n')
+        {
+            cnt++;
+        }
+    }
+
+    return cnt;
+}
+
+/**
+ * @brief Push data on sp 1 into result at \p sp+2
+ */
+static size_t _split_line_by_pattern_push_left_on_stack(lua_State* L, int idx, size_t lineno)
+{
+    idx = lua_absindex(L, idx);
+
+    lua_newtable(L);
+
+    lua_pushvalue(L, idx);
+    lua_setfield(L, -2, "data");
+
+    lua_pushinteger(L, lineno);
+    lua_setfield(L, -2, "line_beg");
+
+    size_t cnt_line = _split_line_by_pattern_count_line(L, idx);
+    lua_pushinteger(L, lineno + cnt_line);
+    lua_setfield(L, -2, "line_end");
+
+    return cnt_line;
+}
+
+static int _split_line_by_pattern(lua_State* L)
+{
+    _split_line_by_pattern_check_args(L);
+
+    int sp = lua_gettop(L);
+    size_t lineno = 1;
+
+    lua_newtable(L); // sp+1: this will be the return value.
+
+    while (1)
+    {
+        if (_split_line_by_pattern_wrap_string_find(L, 1, 2) == 0)
+        {/* Not found */
+            lineno += _split_line_by_pattern_push_left_on_stack(L, 1, lineno);
+            lua_seti(L, sp + 1, luaL_len(L, sp + 1) + 1);
+            break;
+        }
+        int now_sp = lua_gettop(L); // now_sp-sp: the number of return value.
+
+        /* Get offset */
+        size_t off_beg = (size_t)lua_tonumber(L, sp + 3);
+        size_t off_end = (size_t)lua_tonumber(L, sp + 4);
+
+        if (off_beg > 1)
+        {
+            _split_line_by_pattern_wrap_string_sub(L, 1, off_beg - 1,
+                off_end - off_beg + 1);
+
+            lineno += _split_line_by_pattern_push_left_on_stack(L, -1, lineno);
+            lua_seti(L, sp + 1, luaL_len(L, sp + 1) + 1);
+
+            lua_pop(L, 1);
+        }
+
+        lua_newtable(L);
+        {
+            int i;
+            lua_newtable(L);
+            for (i = sp + 2; i <= now_sp; i++)
+            {
+                lua_pushvalue(L, i);
+                lua_seti(L, -2, luaL_len(L, -2) + 1);
+            }
+            lua_setfield(L, -2, "group");
+
+            lua_pushinteger(L, lineno);
+            lua_setfield(L, -2, "line_beg");
+
+            _split_line_by_pattern_wrap_string_sub(L, 1, off_beg - 1, off_end - off_beg + 1);
+            size_t line_cnt = _split_line_by_pattern_count_line(L, -1);
+            lua_pop(L, 1);
+            lua_pushinteger(L, lineno + line_cnt);
+            lua_setfield(L, -2, "line_end");
+        }
+        lua_seti(L, sp + 1, luaL_len(L, sp + 1) + 1);
+
+        _split_line_by_pattern_wrap_string_sub(L, 1, off_end, (size_t)-1);
+        lua_replace(L, 1);
+
+        lua_settop(L, sp + 1);
+    }
+
+    return 1;
+}
+
+am_function_t am_f_split_line_by_pattern = {
+"split_line_by_pattern", _split_line_by_pattern,
+"table, split_line_by_pattern(string data, string pattern)",
+"Split line by pattern and return the split result.",
+
+"The result is a list contains following fields:\n"
+"+ \"data\": The actual string data.\n"
+"+ \"line_beg\": The start line number of the data.\n"
+"+ \"line_end\": The end line number of the data.\n"
+"+ \"group\": Array of captured groups if exists.\n"
+"\n"
+"E.g.\n"
+"[\n"
+"    {\n"
+"        \"data\": \"The actual string data.\",\n"
+"        \"line_beg\": \"The start line number of the data.\",\n"
+"        \"line_end\": \"The end line number of the data.\",\n"
+"        \"group\": [\n"
+"            [1]= \"The first group\","
+"            [2]= \"The second group\","
+"            ...\n"
+"        ]\n"
+"    }\n,"
+"    ...\n"
+"]"
+};
+/* AMALGAMATE c:expand_include function/lua_split_line_by_pattern.c [END] */
 
 /*
  * ADDON:   c:expand_include

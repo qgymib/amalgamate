@@ -80,6 +80,7 @@ extern am_function_t am_f_msvc_suppress_warning;
 extern am_function_t am_f_search_file;
 extern am_function_t am_f_sha256;
 extern am_function_t am_f_split_line;
+extern am_function_t am_f_split_line_by_pattern;
 extern am_function_t am_f_strcasecmp;
 extern am_function_t am_f_table_is_array;
 extern am_function_t am_f_write_file;
